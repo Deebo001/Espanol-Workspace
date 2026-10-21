@@ -35,33 +35,8 @@
                     <p class="text-xs text-amber-400">Workspace Personalizado para Gabor (A2 ➔ B1)</p>
                 </div>
             </div>
-
-            <!-- Topic Selector (All Unlocked Across 4 Months) -->
-            <div class="flex items-center space-x-3">
-                <div class="text-right hidden sm:block">
-                    <span class="text-xs text-slate-400 block">Nivel y Módulo Actual</span>
-                    <select id="moduleSelect" onchange="changeModule(this.value)" class="bg-slate-800 text-amber-300 font-medium text-xs rounded border border-slate-700 px-2 py-1 focus:outline-none focus:border-amber-400">
-                        <option value="m1w1">Mes 1, Semana 1: Indefinido vs. Imperfecto</option>
-                        <option value="m1w2">Mes 1, Semana 2: Pretérito Perfecto</option>
-                        <option value="m1w3">Mes 1, Semana 3: Pluscuamperfecto</option>
-                        <option value="m1w4">Mes 1, Semana 4: Maestría Narrativa</option>
-                        <option value="m2w1">Mes 2, Semana 1: Futuro Simple</option>
-                        <option value="m2w2">Mes 2, Semana 2: Condicional Simple</option>
-                        <option value="m2w3">Mes 2, Semana 3: Perífrasis Verbales</option>
-                        <option value="m2w4">Mes 2, Semana 4: Cohesión y Conectores</option>
-                        <option value="m3w1">Mes 3, Semana 1: Presente de Subjuntivo</option>
-                        <option value="m3w2">Mes 3, Semana 2: Triggers del Subjuntivo</option>
-                        <option value="m3w3">Mes 3, Semana 3: Duda, Negación y Mandatos</option>
-                        <option value="m3w4">Mes 3, Semana 4: Reclamaciones Formales</option>
-                        <option value="m4w1">Mes 4, Semana 1: Comprensión Lectora</option>
-                        <option value="m4w2">Mes 4, Semana 2: Entrenamiento de Escritura</option>
-                        <option value="m4w3">Mes 4, Semana 3: Estrategia Oral</option>
-                        <option value="m4w4">Mes 4, Semana 4: Simulación de Examen</option>
-                    </select>
-                </div>
-                <div class="bg-slate-800 px-3 py-1 rounded border border-slate-700 text-xs">
-                    <span class="text-slate-400">Estado:</span> <span class="text-emerald-400 font-bold">Todo Desbloqueado</span>
-                </div>
+            <div class="bg-slate-800 px-3 py-1.5 rounded border border-slate-700 text-xs">
+                <span class="text-slate-400">Estado:</span> <span class="text-emerald-400 font-bold">Todos los Temas Desbloqueados</span>
             </div>
         </div>
     </header>
@@ -69,8 +44,38 @@
     <!-- Main Container -->
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 grid grid-cols-1 lg:grid-cols-3 gap-8">
         
-        <!-- Center Column: Practice Block & Study Notes -->
+        <!-- Left/Center Column: Practice Block & Curriculum Navigator -->
         <section class="lg:col-span-2 space-y-6">
+            
+            <!-- Module Navigator Panel (Solves dropdown visibility limits) -->
+            <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 shadow-lg space-y-3">
+                <h3 class="text-sm font-bold text-amber-400 flex items-center gap-2">
+                    <i class="fa-solid fa-compass"></i> Selecciona Mes y Semana de Estudio (16 Módulos Desbloqueados)
+                </h3>
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
+                    <button onclick="changeModule('m1w1')" id="btn_m1w1" class="p-2 rounded bg-slate-800 hover:bg-amber-500 hover:text-slate-950 text-left transition-colors font-medium border border-slate-700">M1 W1: Indefinido</button>
+                    <button onclick="changeModule('m1w2')" id="btn_m1w2" class="p-2 rounded bg-slate-800 hover:bg-amber-500 hover:text-slate-950 text-left transition-colors font-medium border border-slate-700">M1 W2: Perfecto</button>
+                    <button onclick="changeModule('m1w3')" id="btn_m1w3" class="p-2 rounded bg-slate-800 hover:bg-amber-500 hover:text-slate-950 text-left transition-colors font-medium border border-slate-700">M1 W3: Pluscuam.</button>
+                    <button onclick="changeModule('m1w4')" id="btn_m1w4" class="p-2 rounded bg-slate-800 hover:bg-amber-500 hover:text-slate-950 text-left transition-colors font-medium border border-slate-700">M1 W4: Narrativa</button>
+                    
+                    <button onclick="changeModule('m2w1')" id="btn_m2w1" class="p-2 rounded bg-slate-800 hover:bg-amber-500 hover:text-slate-950 text-left transition-colors font-medium border border-slate-700">M2 W1: Futuro</button>
+                    <button onclick="changeModule('m2w2')" id="btn_m2w2" class="p-2 rounded bg-slate-800 hover:bg-amber-500 hover:text-slate-950 text-left transition-colors font-medium border border-slate-700">M2 W2: Condicional</button>
+                    <button onclick="changeModule('m2w3')" id="btn_m2w3" class="p-2 rounded bg-slate-800 hover:bg-amber-500 hover:text-slate-950 text-left transition-colors font-medium border border-slate-700">M2 W3: Perífrasis</button>
+                    <button onclick="changeModule('m2w4')" id="btn_m2w4" class="p-2 rounded bg-slate-800 hover:bg-amber-500 hover:text-slate-950 text-left transition-colors font-medium border border-slate-700">M2 W4: Conectores</button>
+
+                    <button onclick="changeModule('m3w1')" id="btn_m3w1" class="p-2 rounded bg-slate-800 hover:bg-amber-500 hover:text-slate-950 text-left transition-colors font-medium border border-slate-700">M3 W1: Subjuntivo</button>
+                    <button onclick="changeModule('m3w2')" id="btn_m3w2" class="p-2 rounded bg-slate-800 hover:bg-amber-500 hover:text-slate-950 text-left transition-colors font-medium border border-slate-700">M3 W2: Triggers</button>
+                    <button onclick="changeModule('m3w3')" id="btn_m3w3" class="p-2 rounded bg-slate-800 hover:bg-amber-500 hover:text-slate-950 text-left transition-colors font-medium border border-slate-700">M3 W3: Duda/Cmd</button>
+                    <button onclick="changeModule('m3w4')" id="btn_m3w4" class="p-2 rounded bg-slate-800 hover:bg-amber-500 hover:text-slate-950 text-left transition-colors font-medium border border-slate-700">M3 W4: Reclamación</button>
+
+                    <button onclick="changeModule('m4w1')" id="btn_m4w1" class="p-2 rounded bg-slate-800 hover:bg-amber-500 hover:text-slate-950 text-left transition-colors font-medium border border-slate-700">M4 W1: Lectura</button>
+                    <button onclick="changeModule('m4w2')" id="btn_m4w2" class="p-2 rounded bg-slate-800 hover:bg-amber-500 hover:text-slate-950 text-left transition-colors font-medium border border-slate-700">M4 W2: Escritura</button>
+                    <button onclick="changeModule('m4w3')" id="btn_m4w3" class="p-2 rounded bg-slate-800 hover:bg-amber-500 hover:text-slate-950 text-left transition-colors font-medium border border-slate-700">M4 W3: Oral</button>
+                    <button onclick="changeModule('m4w4')" id="btn_m4w4" class="p-2 rounded bg-slate-800 hover:bg-amber-500 hover:text-slate-950 text-left transition-colors font-medium border border-slate-700">M4 W4: Simulación</button>
+                </div>
+            </div>
+
+            <!-- Active Module Header -->
             <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 shadow-lg relative overflow-hidden">
                 <div class="absolute top-0 right-0 bg-amber-500/10 text-amber-400 font-bold text-xs uppercase px-3 py-1 rounded-bl-lg border-l border-b border-amber-500/20">
                     SIELE & DELE B1 Mastery • Meta 80%
@@ -84,7 +89,7 @@
             <!-- Accent Toolbar -->
             <div class="bg-slate-900 border border-slate-800 rounded-xl p-3 flex items-center justify-between shadow-sm">
                 <span class="text-xs font-semibold text-slate-400 flex items-center gap-1">
-                    <i class="fa-solid fa-keyboard text-amber-400"></i> Teclas Rápidas de Acentos:
+                    <i class="fa-solid fa-keyboard text-amber-400"></i> Acentos Rápidos:
                 </span>
                 <div class="flex space-x-1 sm:space-x-2">
                     <button type="button" onclick="insertAccent('á')" class="accent-btn">á</button>
@@ -125,24 +130,16 @@
                     <h4 class="text-amber-400 font-bold text-sm flex items-center gap-2">
                         <i class="fa-solid fa-book-bookmark"></i> Regla Gramatical / Grammar Rule
                     </h4>
-                    <p id="ruleTextEs" class="text-xs text-slate-300 leading-relaxed">
-                        El Imperfecto describe escenarios y hábitos. El Indefinido describe acciones puntuales y terminadas.
-                    </p>
-                    <p id="ruleTextEn" class="text-xs text-slate-400 italic leading-relaxed">
-                        Imperfect describes scenery and habits. Preterite describes completed specific actions.
-                    </p>
+                    <p id="ruleTextEs" class="text-xs text-slate-300 leading-relaxed">El Imperfecto describe escenarios. El Indefinido ejecuta acciones puntuales.</p>
+                    <p id="ruleTextEn" class="text-xs text-slate-400 italic leading-relaxed">Imperfect sets the background. Preterite executes completed actions.</p>
                 </div>
 
                 <div class="bg-slate-900 border border-slate-800 p-5 rounded-xl space-y-3">
                     <h4 class="text-emerald-400 font-bold text-sm flex items-center gap-2">
                         <i class="fa-solid fa-bolt"></i> Estructura Profesional / Business Structure
                     </h4>
-                    <p id="ruleExtraEs" class="text-xs text-slate-300 leading-relaxed">
-                        Usa los tiempos pasados para redactar informes de proyectos y anécdotas profesionales.
-                    </p>
-                    <p id="ruleExtraEn" class="text-xs text-slate-400 italic leading-relaxed">
-                        Use past tenses to draft project updates and professional anecdotes.
-                    </p>
+                    <p id="ruleExtraEs" class="text-xs text-slate-300 leading-relaxed">Usa los tiempos pasados para redactar informes de proyectos y anécdotas profesionales.</p>
+                    <p id="ruleExtraEn" class="text-xs text-slate-400 italic leading-relaxed">Use past tenses to draft project updates and professional anecdotes.</p>
                 </div>
             </div>
         </section>
@@ -196,221 +193,208 @@
                 extraEs: "Ejemplo: Mientras yo estudiaba, sonó el teléfono.",
                 extraEn: "Example: While I was studying, the phone rang.",
                 questions: [
-                    { id: "q1", prefix: "1. Mientras yo", suffix: "en mi habitación, sonó el teléfono.", answer: "estudiaba", explanation: "Imperfecto para acción en desarrollo.", hint: "estudiar (imperfecto)" },
-                    { id: "q2", prefix: "2. El hotel", suffix: "muy grande y tenía una piscina hermosa.", answer: "era", explanation: "Imperfecto para descripción de estado.", hint: "ser (imperfecto)" },
-                    { id: "q3", prefix: "3. Ayer", suffix: "al supermercado a comprar comida.", answer: "fui", explanation: "Indefinido para acción puntual terminada.", hint: "ir (indefinido yo)" },
-                    { id: "q4", prefix: "4. Cuando Juan", suffix: "niño, siempre jugaba al fútbol.", answer: "era", explanation: "Imperfecto para edad en el pasado.", hint: "ser (imperfecto)" },
-                    { id: "q5", prefix: "5. El sábado pasado, nosotros", suffix: "en un restaurante mexicano.", answer: "comimos", explanation: "Indefinido para evento completado.", hint: "comer (indefinido nosotros)" }
+                    { id: "q1", prefix: "1. Mientras yo", suffix: "en mi habitación, sonó el teléfono.", answer: "estudiaba", explanation: "Imperfecto para acción en desarrollo.", hint: "estudiar" },
+                    { id: "q2", prefix: "2. El hotel", suffix: "muy grande y tenía una piscina hermosa.", answer: "era", explanation: "Imperfecto para descripción.", hint: "ser" },
+                    { id: "q3", prefix: "3. Ayer", suffix: "al supermercado a comprar comida.", answer: "fui", explanation: "Indefinido para acción puntual.", hint: "ir" },
+                    { id: "q4", prefix: "4. Cuando Juan", suffix: "niño, siempre jugaba al fútbol.", answer: "era", explanation: "Imperfecto para edad.", hint: "ser" },
+                    { id: "q5", prefix: "5. El sábado pasado, nosotros", suffix: "en un restaurante mexicano.", answer: "comimos", explanation: "Indefinido para evento completado.", hint: "comer" }
                 ]
             },
             "m1w2": {
                 title: "Mes 1, Semana 2: Pretérito Perfecto",
                 description: "Puente entre el pasado y el presente para experiencias de vida y tiempo no concluido.",
-                ruleEs: "Usa el Pretérito Perfecto (he, has, ha... + participio) para acciones en periodos de tiempo abiertos (hoy, este año).",
+                ruleEs: "Usa el Pretérito Perfecto (he, has... + participio) para periodos de tiempo abiertos (hoy, este año).",
                 ruleEn: "Use Present Perfect for ongoing time frames or life experiences.",
                 extraEs: "Ejemplo: Esta mañana he tenido una reunión importante.",
                 extraEn: "Example: This morning I have had an important meeting.",
                 questions: [
-                    { id: "q1", prefix: "1. Hoy", suffix: "un día muy ocupado en la oficina.", answer: "ha sido", explanation: "Pretérito perfecto para tiempo no concluido ('hoy').", hint: "ser (he/ha sido)" },
-                    { id: "q2", prefix: "2. Esta semana", suffix: "tres informes financieros.", answer: "he escrito", explanation: "Pretérito perfecto para la semana actual.", hint: "escribir (he escrito)" },
-                    { id: "q3", prefix: "3. ¿Alguna vez", suffix: "tú a Madrid por motivos de trabajo?", answer: "has viajado", explanation: "Experiencia de vida con 'alguna vez'.", hint: "viajar (has viajado)" },
-                    { id: "q4", prefix: "4. Este mes nosotros", suffix: "dos contratos nuevos.", answer: "hemos firmado", explanation: "Acción en periodo de tiempo actual.", hint: "firmar (hemos firmado)" }
+                    { id: "q1", prefix: "1. Hoy", suffix: "un día muy ocupado en la oficina.", answer: "ha sido", explanation: "Pretérito perfecto para 'hoy'.", hint: "ha sido" },
+                    { id: "q2", prefix: "2. Esta semana", suffix: "tres informes financieros.", answer: "he escrito", explanation: "Pretérito perfecto para semana actual.", hint: "he escrito" },
+                    { id: "q3", prefix: "3. ¿Alguna vez", suffix: "tú a Madrid por trabajo?", answer: "has viajado", explanation: "Experiencia de vida.", hint: "has viajado" },
+                    { id: "q4", prefix: "4. Este mes nosotros", suffix: "dos contratos nuevos.", answer: "hemos firmado", explanation: "Acción en periodo actual.", hint: "hemos firmado" }
                 ]
             },
             "m1w3": {
                 title: "Mes 1, Semana 3: Pretérito Pluscuamperfecto",
                 description: "El pasado antes del pasado para justificaciones y cronología compleja.",
-                ruleEs: "Usa el Pluscuamperfecto (había, habías... + participio) para acciones ocurridas antes de otro evento pasado.",
-                ruleEn: "Use Past Perfect (had + past participle) for an action prior to another past action.",
+                ruleEs: "Usa el Pluscuamperfecto (había... + participio) para acciones ocurridas antes de otro evento pasado.",
+                ruleEn: "Use Past Perfect (had + participle) for an action prior to another past action.",
                 extraEs: "Ejemplo: Cuando llegué, el director ya había salido.",
                 extraEn: "Example: When I arrived, the director had already left.",
                 questions: [
-                    { id: "q1", prefix: "1. Cuando los clientes llegaron, Carlos ya", suffix: "la cena.", answer: "había cocinado", explanation: "Pluscuamperfecto para la acción anterior.", hint: "cocinar (había cocinado)" },
-                    { id: "q2", prefix: "2. No pude abrir la puerta porque yo", suffix: "las llaves.", answer: "había perdido", explanation: "Causa anterior al bloqueo.", hint: "perder (había perdido)" },
-                    { id: "q3", prefix: "3. Antes de trabajar aquí, yo ya", suffix: "mi carrera.", answer: "había terminado", explanation: "Acción completada en un punto anterior del pasado.", hint: "terminar (había terminado)" }
+                    { id: "q1", prefix: "1. Cuando llegaron, Carlos ya", suffix: "la cena.", answer: "había cocinado", explanation: "Pluscuamperfecto para la acción anterior.", hint: "había cocinado" },
+                    { id: "q2", prefix: "2. No pude abrir porque yo", suffix: "las llaves.", answer: "había perdido", explanation: "Causa anterior.", hint: "había perdido" },
+                    { id: "q3", prefix: "3. Antes de trabajar aquí, yo ya", suffix: "mi carrera.", answer: "había terminado", explanation: "Acción anterior.", hint: "había terminado" }
                 ]
             },
             "m1w4": {
                 title: "Mes 1, Semana 4: Maestría Narrativa y Conectores",
-                description: "Integración de todos los tiempos pasados con marcadores discursivos para SIELE.",
-                ruleEs: "Combina imperfecto, indefinido y pluscuamperfecto usando conectores como 'sin embargo' y 'por lo tanto'.",
-                ruleEn: "Combine past tenses using cohesive connectors like 'sin embargo' and 'por lo tanto'.",
+                description: "Integración de tiempos pasados con marcadores discursivos.",
+                ruleEs: "Combina imperfecto, indefinido y pluscuamperfecto usando conectores como 'sin embargo'.",
+                ruleEn: "Combine past tenses using cohesive connectors.",
                 extraEs: "Ejemplo: Hacía sol; sin embargo, decidí llevar paraguas.",
-                extraEn: "Example: It was sunny; however, I decided to take an umbrella.",
+                extraEn: "Example: It was sunny; however, I took an umbrella.",
                 questions: [
-                    { id: "q1", prefix: "1. Ayer decidí salir a correr; ", suffix: ", empezó a llover fuertemente.", answer: "sin embargo", explanation: "Conector de contraste.", hint: "sin embargo" },
-                    { id: "q2", prefix: "2. El lunes pasado Elena", suffix: "cambiar de apartamento.", answer: "decidió", explanation: "Indefinido para decisión puntual.", hint: "decidir (decidió)" },
-                    { id: "q3", prefix: "3. Un amigo le", suffix: "una zona muy tranquila.", answer: "había recomendado", explanation: "Pluscuamperfecto para recomendación previa.", hint: "recomendar (había recomendado)" }
+                    { id: "q1", prefix: "1. Ayer decidí salir a correr;", suffix: ", empezó a llover fuertemente.", answer: "sin embargo", explanation: "Conector de contraste.", hint: "sin embargo" },
+                    { id: "q2", prefix: "2. El lunes pasado Elena", suffix: "cambiar de apartamento.", answer: "decidió", explanation: "Indefinido para decisión.", hint: "decidió" }
                 ]
             },
             "m2w1": {
                 title: "Mes 2, Semana 1: El Futuro Simple",
-                description: "Proyecciones, planes y predicciones tecnológicas para B1.",
-                ruleEs: "Añade las terminaciones (-é, -ás, -á, -emos, -éis, -án) al infinitivo. Cuidado con los irregulares (haré, tendré).",
-                ruleEn: "Add future endings directly to the infinitive. Watch out for irregular stems.",
+                description: "Proyecciones, planes y predicciones tecnológicas.",
+                ruleEs: "Añade las terminaciones (-é, -ás, -á...) al infinitivo. Cuidado con irregulares (haré, tendré).",
+                ruleEn: "Add future endings directly to the infinitive.",
                 extraEs: "Ejemplo: El próximo año cambiaré de puesto.",
                 extraEn: "Example: Next year I will change position.",
                 questions: [
-                    { id: "q1", prefix: "1. El mes que viene, mi equipo y yo", suffix: "un viaje de negocios.", answer: "haremos", explanation: "Futuro irregular de hacer (haremos).", hint: "hacer (haremos)" },
-                    { id: "q2", prefix: "2. Si estudio duro, sé que", suffix: "mejores oportunidades.", answer: "tendré", explanation: "Futuro irregular de tener (tendré).", hint: "tener (tendré)" },
-                    { id: "q3", prefix: "3. Los expertos dicen que en 2050", suffix: "coches autónomos.", answer: "habrá", suffix: "en las ciudades.", explanation: "Forma impersonal de haber en futuro (habrá).", hint: "haber (habrá)" }
+                    { id: "q1", prefix: "1. El mes que viene, mi equipo y yo", suffix: "un viaje.", answer: "haremos", explanation: "Futuro irregular de hacer.", hint: "haremos" },
+                    { id: "q2", prefix: "2. Si estudio duro, sé que", suffix: "mejores oportunidades.", answer: "tendré", explanation: "Futuro irregular de tener.", hint: "tendré" }
                 ]
             },
             "m2w2": {
                 title: "Mes 2, Semana 2: El Condicional Simple",
                 description: "Consejos formales y escenarios hipotéticos (-aría).",
-                ruleEs: "Usa el condicional para dar consejos ('Yo en tu lugar, compraría...') o hipótesis ideales.",
-                ruleEn: "Use conditional for polite advice and hypothetical scenarios.",
+                ruleEs: "Usa el condicional para dar consejos o hipótesis ideales.",
+                ruleEn: "Use conditional for polite advice and hypotheses.",
                 extraEs: "Ejemplo: Deberías hablar con el gerente.",
                 extraEn: "Example: You should speak with the manager.",
                 questions: [
-                    { id: "q1", prefix: "1. Yo en tu lugar,", suffix: "con el director antes de firmar.", answer: "hablaría", explanation: "Condicional para dar consejos.", hint: "hablar (hablaría)" },
-                    { id: "q2", prefix: "2. Si tuviera más presupuesto,", suffix: "una campaña de marketing.", answer: "haría", explanation: "Condicional en oración hipotética.", hint: "hacer (haría)" },
-                    { id: "q3", prefix: "3. Con más recursos, nosotros", suffix: "resolver el problema técnico.", answer: "podríamos", explanation: "Condicional irregular de poder.", hint: "poder (podríamos)" }
+                    { id: "q1", prefix: "1. Yo en tu lugar,", suffix: "con el director antes de firmar.", answer: "hablaría", explanation: "Condicional para consejos.", hint: "hablaría" },
+                    { id: "q2", prefix: "2. Si tuviera más presupuesto,", suffix: "una campaña.", answer: "haría", explanation: "Hipótesis con condicional.", hint: "haría" }
                 ]
             },
             "m2w3": {
                 title: "Mes 2, Semana 3: Perífrasis Verbales",
-                description: "Estructuras de duración, repetición y obligación (Llevar + gerundio, Volver a + infinitivo).",
+                description: "Estructuras de duración y repetición.",
                 ruleEs: "Usa 'llevar + gerundio' para duración y 'volver a + infinitivo' para repetición.",
-                ruleEn: "Use periphrasis to express ongoing duration or repeated actions.",
+                ruleEn: "Use periphrasis to express duration or repeated actions.",
                 extraEs: "Ejemplo: Llevo dos años trabajando aquí.",
                 extraEn: "Example: I have been working here for two years.",
                 questions: [
-                    { id: "q1", prefix: "1. Yo", suffix: "estudiando español desde 2024.", answer: "llevo", explanation: "Perífrasis de duración ('llevo + gerundio').", hint: "llevar (llevo)" },
-                    { id: "q2", prefix: "2. Prometo que no volveré a", suffix: "el mismo error en el informe.", answer: "cometer", suffix: "", hint: "cometer", explanation: "Perífrasis de repetición ('volver a + infinitivo')." },
-                    { id: "q3", prefix: "3. Para aprobar el examen, tienes que", suffix: "todos los días.", answer: "practicar", explanation: "Obligación con 'tener que + infinitivo'.", hint: "practicar" }
+                    { id: "q1", prefix: "1. Yo", suffix: "estudiando español desde 2024.", answer: "llevo", explanation: "Perífrasis de duración.", hint: "llevo" },
+                    { id: "q2", prefix: "2. Prometo que no volveré a", suffix: "el mismo error.", answer: "cometer", suffix: "", hint: "cometer", explanation: "Perífrasis de repetición." }
                 ]
             },
             "m2w4": {
                 title: "Mes 2, Semana 4: Cohesión y Conectores",
-                description: "Conectores discursivos (además, sin embargo, por lo tanto) para textos cohesivos.",
-                ruleEs: "Estructura argumentos contrastando ideas con 'sin embargo' o indicando consecuencias con 'por lo tanto'.",
-                ruleEn: "Structure arguments using connectors for contrast, addition, and consequences.",
+                description: "Conectores discursivos (además, sin embargo, por lo tanto).",
+                ruleEs: "Estructura argumentos contrastando ideas o indicando consecuencias.",
+                ruleEn: "Structure arguments using connectors.",
                 extraEs: "Ejemplo: El proyecto es costoso; por lo tanto, necesitamos aprobación.",
                 extraEn: "Example: The project is costly; therefore, we need approval.",
                 questions: [
-                    { id: "q1", prefix: "1. Me encanta la propuesta;", suffix: ", nunca he trabajado en ese sector.", answer: "sin embargo", explanation: "Conector para contraste.", hint: "sin embargo" },
-                    { id: "q2", prefix: "2. He ahorrado suficiente dinero;", suffix: ", viajaré a Madrid en septiembre.", answer: "por lo tanto", suffix: "", hint: "por lo tanto", explanation: "Conector de consecuencia." }
+                    { id: "q1", prefix: "1. Me encanta la propuesta;", suffix: ", nunca he trabajado allí.", answer: "sin embargo", explanation: "Conector de contraste.", hint: "sin embargo" }
                 ]
             },
             "m3w1": {
                 title: "Mes 3, Semana 1: Presente de Subjuntivo",
-                description: "Mecánica del modo subjuntivo (yo del presente, cambio de vocal -ar/-er).",
-                ruleEs: "Toma la forma 'yo' del presente, quita la -o y añade las vocales opuestas (-e para -ar, -a para -er/-ir).",
-                ruleEn: "Take the 'yo' form of present indicative, drop -o, and flip the vowel.",
+                description: "Mecánica del modo subjuntivo (yo del presente, vocales opuestas).",
+                ruleEs: "Toma la forma 'yo', quita la -o y añade la vocal opuesta (-e o -a).",
+                ruleEn: "Take 'yo' form, drop -o, flip vowel.",
                 extraEs: "Ejemplo: Espero que tú trabajes bien.",
                 extraEn: "Example: I hope you work well.",
                 questions: [
-                    { id: "q1", prefix: "1. Quiero que tú", suffix: "con el gerente esta tarde.", answer: "hables", explanation: "Subjuntivo de hablar (tú hables).", hint: "hablar (hables)" },
-                    { id: "q2", prefix: "2. Me alegra que él", suffix: "comida saludable en la oficina.", answer: "coma", explanation: "Subjuntivo de comer (él coma).", hint: "comer (coma)" },
-                    { id: "q3", prefix: "3. Es importante que nosotros", suffix: "el contrato hoy.", answer: "firmemos", explanation: "Subjuntivo de firmar (nosotros firmemos).", hint: "firmar (firmemos)" }
+                    { id: "q1", prefix: "1. Quiero que tú", suffix: "con el gerente.", answer: "hables", explanation: "Subjuntivo de hablar.", hint: "hables" },
+                    { id: "q2", prefix: "2. Me alegra que él", suffix: "comida saludable.", answer: "coma", explanation: "Subjuntivo de comer.", hint: "coma" }
                 ]
             },
             "m3w2": {
                 title: "Mes 3, Semana 2: Triggers de Deseos y Emociones",
-                description: "Subjuntivo tras expresiones de deseo y emoción con cambio de sujeto.",
-                ruleEs: "Requiere cambio de sujeto a través del 'que': 'Quiero que tú viajes'.",
-                ruleEn: "Requires a change of subject across 'que' for wishes and emotional triggers.",
-                extraEs: "Ejemplo: Me molesta que mi jefe no escuche mis ideas.",
-                extraEn: "Example: It bothers me that my boss doesn't listen to my ideas.",
+                description: "Subjuntivo tras deseos y emociones con cambio de sujeto.",
+                ruleEs: "Requiere cambio de sujeto a través de 'que'.",
+                ruleEn: "Requires a change of subject across 'que'.",
+                extraEs: "Ejemplo: Me molesta que mi jefe no escuche.",
+                extraEn: "Example: It bothers me that my boss doesn't listen.",
                 questions: [
-                    { id: "q1", prefix: "1. Yo quiero", suffix: "una casa grande. (Sin cambio de sujeto)", answer: "comprar", explanation: "Infinitivo porque no hay cambio de sujeto.", hint: "comprar (infinitivo)" },
-                    { id: "q2", prefix: "2. Yo quiero que mi hermano", suffix: "una casa grande.", answer: "compre", explanation: "Subjuntivo por cambio de sujeto con 'querer que'.", hint: "comprar (compre)" },
-                    { id: "q3", prefix: "3. Es una lástima que ellos no", suffix: "venir a la reunión.", answer: "puedan", explanation: "Subjuntivo irregular de poder.", hint: "poder (puedan)" }
+                    { id: "q1", prefix: "1. Yo quiero", suffix: "una casa grande.", answer: "comprar", explanation: "Infinitivo sin cambio de sujeto.", hint: "comprar" },
+                    { id: "q2", prefix: "2. Yo quiero que mi hermano", suffix: "una casa grande.", answer: "compre", explanation: "Subjuntivo con cambio de sujeto.", hint: "compre" }
                 ]
             },
             "m3w3": {
                 title: "Mes 3, Semana 3: Duda, Negación y Mandatos",
-                description: "Subjuntivo con verbos de duda ('no creo que') e imperativo formal (Usted).",
-                ruleEs: "La certeza usa indicativo ('creo que es'); la duda usa subjuntivo ('no creo que sea').",
-                ruleEn: "Certainty uses indicative; doubt and denial trigger the subjunctive.",
+                description: "Subjuntivo con duda ('no creo que') e imperativo formal.",
+                ruleEs: "La certeza usa indicativo; la duda usa subjuntivo.",
+                ruleEn: "Certainty uses indicative; doubt triggers subjunctive.",
                 extraEs: "Ejemplo: No creo que el informe esté listo.",
                 extraEn: "Example: I don't think the report is ready.",
                 questions: [
-                    { id: "q1", prefix: "1. Creo que el médico", suffix: "razón. (Certeza)", answer: "tiene", explanation: "Indicativo tras 'creo que'.", hint: "tener (tiene)" },
-                    { id: "q2", prefix: "2. No creo que el médico", suffix: "razón. (Duda)", answer: "tenga", explanation: "Subjuntivo tras 'no creo que'.", hint: "tener (tenga)" },
-                    { id: "q3", prefix: "3. Por favor,", suffix: "los documentos en la nube. (Usted)", answer: "suba", explanation: "Imperativo formal (Usted) de subir.", hint: "subir (suba)" }
+                    { id: "q1", prefix: "1. Creo que el médico", suffix: "razón.", answer: "tiene", explanation: "Indicativo tras 'creo que'.", hint: "tiene" },
+                    { id: "q2", prefix: "2. No creo que el médico", suffix: "razón.", answer: "tenga", explanation: "Subjuntivo tras 'no creo que'.", hint: "tenga" }
                 ]
             },
             "m3w4": {
                 title: "Mes 3, Semana 4: Reclamaciones y Problemas",
-                description: "Resolución de incidencias y quejas formales para SIELE Escritura Task 1.",
-                ruleEs: "Usa fórmulas formales: 'Le escribo para informarle de que...' y exige soluciones con subjuntivo.",
-                ruleEn: "Use formal email structures to report appliance failures or service faults.",
+                description: "Resolución de incidencias y quejas formales.",
+                ruleEs: "Usa fórmulas formales para reportar averías y solicitar reembolsos.",
+                ruleEn: "Use formal structures to report faults.",
                 extraEs: "Ejemplo: Solicito que me devuelvan el dinero.",
-                extraEn: "Example: I request that you refund my money.",
+                extraEn: "Example: I request a refund.",
                 questions: [
-                    { id: "q1", prefix: "1. Le escribo para informarle de que el aparato tiene una", suffix: ".", answer: "avería", explanation: "Vocabulario de fallo técnico.", hint: "avería" },
-                    { id: "q2", prefix: "2. Por este motivo, solicito un", suffix: "completo de mi dinero.", answer: "reembolso", explanation: "Vocabulario de devolución económica.", hint: "reembolso" }
+                    { id: "q1", prefix: "1. Le escribo porque el aparato tiene una", suffix: ".", answer: "avería", explanation: "Vocabulario de fallo técnico.", hint: "avería" }
                 ]
             },
             "m4w1": {
                 title: "Mes 4, Semana 1: Comprensión Lectora y Auditiva",
-                description: "Estrategias de skimming y sinónimos para maximizar los puntos pasivos del examen.",
-                ruleEs: "Busca sinónimos en las opciones de respuesta en lugar de buscar palabras exactas del texto.",
-                ruleEn: "Scan for semantic synonyms in reading tasks rather than exact keyword matches.",
+                description: "Estrategias de skimming y sinónimos.",
+                ruleEs: "Busca sinónimos en las opciones de respuesta.",
+                ruleEn: "Scan for semantic synonyms in reading tasks.",
                 extraEs: "Ejemplo: 'Cerrado por obras' equivale a 'No se puede visitar por reparaciones'.",
-                extraEn: "Example: 'Closed for work' equals 'Cannot be visited due to repairs'.",
+                extraEn: "Example: 'Closed for work' equals repairs.",
                 questions: [
-                    { id: "q1", prefix: "1. Si un texto dice 'Solicitar un empleo', su sinónimo es", suffix: "para un puesto.", answer: "postularse", explanation: "Sinónimo formal de buscar trabajo.", hint: "postularse" },
-                    { id: "q2", prefix: "2. Si un producto está estropeado, tiene una", suffix: ".", answer: "avería", explanation: "Equivalencia léxica de fallo.", hint: "avería" }
+                    { id: "q1", prefix: "1. Si un texto dice 'Solicitar un empleo', su sinónimo es", suffix: "para un puesto.", answer: "postularse", explanation: "Sinónimo de buscar trabajo.", hint: "postularse" }
                 ]
             },
             "m4w2": {
-                title: "Mes 4, Semana 2: Entrenamiento de Escritura (Cronometrado)",
-                description: "Fórmulas estructurales prememorizadas para cumplir con los tiempos del examen.",
-                ruleEs: "Ahorra tiempo usando fórmulas fijas de saludo y presentación en correos formales e informales.",
-                ruleEn: "Save time using pre-memorized structural greeting formulas for writing tasks.",
+                title: "Mes 4, Semana 2: Entrenamiento de Escritura",
+                description: "Fórmulas estructurales prememorizadas.",
+                ruleEs: "Ahorra tiempo usando fórmulas fijas de saludo en correos formales.",
+                ruleEn: "Save time using pre-memorized structural greetings.",
                 extraEs: "Ejemplo: 'Estimado Director: Le escribo con motivo de...'",
-                extraEn: "Example: 'Dear Director: I am writing with regard to...'",
+                extraEn: "Example: Dear Director...",
                 questions: [
-                    { id: "q1", prefix: "1. En un correo formal a una empresa, el saludo correcto es", suffix: "Señor/Señora:", answer: "estimado", explanation: "Fórmula de cortesía formal.", hint: "estimado" },
-                    { id: "q2", prefix: "2. Para cerrar un correo profesional se utiliza", suffix: ", Juan Pérez.", answer: "atentamente", explanation: "Despedida formal estándar.", hint: "atentamente" }
+                    { id: "q1", prefix: "1. En un correo formal a una empresa, el saludo es", suffix: "Señor:", answer: "estimado", explanation: "Cortesía formal.", hint: "estimado" }
                 ]
             },
             "m4w3": {
-                title: "Mes 4, Semana 3: Estrategias Orales y Neutralización de Muletillas",
-                description: "Sustitución de ruidos ('ehhh') por conectores fluidos ('Pues...', 'A ver...').",
-                ruleEs: "Mantén la fluidez usando conectores de pensamiento en lugar de pausas silenciosas.",
-                ruleEn: "Maintain fluency by using Spanish conversational fillers instead of hesitations.",
-                extraEs: "Ejemplo: 'A ver, en mi opinión el proyecto es viable.'",
-                extraEn: "Example: 'Let's see, in my opinion the project is viable.'",
+                title: "Mes 4, Semana 3: Estrategias Orales y Muletillas",
+                description: "Sustitución de ruidos por conectores fluidos.",
+                ruleEs: "Mantén la fluidez usando conectores de pensamiento.",
+                ruleEn: "Maintain fluency using Spanish fillers.",
+                extraEs: "Ejemplo: 'A ver, en mi opinión...'",
+                extraEn: "Example: 'Let's see...'",
                 questions: [
-                    { id: "q1", prefix: "1. Cuando necesitas un segundo para pensar, puedes decir '", suffix: "...'", answer: "a ver", explanation: "Conector oral de pausa y reflexión.", hint: "a ver" },
-                    { id: "q2", prefix: "2. Para introducir una opinión personal de forma natural dices 'En mi", suffix: "...'", answer: "opinión", suffix: "", hint: "opinión", explanation: "Estructura estándar de expresión de parecer." }
+                    { id: "q1", prefix: "1. Cuando necesitas pensar, puedes decir '", suffix: "...'", answer: "a ver", explanation: "Conector oral de pausa.", hint: "a ver" }
                 ]
             },
             "m4w4": {
-                title: "Mes 4, Semana 4: Simulación de Examen Completo",
-                description: "Práctica cronometrada de resistencia y auditoría final de rendimiento.",
-                ruleEs: "Realiza simulacros completos sin pausas para acostumbrar a tu mente al formato digital.",
-                ruleEn: "Complete full simulations under strict timer constraints to build stamina.",
-                extraEs: "Ejemplo: Gestiona tus tiempos: 20 minutos para la Tarea 1 de Escritura.",
-                extraEn: "Example: Manage your time: 20 minutes for Writing Task 1.",
+                title: "Mes 4, Semana 4: Simulación de Examen",
+                description: "Práctica cronometrada y auditoría de rendimiento.",
+                ruleEs: "Realiza simulacros completos sin pausas.",
+                ruleEn: "Complete full simulations under timer constraints.",
+                extraEs: "Ejemplo: 50 minutos para Escritura.",
+                extraEn: "Example: 50 minutes for Writing.",
                 questions: [
-                    { id: "q1", prefix: "1. ¿Qué sección del examen SIELE evalúa la expresión escrita en", suffix: "minutos?", answer: "50", explanation: "Duración estándar del módulo de Escritura.", hint: "50" },
-                    { id: "q2", prefix: "2. En el examen SIELE, las respuestas incorrectas penalizan la nota final? (Sí/No)", suffix: "", answer: "no", explanation: "No hay penalización por respuesta incorrecta.", hint: "no" }
+                    { id: "q1", prefix: "1. Duración del módulo de Escritura en SIELE (minutos):", suffix: "", answer: "50", explanation: "Duración estándar.", hint: "50" }
                 ]
             }
         };
 
         const flashcards = [
-            { cat: "Mes 1", q: "el pretérito indefinido", a: "Preterite tense for completed, punctual past actions." },
-            { cat: "Mes 1", q: "el pretérito imperfecto", a: "Imperfect tense for background scenery, age, and habits." },
-            { cat: "Mes 1", q: "el pretérito perfecto", a: "Present perfect (he, has...) for ongoing time frames." },
-            { cat: "Mes 1", q: "el pluscuamperfecto", a: "Past perfect (había...) for an action prior to another past action." },
-            { cat: "Mes 2", q: "el futuro simple", a: "Simple future tense for predictions and plans (-é, -ás...)." },
-            { cat: "Mes 2", q: "el condicional simple", a: "Conditional tense for polite advice and hypotheses (-aría)." },
-            { cat: "Mes 2", q: "las perífrasis verbales", a: "Multi-verb structures like 'llevar + gerundio' or 'volver a'." },
-            { cat: "Mes 2", q: "los conectores discursivos", a: "Discourse markers like 'sin embargo' and 'por lo tanto'." },
-            { cat: "Mes 3", q: "el presente de subjuntivo", a: "Subjunctive mood for doubts, wishes, and uncertainty." },
-            { cat: "Mes 3", q: "el cambio de sujeto", a: "Required grammatical shift across 'que' to trigger subjunctive." },
-            { cat: "Mes 3", q: "el imperativo formal", a: "Formal commands using 'usted' (e.g., suba, firme)." },
-            { cat: "Mes 3", q: "la avería y el reembolso", a: "Technical fault and financial refund for customer complaints." },
-            { cat: "Mes 4", q: "el skimming y los sinónimos", a: "Reading strategy to match paraphrased answer options." },
-            { cat: "Mes 4", q: "la redacción cronometrada", a: "Writing speed training under strict 20-minute constraints." },
-            { cat: "Mes 4", q: "las muletillas y la fluidez", a: "Conversational fillers ('A ver...', 'Pues...') to avoid pauses." }
+            { cat: "Mes 1", q: "el pretérito indefinido", a: "Preterite tense for completed past actions." },
+            { cat: "Mes 1", q: "el pretérito imperfecto", a: "Imperfect tense for background and habits." },
+            { cat: "Mes 1", q: "el pretérito perfecto", a: "Present perfect for ongoing time frames." },
+            { cat: "Mes 1", q: "el pluscuamperfecto", a: "Past perfect for an action prior to another past action." },
+            { cat: "Mes 2", q: "el futuro simple", a: "Simple future tense for predictions (-é, -ás...)." },
+            { cat: "Mes 2", q: "el condicional simple", a: "Conditional tense for polite advice (-aría)." },
+            { cat: "Mes 2", q: "las perífrasis verbales", a: "Structures like 'llevar + gerundio'." },
+            { cat: "Mes 2", q: "los conectores discursivos", a: "Connectors like 'sin embargo' and 'por lo tanto'." },
+            { cat: "Mes 3", q: "el presente de subjuntivo", a: "Subjunctive mood for doubts and wishes." },
+            { cat: "Mes 3", q: "el cambio de sujeto", a: "Grammatical shift across 'que' to trigger subjunctive." },
+            { cat: "Mes 3", q: "el imperativo formal", a: "Formal commands using 'usted'." },
+            { cat: "Mes 3", q: "la avería y el reembolso", a: "Technical fault and refund." },
+            { cat: "Mes 4", q: "el skimming y los sinónimos", a: "Reading strategy for paraphrased options." },
+            { cat: "Mes 4", q: "la redacción cronometrada", a: "Writing speed training under timer constraints." },
+            { cat: "Mes 4", q: "las muletillas y la fluidez", a: "Fillers ('A ver...', 'Pues...') to avoid pauses." }
         ];
 
         let currentModuleKey = "m1w1";
@@ -419,6 +403,16 @@
         let cardFlipped = false;
 
         document.addEventListener('DOMContentLoaded', () => { loadModule(currentModuleKey); updateFlashcard(); });
+
+        function changeModule(key) {
+            // Highlight active button
+            document.querySelectorAll('.grid button').forEach(b => b.classList.remove('bg-amber-500', 'text-slate-950', 'font-bold'));
+            const activeBtn = document.getElementById('btn_' + key);
+            if (activeBtn) {
+                activeBtn.classList.add('bg-amber-500', 'text-slate-950', 'font-bold');
+            }
+            loadModule(key);
+        }
 
         function loadModule(key) {
             currentModuleKey = key;
@@ -431,7 +425,7 @@
             document.getElementById('ruleTextEs').textContent = data.ruleEs;
             document.getElementById('ruleTextEn').textContent = data.ruleEn;
             document.getElementById('ruleExtraEs').textContent = data.extraEs;
-            document.getElementById('ruleExtraEn').textContent = data.extraEn;
+            document.getElementById('ruleExtraEn').textContent = data.extraExtraEn || data.extraEn;
 
             const container = document.getElementById('questionsContainer');
             container.innerHTML = '';
@@ -453,7 +447,6 @@
             resetScoreDisplay();
         }
 
-        function changeModule(key) { loadModule(key); }
         function setActiveInput(id) { activeInputId = id; }
 
         function insertAccent(char) {
