@@ -106,26 +106,26 @@
                 <div id="feedbackResult" class="hidden p-4 rounded-lg border transition-all"></div>
             </div>
 
-            <!-- GRAMMAR RULES & STUDY NOTES CARDS -->
+            <!-- BILINGUAL GRAMMAR RULES & STUDY NOTES CARDS -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div class="bg-slate-900 border border-slate-800 p-5 rounded-xl space-y-3">
                     <h4 class="text-amber-400 font-bold text-sm flex items-center gap-2">
-                        <i class="fa-solid fa-book-bookmark"></i> Regla de Oro 1: SER vs. ESTAR
+                        <i class="fa-solid fa-book-bookmark"></i> Regla 1: SER vs. ESTAR
                     </h4>
                     <ul class="text-xs text-slate-300 space-y-2 list-disc list-inside leading-relaxed">
-                        <li><strong>SER (DOCTOR):</strong> Identidad, profesión habitual (<em>soy consultor</em>), origen y lugar/hora de un evento programado (<em>la reunión es a las 15:00</em>).</li>
-                        <li><strong>ESTAR (PLACE):</strong> Ubicación de objetos/personas (<em>los documentos están en la mesa</em>) y estados o condiciones temporales (<em>estoy satisfecho</em>).</li>
+                        <li><strong>SER (DOCTOR):</strong> Identidad, profesión habitual (<em>soy consultor</em>), origen y lugar/hora de eventos (<em>la reunión es a las 15:00</em>). <span class="text-slate-400 font-italic">(Identity, profession, and event time/location).</span></li>
+                        <li><strong>ESTAR (PLACE):</strong> Ubicación de objetos/personas (<em>los documentos están en la mesa</em>) y estados temporales (<em>estoy satisfecho</em>). <span class="text-slate-400 font-italic">(Physical location and temporary states).</span></li>
                     </ul>
                 </div>
 
                 <div class="bg-slate-900 border border-slate-800 p-5 rounded-xl space-y-3">
                     <h4 class="text-emerald-400 font-bold text-sm flex items-center gap-2">
-                        <i class="fa-solid fa-bolt"></i> Regla de Oro 2: Verbos Reflexivos y Obligaciones
+                        <i class="fa-solid fa-bolt"></i> Regla 2: Verbos Reflexivos y Obligación
                     </h4>
                     <ul class="text-xs text-slate-300 space-y-2 list-disc list-inside leading-relaxed">
-                        <li><strong>Pronombres reflexivos:</strong> Colócalos antes del verbo conjugado (<em>me, te, se, nos</em>). Ejemplo: <em>Yo me encargo</em>.</li>
-                        <li><strong>Cambio vocálico:</strong> Verbos como <em>reunirse</em> llevan tilde en presente (<em>me reúno, te reúnes, se reúne, nos reunimos</em>).</li>
-                        <li><strong>Obligación:</strong> <em>Tener que + infinitivo</em> (personal) o <em>Hay que + infinitivo</em> (impersonal).</li>
+                        <li><strong>Pronombres reflexivos:</strong> Van antes del verbo conjugado (<em>me, te, se, nos</em>). Ej: <em>Yo me encargo</em>. <span class="text-slate-400 font-italic">(Place pronouns before conjugated verbs).</span></li>
+                        <li><strong>Cambio vocálico:</strong> Verbos como <em>reunirse</em> cambian (<em>me reúno, te reúnes, se reúne, nos reunimos</em>). <span class="text-slate-400 font-italic">(Stem-changing reflexive pattern u→ú).</span></li>
+                        <li><strong>Obligación:</strong> <em>Tener que + infinitivo</em> (personal) o <em>Hay que + infinitivo</em> (impersonal). <span class="text-slate-400 font-italic">(Obligation and necessity).</span></li>
                     </ul>
                 </div>
             </div>
@@ -191,27 +191,27 @@
                     { id: "q2", prefix: "2. Nosotros", suffix: "con los clientes internacionales los lunes.", answer: "nos reunimos", explanation: "Reflexivo 'reunirse' (nosotros nos reunimos).", hint: "reunirse (nosotros)" },
                     { id: "q3", prefix: "3. El director de proyectos", suffix: "para la auditoría técnica.", answer: "se prepara", explanation: "Reflexivo 'prepararse' (él se prepara).", hint: "prepararse (él)" },
                     { id: "q4", prefix: "4. Los nuevos consultores", suffix: "rápidamente a los requerimientos.", answer: "se adaptan", explanation: "Reflexivo 'adaptarse' (ellos se adaptan).", hint: "adaptarse (ellos)" },
-                    { id: "q5", prefix: "5. ¿", suffix: "tú que enviar la agenda de la reunión antes de medianoche?", answer: "Tienes", explanation: "Expresión de obligación 'tener que' (tú tienes).", hint: "tener que (tú)" }
+                    { id: "q5", prefix: "5. ¿", suffix: "tú que enviar la agenda de la reunión antes de las 12:00?", answer: "Tienes", explanation: "Expresión de obligación 'tener que' (tú tienes).", hint: "tener que (tú)" }
                 ]
             }
         };
 
         const flashcards = [
-            { cat: "Profesión", q: "el consultor / la consultora", a: "Consultant. Ej: Yo soy consultor de proyectos." },
-            { cat: "Reunión", q: "la reunión", a: "Meeting. Ej: La reunión es a las 15:00." },
-            { cat: "Contrato", q: "el contrato", a: "Contract. Ej: El contrato está listo." },
-            { cat: "Presupuesto", q: "el presupuesto", a: "Budget. Ej: Me encargo del presupuesto." },
-            { cat: "Auditoría", q: "la auditoría", a: "Audit. Ej: Nos preparamos para la auditoría." },
-            { cat: "Gestión", q: "encargarse de", a: "To take charge of. Ej: Me encargo del informe." },
-            { cat: "Colaboración", q: "reunirse con", a: "To meet with. Ej: Nos reunimos con el cliente." },
+            { cat: "Profesión / Role", q: "el consultor / la consultora", a: "Consultant. Ej: Yo soy consultor de proyectos." },
+            { cat: "Reunión / Meeting", q: "la reunión", a: "Meeting. Ej: La reunión es a las 15:00." },
+            { cat: "Contrato / Document", q: "el contrato", a: "Contract. Ej: El contrato está listo." },
+            { cat: "Finanzas / Budget", q: "el presupuesto", a: "Budget. Ej: Me encargo del presupuesto." },
+            { cat: "Auditoría / Audit", q: "la auditoría", a: "Audit. Ej: Nos preparamos para la auditoría." },
+            { cat: "Gestión / Management", q: "encargarse de", a: "To take charge of / deal with. Ej: Me encargo del informe." },
+            { cat: "Colaboración / Work", q: "reunirse con", a: "To meet with. Ej: Nos reunimos con el cliente." },
             { cat: "Responsabilidad", q: "ocuparse de", a: "To deal with / attend to. Ej: ¿Te ocupas de la agenda?" },
             { cat: "Flexibilidad", q: "adaptarse a", a: "To adapt to. Ej: El equipo se adapta al cambio." },
             { cat: "Preparación", q: "prepararse para", a: "To prepare for. Ej: Se preparan para la cita." },
-            { cat: "Ubicación", q: "ubicado / ubicada", a: "Located. Ej: La oficina está ubicada en el centro." },
-            { cat: "Estado", q: "satisfecho / satisfecha", a: "Satisfied. Ej: Estamos muy satisfechos." },
-            { cat: "Horario", q: "disponible", a: "Available. Ej: El director está disponible." },
+            { cat: "Ubicación / Location", q: "ubicado / ubicada", a: "Located. Ej: La oficina está ubicada en el centro." },
+            { cat: "Estado / State", q: "satisfecho / satisfecha", a: "Satisfied. Ej: Estamos muy satisfechos." },
+            { cat: "Horario / Schedule", q: "disponible", a: "Available. Ej: El director está disponible." },
             { cat: "Planificación", q: "la agenda", a: "Schedule / Agenda. Ej: La agenda está completa." },
-            { cat: "Reporte", q: "el informe", a: "Report. Ej: El informe está terminado." }
+            { cat: "Reporte / Report", q: "el informe", a: "Report. Ej: El informe está terminado." }
         ];
 
         let currentModuleKey = "1.1";
