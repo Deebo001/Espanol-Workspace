@@ -36,18 +36,18 @@
                 </div>
             </div>
 
-            <!-- Topic Selector -->
+            <!-- Topic Selector (All Unlocked) -->
             <div class="flex items-center space-x-3">
                 <div class="text-right hidden sm:block">
                     <span class="text-xs text-slate-400 block">Nivel y Módulo Actual</span>
                     <select id="moduleSelect" onchange="changeModule(this.value)" class="bg-slate-800 text-amber-300 font-medium text-xs rounded border border-slate-700 px-2 py-1 focus:outline-none focus:border-amber-400">
-                        <option value="1.1">Módulo 1.1: Ser, Estar y Reflexivos (Práctica A2)</option>
-                        <option value="1.2">Módulo 1.2: Rutinas y Obligaciones Laborales</option>
-                        <option value="2.1" disabled>Módulo 2.1: Pronombres de Objeto Directo (Bloqueado)</option>
+                        <option value="1.1">Módulo 1.1: Ser, Estar y Reflexivos</option>
+                        <option value="1.2">Módulo 1.2: Rutinas y Obligaciones</option>
+                        <option value="2.1">Módulo 2.1: Pronombres de Objeto Directo</option>
                     </select>
                 </div>
                 <div class="bg-slate-800 px-3 py-1 rounded border border-slate-700 text-xs">
-                    <span class="text-slate-400">Meta:</span> <span class="text-emerald-400 font-bold">80% Dominio</span>
+                    <span class="text-slate-400">Estado:</span> <span class="text-emerald-400 font-bold">Todo Desbloqueado</span>
                 </div>
             </div>
         </div>
@@ -62,7 +62,7 @@
                 <div class="absolute top-0 right-0 bg-amber-500/10 text-amber-400 font-bold text-xs uppercase px-3 py-1 rounded-bl-lg border-l border-b border-amber-500/20">
                     A2 ➔ B1 SIELE Preparation • Meta 80%
                 </div>
-                <h2 id="moduleTitle" class="text-2xl font-bold text-amber-400 mb-2">Módulo 1: Fundamentos del Presente</h2>
+                <h2 id="moduleTitle" class="text-2xl font-bold text-amber-400 mb-2">Módulo 2.1: Pronombres de Objeto Directo</h2>
                 <p id="moduleDescription" class="text-slate-300 text-sm leading-relaxed">
                     Escribe tus respuestas directamente dentro de cada oración o usa el botón de voz. Pulsa Enter o evalúa para comprobar tus respuestas.
                 </p>
@@ -87,9 +87,9 @@
             <div class="bg-slate-900 border border-slate-800 rounded-xl p-6 shadow-xl space-y-6">
                 <div class="flex items-center justify-between border-b border-slate-800 pb-4">
                     <h3 id="blockTitle" class="text-lg font-bold text-slate-100 flex items-center gap-2">
-                        <i class="fa-solid fa-pen-to-square text-amber-400"></i> Bloque de Ejercicios Prácticos 1.1
+                        <i class="fa-solid fa-pen-to-square text-amber-400"></i> Bloque de Ejercicios Prácticos
                     </h3>
-                    <span class="text-xs text-slate-400">5 Preguntas</span>
+                    <span class="text-xs text-slate-400">Preguntas Interactivas</span>
                 </div>
 
                 <form id="exerciseForm" onsubmit="event.preventDefault(); evaluateBlock();" class="space-y-6">
@@ -110,23 +110,26 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div class="bg-slate-900 border border-slate-800 p-5 rounded-xl space-y-3">
                     <h4 class="text-amber-400 font-bold text-sm flex items-center gap-2">
-                        <i class="fa-solid fa-book-bookmark"></i> Regla 1: SER vs. ESTAR
+                        <i class="fa-solid fa-book-bookmark"></i> Regla Gramatical / Grammar Rule
                     </h4>
-                    <ul class="text-xs text-slate-300 space-y-2 list-disc list-inside leading-relaxed">
-                        <li><strong>SER (DOCTOR):</strong> Identidad, profesión habitual (<em>soy consultor</em>), origen y lugar/hora de eventos (<em>la reunión es a las 15:00</em>). <span class="text-slate-400 font-italic">(Identity, profession, and event time/location).</span></li>
-                        <li><strong>ESTAR (PLACE):</strong> Ubicación de objetos/personas (<em>los documentos están en la mesa</em>) y estados temporales (<em>estoy satisfecho</em>). <span class="text-slate-400 font-italic">(Physical location and temporary states).</span></li>
-                    </ul>
+                    <p id="ruleTextEs" class="text-xs text-slate-300 leading-relaxed">
+                        Los pronombres de objeto directo (lo, la, los, las) van antes del verbo conjugado o unidos al infinitivo.
+                    </p>
+                    <p id="ruleTextEn" class="text-xs text-slate-400 italic leading-relaxed">
+                        Direct object pronouns (lo, la, los, las) go before the conjugated verb or attached to the infinitive.
+                    </p>
                 </div>
 
                 <div class="bg-slate-900 border border-slate-800 p-5 rounded-xl space-y-3">
                     <h4 class="text-emerald-400 font-bold text-sm flex items-center gap-2">
-                        <i class="fa-solid fa-bolt"></i> Regla 2: Verbos Reflexivos y Obligación
+                        <i class="fa-solid fa-bolt"></i> Estructura Profesional / Business Structure
                     </h4>
-                    <ul class="text-xs text-slate-300 space-y-2 list-disc list-inside leading-relaxed">
-                        <li><strong>Pronombres reflexivos:</strong> Van antes del verbo conjugado (<em>me, te, se, nos</em>). Ej: <em>Yo me encargo</em>. <span class="text-slate-400 font-italic">(Place pronouns before conjugated verbs).</span></li>
-                        <li><strong>Cambio vocálico:</strong> Verbos como <em>reunirse</em> cambian (<em>me reúno, te reúnes, se reúne, nos reunimos</em>). <span class="text-slate-400 font-italic">(Stem-changing reflexive pattern u→ú).</span></li>
-                        <li><strong>Obligación:</strong> <em>Tener que + infinitivo</em> (personal) o <em>Hay que + infinitivo</em> (impersonal). <span class="text-slate-400 font-italic">(Obligation and necessity).</span></li>
-                    </ul>
+                    <p id="ruleExtraEs" class="text-xs text-slate-300 leading-relaxed">
+                        Evita repetir sustantivos: —¿Tienes el presupuesto? Sí, lo tengo.
+                    </p>
+                    <p id="ruleExtraEn" class="text-xs text-slate-400 italic leading-relaxed">
+                        Avoid repeating nouns: Do you have the budget? Yes, I have it.
+                    </p>
                 </div>
             </div>
         </section>
@@ -148,7 +151,7 @@
                 </div>
             </div>
 
-            <!-- Flashcards Deck (15 Essential Terms) -->
+            <!-- Flashcards Deck -->
             <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 shadow-lg space-y-4">
                 <div class="flex justify-between items-center">
                     <h3 class="text-base font-bold text-slate-100 flex items-center gap-2">
@@ -158,7 +161,7 @@
                 </div>
                 <div id="flashcard" onclick="flipCard()" class="bg-slate-800 border border-slate-700 rounded-xl p-6 min-h-[140px] flex flex-col items-center justify-center text-center cursor-pointer hover:border-amber-400/50 transition-all select-none group">
                     <span id="cardCategory" class="text-[10px] uppercase font-bold text-amber-400 mb-1">Concepto</span>
-                    <p id="cardText" class="text-sm font-semibold text-slate-200 group-hover:text-amber-300 transition-colors">el consultor / la consultora</p>
+                    <p id="cardText" class="text-sm font-semibold text-slate-200 group-hover:text-amber-300 transition-colors">el consultor</p>
                     <span class="text-[10px] text-slate-500 mt-3"><i class="fa-solid fa-rotate me-1"></i> Haz clic para ver significado</span>
                 </div>
                 <div class="flex justify-between space-x-2">
@@ -175,46 +178,67 @@
             "1.1": {
                 title: "Módulo 1.1: Ser, Estar y Verbos Reflexivos",
                 description: "Ejercicios para consolidar bases A2 e iniciar nivel B1 en contextos de negocios.",
+                ruleEs: "SER (DOCTOR) para identidad y profesiones. ESTAR (PLACE) para ubicación y estados temporales.",
+                ruleEn: "SER for identity/professions. ESTAR for physical location and temporary states.",
+                extraEs: "Los pronombres reflexivos van antes del verbo conjugado.",
+                extraEn: "Reflexive pronouns precede the conjugated verb.",
                 questions: [
-                    { id: "q1", prefix: "1. Yo", suffix: "consultor internacional.", answer: "soy", explanation: "Se usa SER (soy) para profesión habitual.", hint: "verbo SER (yo)" },
-                    { id: "q2", prefix: "2. ¿Dónde", suffix: "los documentos del contrato?", answer: "están", explanation: "Se usa ESTAR (están) para ubicación de cosas.", hint: "verbo ESTAR (plural)" },
-                    { id: "q3", prefix: "3. La reunión con los clientes", suffix: "en la sala principal a las 15:00.", answer: "es", explanation: "Se usa SER (es) para eventos programados.", hint: "verbo SER (evento)" },
-                    { id: "q4", prefix: "4. Yo", suffix: "de gestionar el presupuesto.", answer: "me encargo", explanation: "Reflexivo 'encargarse de' (yo me encargo).", hint: "encargarse (yo)" },
-                    { id: "q5", prefix: "5. Nosotros", suffix: "con el director todos los lunes.", answer: "nos reunimos", explanation: "Reflexivo 'reunirse' (nosotros nos reunimos).", hint: "reunirse (nosotros)" }
+                    { id: "q1", prefix: "1. Yo", suffix: "consultor internacional.", answer: "soy", explanation: "SER para profesión.", hint: "verbo SER" },
+                    { id: "q2", prefix: "2. ¿Dónde", suffix: "los documentos del contrato?", answer: "están", explanation: "ESTAR para ubicación.", hint: "verbo ESTAR" },
+                    { id: "q3", prefix: "3. La reunión", suffix: "en la sala principal a las 15:00.", answer: "es", explanation: "SER para eventos programados.", hint: "verbo SER" },
+                    { id: "q4", prefix: "4. Yo", suffix: "de gestionar el presupuesto.", answer: "me encargo", explanation: "Reflexivo 'encargarse de'.", hint: "encargarse" },
+                    { id: "q5", prefix: "5. Nosotros", suffix: "con el director los lunes.", answer: "nos reunimos", explanation: "Reflexivo 'reunirse'.", hint: "reunirse" }
                 ]
             },
             "1.2": {
                 title: "Módulo 1.2: Rutinas y Obligaciones Laborales",
-                description: "Práctica de verbos reflexivos, cambios vocálicos y expresiones de obligación en el trabajo.",
+                description: "Práctica de verbos reflexivos, cambios vocálicos y expresiones de obligación.",
+                ruleEs: "Verbos como 'reunirse' sufren cambios vocálicos (u→ú) en singular y 3ª persona del plural.",
+                ruleEn: "Verbs like 'reunirse' experience stem changes (u→ú) in singular and 3rd person plural.",
+                extraEs: "Usa 'tener que + infinitivo' para expresar obligación personal.",
+                extraEn: "Use 'tener que + infinitive' to express personal obligation.",
                 questions: [
-                    { id: "q1", prefix: "1. Yo", suffix: "de gestionar el presupuesto del departamento.", answer: "me encargo", explanation: "Reflexivo 'encargarse de' (yo me encargo).", hint: "encargarse (yo)" },
-                    { id: "q2", prefix: "2. Nosotros", suffix: "con los clientes internacionales los lunes.", answer: "nos reunimos", explanation: "Reflexivo 'reunirse' (nosotros nos reunimos).", hint: "reunirse (nosotros)" },
-                    { id: "q3", prefix: "3. El director de proyectos", suffix: "para la auditoría técnica.", answer: "se prepara", explanation: "Reflexivo 'prepararse' (él se prepara).", hint: "prepararse (él)" },
-                    { id: "q4", prefix: "4. Los nuevos consultores", suffix: "rápidamente a los requerimientos.", answer: "se adaptan", explanation: "Reflexivo 'adaptarse' (ellos se adaptan).", hint: "adaptarse (ellos)" },
-                    { id: "q5", prefix: "5. ¿", suffix: "tú que enviar la agenda de la reunión antes de las 12:00?", answer: "Tienes", explanation: "Expresión de obligación 'tener que' (tú tienes).", hint: "tener que (tú)" }
+                    { id: "q1", prefix: "1. Yo", suffix: "de gestionar el presupuesto.", answer: "me encargo", explanation: "Reflexivo 'encargarse de'.", hint: "encargarse" },
+                    { id: "q2", prefix: "2. Nosotros", suffix: "con los clientes los lunes.", answer: "nos reunimos", explanation: "Reflexivo 'reunirse' (nosotros nos reunimos).", hint: "reunirse" },
+                    { id: "q3", prefix: "3. El director", suffix: "para la auditoría técnica.", answer: "se prepara", explanation: "Reflexivo 'prepararse'.", hint: "prepararse" },
+                    { id: "q4", prefix: "4. Los consultores", suffix: "rápidamente a los requerimientos.", answer: "se adaptan", explanation: "Reflexivo 'adaptarse'.", hint: "adaptarse" },
+                    { id: "q5", prefix: "5. ¿", suffix: "tú que enviar la agenda hoy?", answer: "tienes", explanation: "Obligación 'tener que' (tú tienes).", hint: "tener que" }
+                ]
+            },
+            "2.1": {
+                title: "Módulo 2.1: Pronombres de Objeto Directo",
+                description: "Uso de lo, la, los, las para reemplazar objetos directos y evitar repeticiones.",
+                ruleEs: "Los pronombres de objeto directo (lo, la, los, las) van antes del verbo conjugado o unidos al infinitivo.",
+                ruleEn: "Direct object pronouns (lo, la, los, las) go before the conjugated verb or attached to the infinitive.",
+                extraEs: "¿Tienes el presupuesto? Sí, lo tengo. / Voy a enviarlo.",
+                extraEn: "Do you have the budget? Yes, I have it. / I am going to send it.",
+                questions: [
+                    { id: "q1", prefix: "1. ¿Preparaste el presupuesto? Sí, ya", suffix: "preparé para la junta.", answer: "lo", explanation: "Objeto directo masculino singular ('el presupuesto' = lo).", hint: "lo / la / los / las" },
+                    { id: "q2", prefix: "2. ¿Enviaste la agenda? No, voy a enviar", suffix: "mañana.", answer: "la", explanation: "Objeto directo femenino singular unido al infinitivo ('la agenda' = la).", hint: "lo / la / los / las" },
+                    { id: "q3", prefix: "3. ¿Leíste los requerimientos técnicos? Sí,", suffix: "leí anoche.", answer: "los", explanation: "Objeto directo masculino plural ('los requerimientos' = los).", hint: "lo / la / los / las" }
                 ]
             }
         };
 
         const flashcards = [
-            { cat: "Profesión / Role", q: "el consultor / la consultora", a: "Consultant. Ej: Yo soy consultor de proyectos." },
-            { cat: "Reunión / Meeting", q: "la reunión", a: "Meeting. Ej: La reunión es a las 15:00." },
-            { cat: "Contrato / Document", q: "el contrato", a: "Contract. Ej: El contrato está listo." },
-            { cat: "Finanzas / Budget", q: "el presupuesto", a: "Budget. Ej: Me encargo del presupuesto." },
-            { cat: "Auditoría / Audit", q: "la auditoría", a: "Audit. Ej: Nos preparamos para la auditoría." },
-            { cat: "Gestión / Management", q: "encargarse de", a: "To take charge of / deal with. Ej: Me encargo del informe." },
-            { cat: "Colaboración / Work", q: "reunirse con", a: "To meet with. Ej: Nos reunimos con el cliente." },
-            { cat: "Responsabilidad", q: "ocuparse de", a: "To deal with / attend to. Ej: ¿Te ocupas de la agenda?" },
-            { cat: "Flexibilidad", q: "adaptarse a", a: "To adapt to. Ej: El equipo se adapta al cambio." },
+            { cat: "Profesión", q: "el consultor / la consultora", a: "Consultant. Ej: Yo soy consultor de proyectos." },
+            { cat: "Reunión", q: "la reunión", a: "Meeting. Ej: La reunión es a las 15:00." },
+            { cat: "Contrato", q: "el contrato", a: "Contract. Ej: El contrato está listo." },
+            { cat: "Presupuesto", q: "el presupuesto", a: "Budget. Ej: Me encargo del presupuesto." },
+            { cat: "Auditoría", q: "la auditoría", a: "Audit. Ej: Nos preparamos para la auditoría." },
+            { cat: "Gestión", q: "encargarse de", a: "To take charge of. Ej: Me encargo del informe." },
+            { cat: "Colaboración", q: "reunirse con", a: "To meet with. Ej: Nos reunimos con el cliente." },
+            { cat: "Responsabilidad", q: "ocuparse de", a: "To deal with. Ej: ¿Te ocupas de la agenda?" },
+            { cat: "Flexibilidad", q: "adaptarse a", a: "To adapt to. Ej: El equipo se adapta." },
             { cat: "Preparación", q: "prepararse para", a: "To prepare for. Ej: Se preparan para la cita." },
-            { cat: "Ubicación / Location", q: "ubicado / ubicada", a: "Located. Ej: La oficina está ubicada en el centro." },
-            { cat: "Estado / State", q: "satisfecho / satisfecha", a: "Satisfied. Ej: Estamos muy satisfechos." },
-            { cat: "Horario / Schedule", q: "disponible", a: "Available. Ej: El director está disponible." },
+            { cat: "Ubicación", q: "ubicado / ubicada", a: "Located. Ej: La oficina está ubicada en el centro." },
+            { cat: "Estado", q: "satisfecho / satisfecha", a: "Satisfied. Ej: Estamos muy satisfechos." },
+            { cat: "Horario", q: "disponible", a: "Available. Ej: El director está disponible." },
             { cat: "Planificación", q: "la agenda", a: "Schedule / Agenda. Ej: La agenda está completa." },
-            { cat: "Reporte / Report", q: "el informe", a: "Report. Ej: El informe está terminado." }
+            { cat: "Reporte", q: "el informe", a: "Report. Ej: El informe está terminado." }
         ];
 
-        let currentModuleKey = "1.1";
+        let currentModuleKey = "2.1";
         let activeInputId = null;
         let currentCardIndex = 0;
         let cardFlipped = false;
@@ -227,7 +251,13 @@
             if (!data) return;
             document.getElementById('moduleTitle').textContent = data.title;
             document.getElementById('moduleDescription').textContent = data.description;
-            document.getElementById('blockTitle').innerHTML = `<i class="fa-solid fa-pen-to-square text-amber-400"></i> Bloque de Ejercicios Prácticos ${key}`;
+            document.getElementById('blockTitle').innerHTML = `<i class="fa-solid fa-pen-to-square text-amber-400"></i> Bloque de Ejercicios ${key}`;
+            
+            document.getElementById('ruleTextEs').textContent = data.ruleEs;
+            document.getElementById('ruleTextEn').textContent = data.ruleEn;
+            document.getElementById('ruleExtraEs').textContent = data.extraEs;
+            document.getElementById('ruleExtraEn').textContent = data.extraEn;
+
             const container = document.getElementById('questionsContainer');
             container.innerHTML = '';
             data.questions.forEach((q) => {
@@ -308,8 +338,7 @@
             banner.classList.remove('hidden');
             if (pct >= 80) {
                 banner.className = 'p-4 rounded-lg border bg-emerald-950/80 border-emerald-500 text-emerald-200 text-sm';
-                banner.innerHTML = `<strong><i class="fa-solid fa-trophy"></i> ¡Felicidades Gabor! Puntuación: ${pct}% (Superado)</strong><p class="text-xs text-emerald-300">Has alcanzado la meta del 80%. Siguiente módulo desbloqueado.</p>`;
-                unlockNextModuleOption();
+                banner.innerHTML = `<strong><i class="fa-solid fa-trophy"></i> ¡Felicidades Gabor! Puntuación: ${pct}% (Superado)</strong><p class="text-xs text-emerald-300">Has alcanzado la meta del 80%. Módulo superado con éxito.</p>`;
             } else {
                 banner.className = 'p-4 rounded-lg border bg-rose-950/80 border-rose-500 text-rose-200 text-sm';
                 banner.innerHTML = `<strong><i class="fa-solid fa-triangle-exclamation"></i> Puntuación: ${pct}% (Meta: 80%)</strong><p class="text-xs text-rose-300">Revisa las respuestas incorrectas y vuelve a intentarlo.</p>`;
@@ -322,11 +351,6 @@
         }
 
         function resetForm() { document.getElementById('exerciseForm').reset(); resetScoreDisplay(); }
-
-        function unlockNextModuleOption() {
-            const select = document.getElementById('moduleSelect');
-            if (currentModuleKey === "1.1") select.options[1].disabled = false;
-        }
 
         function updateFlashcard() {
             const card = flashcards[currentCardIndex];
