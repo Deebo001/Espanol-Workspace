@@ -14,7 +14,7 @@
         }
         .accent-btn:hover { background-color: #475569; }
         .inline-input {
-            background-color: #030712; border: 2px solid #475569; color: #fde047; font-weight: 600; padding: 0.25rem 0.75rem; border-radius: 0.375rem; display: inline-block; text-align: center; min-width: 130px; outline: none; transition: all 0.2s;
+            background-color: #030712; border: 2px solid #475569; color: #fde047; font-weight: 600; padding: 0.25rem 0.75rem; border-radius: 0.375rem; display: inline-block; text-align: center; min-width: 140px; outline: none; transition: all 0.2s;
         }
         .inline-input:focus { border-color: #fbbf24; }
         .inline-input.correct { border-color: #10b981; background-color: rgba(6, 78, 59, 0.4); color: #6ee7b7; }
@@ -56,7 +56,7 @@
     <!-- Main Container -->
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 grid grid-cols-1 lg:grid-cols-3 gap-8">
         
-        <!-- Center Column: Practice Block -->
+        <!-- Center Column: Practice Block & Study Notes -->
         <section class="lg:col-span-2 space-y-6">
             <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 shadow-lg relative overflow-hidden">
                 <div class="absolute top-0 right-0 bg-amber-500/10 text-amber-400 font-bold text-xs uppercase px-3 py-1 rounded-bl-lg border-l border-b border-amber-500/20">
@@ -105,6 +105,30 @@
                 </form>
                 <div id="feedbackResult" class="hidden p-4 rounded-lg border transition-all"></div>
             </div>
+
+            <!-- GRAMMAR RULES & STUDY NOTES CARDS -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="bg-slate-900 border border-slate-800 p-5 rounded-xl space-y-3">
+                    <h4 class="text-amber-400 font-bold text-sm flex items-center gap-2">
+                        <i class="fa-solid fa-book-bookmark"></i> Regla de Oro 1: SER vs. ESTAR
+                    </h4>
+                    <ul class="text-xs text-slate-300 space-y-2 list-disc list-inside leading-relaxed">
+                        <li><strong>SER (DOCTOR):</strong> Identidad, profesión habitual (<em>soy consultor</em>), origen y lugar/hora de un evento programado (<em>la reunión es a las 15:00</em>).</li>
+                        <li><strong>ESTAR (PLACE):</strong> Ubicación de objetos/personas (<em>los documentos están en la mesa</em>) y estados o condiciones temporales (<em>estoy satisfecho</em>).</li>
+                    </ul>
+                </div>
+
+                <div class="bg-slate-900 border border-slate-800 p-5 rounded-xl space-y-3">
+                    <h4 class="text-emerald-400 font-bold text-sm flex items-center gap-2">
+                        <i class="fa-solid fa-bolt"></i> Regla de Oro 2: Verbos Reflexivos y Obligaciones
+                    </h4>
+                    <ul class="text-xs text-slate-300 space-y-2 list-disc list-inside leading-relaxed">
+                        <li><strong>Pronombres reflexivos:</strong> Colócalos antes del verbo conjugado (<em>me, te, se, nos</em>). Ejemplo: <em>Yo me encargo</em>.</li>
+                        <li><strong>Cambio vocálico:</strong> Verbos como <em>reunirse</em> llevan tilde en presente (<em>me reúno, te reúnes, se reúne, nos reunimos</em>).</li>
+                        <li><strong>Obligación:</strong> <em>Tener que + infinitivo</em> (personal) o <em>Hay que + infinitivo</em> (impersonal).</li>
+                    </ul>
+                </div>
+            </div>
         </section>
 
         <!-- Right Column: Progress & Flashcards -->
@@ -124,7 +148,7 @@
                 </div>
             </div>
 
-            <!-- Flashcards -->
+            <!-- Flashcards Deck (15 Essential Terms) -->
             <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 shadow-lg space-y-4">
                 <div class="flex justify-between items-center">
                     <h3 class="text-base font-bold text-slate-100 flex items-center gap-2">
@@ -134,7 +158,7 @@
                 </div>
                 <div id="flashcard" onclick="flipCard()" class="bg-slate-800 border border-slate-700 rounded-xl p-6 min-h-[140px] flex flex-col items-center justify-center text-center cursor-pointer hover:border-amber-400/50 transition-all select-none group">
                     <span id="cardCategory" class="text-[10px] uppercase font-bold text-amber-400 mb-1">Concepto</span>
-                    <p id="cardText" class="text-sm font-semibold text-slate-200 group-hover:text-amber-300 transition-colors">el consultor</p>
+                    <p id="cardText" class="text-sm font-semibold text-slate-200 group-hover:text-amber-300 transition-colors">el consultor / la consultora</p>
                     <span class="text-[10px] text-slate-500 mt-3"><i class="fa-solid fa-rotate me-1"></i> Haz clic para ver significado</span>
                 </div>
                 <div class="flex justify-between space-x-2">
@@ -150,23 +174,44 @@
         const exerciseData = {
             "1.1": {
                 title: "Módulo 1.1: Ser, Estar y Verbos Reflexivos",
-                description: "Ejercicios diseñados para consolidar bases A2 e iniciar nivel B1.",
+                description: "Ejercicios para consolidar bases A2 e iniciar nivel B1 en contextos de negocios.",
                 questions: [
-                    { id: "q1", prefix: "1. Yo", suffix: "consultor internacional.", answer: "soy", explanation: "Se usa SER (soy) para profesión.", hint: "verbo SER" },
-                    { id: "q2", prefix: "2. ¿Dónde", suffix: "los documentos?", answer: "están", explanation: "Se usa ESTAR para ubicación.", hint: "verbo ESTAR" },
-                    { id: "q3", prefix: "3. La reunión", suffix: "a las 15:00.", answer: "es", explanation: "Se usa SER para eventos.", hint: "verbo SER" },
-                    { id: "q4", prefix: "4. Yo", suffix: "de gestionar el presupuesto.", answer: "me encargo", explanation: "Reflexivo 'encargarse de'.", hint: "encargarse" },
-                    { id: "q5", prefix: "5. Nosotros", suffix: "con el director.", answer: "nos reunimos", explanation: "Reflexivo 'reunirse'.", hint: "reunirse" }
+                    { id: "q1", prefix: "1. Yo", suffix: "consultor internacional.", answer: "soy", explanation: "Se usa SER (soy) para profesión habitual.", hint: "verbo SER (yo)" },
+                    { id: "q2", prefix: "2. ¿Dónde", suffix: "los documentos del contrato?", answer: "están", explanation: "Se usa ESTAR (están) para ubicación de cosas.", hint: "verbo ESTAR (plural)" },
+                    { id: "q3", prefix: "3. La reunión con los clientes", suffix: "en la sala principal a las 15:00.", answer: "es", explanation: "Se usa SER (es) para eventos programados.", hint: "verbo SER (evento)" },
+                    { id: "q4", prefix: "4. Yo", suffix: "de gestionar el presupuesto.", answer: "me encargo", explanation: "Reflexivo 'encargarse de' (yo me encargo).", hint: "encargarse (yo)" },
+                    { id: "q5", prefix: "5. Nosotros", suffix: "con el director todos los lunes.", answer: "nos reunimos", explanation: "Reflexivo 'reunirse' (nosotros nos reunimos).", hint: "reunirse (nosotros)" }
+                ]
+            },
+            "1.2": {
+                title: "Módulo 1.2: Rutinas y Obligaciones Laborales",
+                description: "Práctica de verbos reflexivos, cambios vocálicos y expresiones de obligación en el trabajo.",
+                questions: [
+                    { id: "q1", prefix: "1. Yo", suffix: "de gestionar el presupuesto del departamento.", answer: "me encargo", explanation: "Reflexivo 'encargarse de' (yo me encargo).", hint: "encargarse (yo)" },
+                    { id: "q2", prefix: "2. Nosotros", suffix: "con los clientes internacionales los lunes.", answer: "nos reunimos", explanation: "Reflexivo 'reunirse' (nosotros nos reunimos).", hint: "reunirse (nosotros)" },
+                    { id: "q3", prefix: "3. El director de proyectos", suffix: "para la auditoría técnica.", answer: "se prepara", explanation: "Reflexivo 'prepararse' (él se prepara).", hint: "prepararse (él)" },
+                    { id: "q4", prefix: "4. Los nuevos consultores", suffix: "rápidamente a los requerimientos.", answer: "se adaptan", explanation: "Reflexivo 'adaptarse' (ellos se adaptan).", hint: "adaptarse (ellos)" },
+                    { id: "q5", prefix: "5. ¿", suffix: "tú que enviar la agenda de la reunión antes de medianoche?", answer: "Tienes", explanation: "Expresión de obligación 'tener que' (tú tienes).", hint: "tener que (tú)" }
                 ]
             }
         };
 
         const flashcards = [
-            { cat: "Profesión", q: "el consultor", a: "Consultant." },
-            { cat: "Reunión", q: "la reunión", a: "Meeting." },
-            { cat: "Contrato", q: "el contrato", a: "Contract." },
-            { cat: "Presupuesto", q: "el presupuesto", a: "Budget." },
-            { cat: "Auditoría", q: "la auditoría", a: "Audit." }
+            { cat: "Profesión", q: "el consultor / la consultora", a: "Consultant. Ej: Yo soy consultor de proyectos." },
+            { cat: "Reunión", q: "la reunión", a: "Meeting. Ej: La reunión es a las 15:00." },
+            { cat: "Contrato", q: "el contrato", a: "Contract. Ej: El contrato está listo." },
+            { cat: "Presupuesto", q: "el presupuesto", a: "Budget. Ej: Me encargo del presupuesto." },
+            { cat: "Auditoría", q: "la auditoría", a: "Audit. Ej: Nos preparamos para la auditoría." },
+            { cat: "Gestión", q: "encargarse de", a: "To take charge of. Ej: Me encargo del informe." },
+            { cat: "Colaboración", q: "reunirse con", a: "To meet with. Ej: Nos reunimos con el cliente." },
+            { cat: "Responsabilidad", q: "ocuparse de", a: "To deal with / attend to. Ej: ¿Te ocupas de la agenda?" },
+            { cat: "Flexibilidad", q: "adaptarse a", a: "To adapt to. Ej: El equipo se adapta al cambio." },
+            { cat: "Preparación", q: "prepararse para", a: "To prepare for. Ej: Se preparan para la cita." },
+            { cat: "Ubicación", q: "ubicado / ubicada", a: "Located. Ej: La oficina está ubicada en el centro." },
+            { cat: "Estado", q: "satisfecho / satisfecha", a: "Satisfied. Ej: Estamos muy satisfechos." },
+            { cat: "Horario", q: "disponible", a: "Available. Ej: El director está disponible." },
+            { cat: "Planificación", q: "la agenda", a: "Schedule / Agenda. Ej: La agenda está completa." },
+            { cat: "Reporte", q: "el informe", a: "Report. Ej: El informe está terminado." }
         ];
 
         let currentModuleKey = "1.1";
@@ -182,6 +227,7 @@
             if (!data) return;
             document.getElementById('moduleTitle').textContent = data.title;
             document.getElementById('moduleDescription').textContent = data.description;
+            document.getElementById('blockTitle').innerHTML = `<i class="fa-solid fa-pen-to-square text-amber-400"></i> Bloque de Ejercicios Prácticos ${key}`;
             const container = document.getElementById('questionsContainer');
             container.innerHTML = '';
             data.questions.forEach((q) => {
@@ -199,11 +245,18 @@
                 container.appendChild(qDiv);
             });
             document.getElementById('feedbackResult').className = 'hidden';
+            resetScoreDisplay();
         }
 
+        function changeModule(key) { loadModule(key); }
         function setActiveInput(id) { activeInputId = id; }
+
         function insertAccent(char) {
-            if (!activeInputId) return;
+            if (!activeInputId) {
+                const inputs = document.querySelectorAll('.inline-input');
+                if (inputs.length > 0) activeInputId = inputs[0].id;
+                else return;
+            }
             const input = document.getElementById(activeInputId);
             if (input) {
                 const start = input.selectionStart || input.value.length;
@@ -211,20 +264,26 @@
                 input.focus();
             }
         }
+
         function handleInputKeydown(event) { if (event.key === 'Enter') { event.preventDefault(); evaluateBlock(); } }
 
         function startSpeechRecognition(inputId) {
             const input = document.getElementById(inputId);
             setActiveInput(inputId);
-            if (!('webkitSpeechRecognition' in window)) { alert('Speech recognition not supported in this browser.'); return; }
-            const recognition = new webkitSpeechRecognition();
+            if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+                alert('El reconocimiento de voz no está soportado en este navegador. Usa Google Chrome o Microsoft Edge.');
+                return;
+            }
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            const recognition = new SpeechRecognition();
             recognition.lang = 'es-ES';
             recognition.start();
-            recognition.onresult = (e) => { input.value = e.results[0][0].transcript.toLowerCase(); };
+            recognition.onresult = (e) => { input.value = e.results[0][0].transcript.toLowerCase().trim(); };
         }
 
         function evaluateBlock() {
             const data = exerciseData[currentModuleKey];
+            if (!data) return;
             let correctCount = 0;
             data.questions.forEach((q) => {
                 const input = document.getElementById(q.id);
@@ -239,7 +298,7 @@
                 } else {
                     input.classList.add('incorrect');
                     feedback.className = 'text-xs text-rose-400 font-medium pt-1';
-                    feedback.innerHTML = `<i class="fa-solid fa-circle-xmark"></i> Esperado: <strong>${q.answer}</strong>`;
+                    feedback.innerHTML = `<i class="fa-solid fa-circle-xmark"></i> Respuesta esperada: <strong>${q.answer}</strong>. ${q.explanation}`;
                 }
             });
             const pct = Math.round((correctCount / data.questions.length) * 100);
@@ -249,26 +308,39 @@
             banner.classList.remove('hidden');
             if (pct >= 80) {
                 banner.className = 'p-4 rounded-lg border bg-emerald-950/80 border-emerald-500 text-emerald-200 text-sm';
-                banner.innerHTML = `<strong>¡Felicidades Gabor! Puntuación: ${pct}% (Superado)</strong>`;
+                banner.innerHTML = `<strong><i class="fa-solid fa-trophy"></i> ¡Felicidades Gabor! Puntuación: ${pct}% (Superado)</strong><p class="text-xs text-emerald-300">Has alcanzado la meta del 80%. Siguiente módulo desbloqueado.</p>`;
+                unlockNextModuleOption();
             } else {
                 banner.className = 'p-4 rounded-lg border bg-rose-950/80 border-rose-500 text-rose-200 text-sm';
-                banner.innerHTML = `<strong>Puntuación: ${pct}% (Meta: 80%)</strong>`;
+                banner.innerHTML = `<strong><i class="fa-solid fa-triangle-exclamation"></i> Puntuación: ${pct}% (Meta: 80%)</strong><p class="text-xs text-rose-300">Revisa las respuestas incorrectas y vuelve a intentarlo.</p>`;
             }
         }
 
-        function resetForm() { document.getElementById('exerciseForm').reset(); }
+        function resetScoreDisplay() {
+            document.getElementById('scorePercent').textContent = '0%';
+            document.getElementById('progressBar').style.width = '0%';
+        }
+
+        function resetForm() { document.getElementById('exerciseForm').reset(); resetScoreDisplay(); }
+
+        function unlockNextModuleOption() {
+            const select = document.getElementById('moduleSelect');
+            if (currentModuleKey === "1.1") select.options[1].disabled = false;
+        }
+
         function updateFlashcard() {
             const card = flashcards[currentCardIndex];
             document.getElementById('cardCounter').textContent = `${currentCardIndex + 1} / ${flashcards.length}`;
             document.getElementById('cardCategory').textContent = card.cat;
             document.getElementById('cardText').textContent = cardFlipped ? card.a : card.q;
         }
+
         function flipCard() { cardFlipped = !cardFlipped; updateFlashcard(); }
         function nextCard() { cardFlipped = false; currentCardIndex = (currentCardIndex + 1) % flashcards.length; updateFlashcard(); }
         function prevCard() { cardFlipped = false; currentCardIndex = (currentCardIndex - 1 + flashcards.length) % flashcards.length; updateFlashcard(); }
         function speakFlashcard() {
             const card = flashcards[currentCardIndex];
-            const msg = new SpeechSynthesisUtterance(card.q);
+            const msg = new SpeechSynthesisUtterance(`${card.q}. ${card.a}`);
             msg.lang = 'es-ES';
             window.speechSynthesis.speak(msg);
         }
