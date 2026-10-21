@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Español B1 Mastery Coach Workspace - Tailored for Gabor</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .flip-card { perspective: 1000px; }
+        .flip-card-inner { transition: transform 0.6s; transform-style: preserve-3d; }
+        .flip-card.flipped .flip-card-inner { transform: rotateY(180deg); }
+        .flip-card-front, .flip-card-back { backface-visibility: hidden; }
+        .flip-card-back { transform: rotateY(180deg); }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #1f2937; }
+        ::-webkit-scrollbar-thumb { background: #374151; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #4b5563; }
+    </style>
+</head>
+<body class="bg-gray-900 text-gray-100 min-h-screen flex flex-col font-sans antialiased selection:bg-amber-500 selection:text-gray-900">
+
+    <!-- TOP HEADER / NAVBAR -->
+    <header class="bg-gray-800 border-b border-gray-700 sticky top-0 z-40 px-4 py-3 shadow-md">
+        <div class="max-w-7xl mx-auto flex flex-wrap justify-between items-center gap-4">
+            <!-- Logo & User Tag -->
+            <div class="flex items-center space-x-3">
+                <div class="bg-gradient-to-tr from-amber-500 to-red-600 p-2.5 rounded-xl shadow-lg flex items-center justify-center">
+                    <i class="fa-solid fa-graduation-cap text-xl text-white"></i>
+                </div>
+                <div>
+                    <h1 class="text-xl font-bold tracking-tight text-white flex items-center gap-2">
+                        Español B1 Coach <span class="text-xs font-semibold px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-400 border border-amber-500/30">SIELE Prep</span>
+                    </h1>
+                    <p class="text-xs text-gray-400">Workspace Personalizado para <span class="text-amber-400 font-semibold">Gabor</span></p>
+                </div>
+            </div>
+
+            <!-- Controls: Level Selector & Auto-Start -->
+            <div class="flex items-center space-x-4">
+                <div class="flex items-center space-x-2 bg-gray-900/80 p-1.5 rounded-lg border border-gray-700">
+                    <label for="levelSelect" class="text-xs text-gray-400 pl-2 font-medium">Nivel:</label>
+                    <select id="levelSelect" onchange="changeLevel(this.value)" class="bg-gray-800 text-amber-400 text-xs font-semibold rounded px-2 py-1 outline-none border border-gray-600 focus:border-amber-500 cursor-pointer">
+                        <option value="A1">A1 - Inicial</option>
+                        <option value="A2">A2 - Elemental</option>
+                        <option value="B1" selected>B1 - Intermedio (Syllabus Activo)</option>
+                        <option value="B2">B2 - Avanzado</option>
+                        <option value="C1">C1 - Dominio</option>
+                    </select>
+                </div>
+
+                <div class="flex items-center space-x-2 bg-gray-900/80 px-3 py-1.5 rounded-lg border border-gray-700">
+                    <span class="text-xs text-gray-300 font-medium">Auto-Inicio:</span>
+                    <button id="autoStartToggle" onclick="toggleAutoStart()" class="relative inline-flex h-5 w-9 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent bg-amber-500 transition-colors duration-200 ease-in-out focus:outline-none" role="switch" aria-checked="true">
+                        <span id="autoStartDot" class="pointer-events-none inline-block h-4 w-4 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out translate-x-4"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN WORKSPACE LAYOUT -->
+    <div class="max-w-7xl mx-auto w-full flex-1 p-4 grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+        <!-- LEFT/MAIN COLUMN: EXERCISES, GRAMMAR & VERB MATRIX (8 COLS) -->
+        <main class="lg:col-span-8 flex flex-col space-y-6">
+
+            <!-- WEEK & SYLLABUS BANNER -->
+            <div class="bg-gradient-to-r from-gray-800 via-gray-800 to-amber-950/40 p-5 rounded-2xl border border-gray-700/80 shadow-sm relative overflow-hidden">
+                <div class="absolute -right-6 -bottom-6 text-gray-700/20 text-9xl pointer-events-none select-none">
+                    <i class="fa-solid fa-book-open"></i>
+                </div>
+                <div class="relative z-10 flex justify-between items-start flex-wrap gap-2">
+                    <div>
+                        <div class="flex items-center space-x-2">
+                            <span class="bg-amber-500/10 text-amber-400 text-xs font-bold px-2.5 py-1 rounded-md border border-amber-500/20 uppercase tracking-wider">Semana 1 de 12</span>
+                            <span class="text-xs text-gray-400"><i class="fa-solid fa-bullseye text-amber-500 mr-1"></i>Meta: 80% Aprobado</span>
+                        </div>
+                        <h2 class="text-2xl font-bold text-white mt-2">Fundamentos del Presente: <span class="text-amber-400">Ser vs. Estar</span></h2>
+                        <p class="text-sm text-gray-300 mt-1 max-w-xl">
+                            Domina el uso profesional del presente en contextos corporativos de SIELE B1. Diferencia correctamente es/está, soy/estoy y eventos vs ubicación.
+                        </p>
+                    </div>
+                    <button onclick="speakText('Semana 1. Fundamentos del Presente. Ser vs Estar.')" class="bg-gray-700/60 hover:bg-gray-700 text-gray-300 hover:text-white p-2 rounded-lg border border-gray-600 transition" title="Escuchar título">
+                        <i class="fa-solid fa-volume-high text-sm"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- EXERCISE CONTAINER CARD -->
+            <section class="bg-gray-800 rounded-2xl border border-gray-700 p-6 shadow-md flex flex-col space-y-5">
+                <div class="flex justify-between items-center pb-3 border-b border-gray-700">
+                    <div class="flex items-center space-x-2">
+                        <i class="fa-solid fa-pen-to-square text-amber-400"></i>
+                        <h3 class="font-bold text-lg text-white">Bloque de Ejercicios 1.1</h3>
+                    </div>
+                    <span class="text-xs text-gray-400 bg-gray-900 px-2.5 py-1 rounded-full border border-gray-700">5 Preguntas</span>
+                </div>
+
+                <!-- ACCENT TOOLBAR -->
+                <div class="bg-gray-900/90 p-2.5 rounded-xl border border-gray-700/70 flex items-center justify-between flex-wrap gap-2">
+                    <span class="text-xs text-gray-400 font-medium flex items-center gap-1">
+                        <i class="fa-solid fa-keyboard text-amber-500"></i> Tildes Rápidas:
+                    </span>
+                    <div class="flex flex-wrap gap-1.5" id="tildeBar">
+                        <button onclick="insertAccent('á')" class="bg-gray-800 hover:bg-amber-500 hover:text-gray-900 text-amber-400 font-bold px-2.5 py-1 rounded border border-gray-700 text-sm transition">á</button>
+                        <button onclick="insertAccent('é')" class="bg-gray-800 hover:bg-amber-500 hover:text-gray-900 text-amber-400 font-bold px-2.5 py-1 rounded border border-gray-700 text-sm transition">é</button>
+                        <button onclick="insertAccent('í')" class="bg-gray-800 hover:bg-amber-500 hover:text-gray-900 text-amber-400 font-bold px-2.5 py-1 rounded border border-gray-700 text-sm transition">í</button>
+                        <button onclick="insertAccent('ó')" class="bg-gray-800 hover:bg-amber-500 hover:text-gray-900 text-amber-400 font-bold px-2.5 py-1 rounded border border-gray-700 text-sm transition">ó</button>
+                        <button onclick="insertAccent('ú')" class="bg-gray-800 hover:bg-amber-500 hover:text-gray-900 text-amber-400 font-bold px-2.5 py-1 rounded border border-gray-700 text-sm transition">ú</button>
+                        <button onclick="insertAccent('ñ')" class="bg-gray-800 hover:bg-amber-500 hover:text-gray-900 text-amber-400 font-bold px-2.5 py-1 rounded border border-gray-700 text-sm transition">ñ</button>
+                        <button onclick="insertAccent('ü')" class="bg-gray-800 hover:bg-amber-500 hover:text-gray-900 text-amber-400 font-bold px-2.5 py-1 rounded border border-gray-700 text-sm transition">ü</button>
+                        <button onclick="insertAccent('¿')" class="bg-gray-800 hover:bg-amber-500 hover:text-gray-900 text-amber-400 font-bold px-2.5 py-1 rounded border border-gray-700 text-sm transition">¿</button>
+                        <button onclick="insertAccent('¡')" class="bg-gray-800 hover:bg-amber-500 hover:text-gray-900 text-amber-400 font-bold px-2.5 py-1 rounded border border-gray-700 text-sm transition">¡</button>
+                    </div>
+                </div>
+
+                <!-- EXERCISE FORM -->
+                <form id="exerciseForm" onsubmit="evaluateExercises(event)" class="space-y-4">
+                    <!-- Sentence 1 -->
+                    <div class="p-3.5 bg-gray-900/50 rounded-xl border border-gray-700/60 hover:border-gray-600 transition flex flex-col space-y-2">
+                        <div class="flex items-baseline space-x-2 text-sm text-gray-200 flex-wrap">
+                            <span class="font-bold text-amber-400">1.</span>
+                            <span>Yo</span>
+                            <input type="text" id="q1" onfocus="activeInput = this" class="bg-gray-800 border border-gray-600 rounded px-2.5 py-1 text-amber-300 font-semibold focus:outline-none focus:border-amber-500 w-28 text-center" placeholder="(ser/estar)" autocomplete="off">
+                            <span>consultor internacional y trabajo en proyectos de infraestructura.</span>
+                            <button type="button" onclick="speakText('Yo consultor internacional y trabajo en proyectos de infraestructura.')" class="text-gray-400 hover:text-amber-400 ml-auto text-xs"><i class="fa-solid fa-volume-high"></i></button>
+                        </div>
+                        <div id="feedback-q1" class="hidden text-xs mt-1 p-2 rounded bg-gray-800"></div>
+                    </div>
+
+                    <!-- Sentence 2 -->
+                    <div class="p-3.5 bg-gray-900/50 rounded-xl border border-gray-700/60 hover:border-gray-600 transition flex flex-col space-y-2">
+                        <div class="flex items-baseline space-x-2 text-sm text-gray-200 flex-wrap">
+                            <span class="font-bold text-amber-400">2.</span>
+                            <span>¿Dónde</span>
+                            <input type="text" id="q2" onfocus="activeInput = this" class="bg-gray-800 border border-gray-600 rounded px-2.5 py-1 text-amber-300 font-semibold focus:outline-none focus:border-amber-500 w-28 text-center" placeholder="(ser/estar)" autocomplete="off">
+                            <span>los documentos del nuevo contrato?</span>
+                            <button type="button" onclick="speakText('¿Dónde los documentos del nuevo contrato?')" class="text-gray-400 hover:text-amber-400 ml-auto text-xs"><i class="fa-solid fa-volume-high"></i></button>
+                        </div>
+                        <div id="feedback-q2" class="hidden text-xs mt-1 p-2 rounded bg-gray-800"></div>
+                    </div>
+
+                    <!-- Sentence 3 -->
+                    <div class="p-3.5 bg-gray-900/50 rounded-xl border border-gray-700/60 hover:border-gray-600 transition flex flex-col space-y-2">
+                        <div class="flex items-baseline space-x-2 text-sm text-gray-200 flex-wrap">
+                            <span class="font-bold text-amber-400">3.</span>
+                            <span>La presentación con los clientes</span>
+                            <input type="text" id="q3" onfocus="activeInput = this" class="bg-gray-800 border border-gray-600 rounded px-2.5 py-1 text-amber-300 font-semibold focus:outline-none focus:border-amber-500 w-28 text-center" placeholder="(ser/estar)" autocomplete="off">
+                            <span>en la sala principal a las 15:00.</span>
+                            <button type="button" onclick="speakText('La presentación con los clientes en la sala principal a las quince horas.')" class="text-gray-400 hover:text-amber-400 ml-auto text-xs"><i class="fa-solid fa-volume-high"></i></button>
+                        </div>
+                        <div id="feedback-q3" class="hidden text-xs mt-1 p-2 rounded bg-gray-800"></div>
+                    </div>
+
+                    <!-- Sentence 4 -->
+                    <div class="p-3.5 bg-gray-900/50 rounded-xl border border-gray-700/60 hover:border-gray-600 transition flex flex-col space-y-2">
+                        <div class="flex items-baseline space-x-2 text-sm text-gray-200 flex-wrap">
+                            <span class="font-bold text-amber-400">4.</span>
+                            <span>Nosotros</span>
+                            <input type="text" id="q4" onfocus="activeInput = this" class="bg-gray-800 border border-gray-600 rounded px-2.5 py-1 text-amber-300 font-semibold focus:outline-none focus:border-amber-500 w-28 text-center" placeholder="(ser/estar)" autocomplete="off">
+                            <span>muy satisfechos con los resultados del primer trimestre.</span>
+                            <button type="button" onclick="speakText('Nosotros muy satisfechos con los resultados del primer trimestre.')" class="text-gray-400 hover:text-amber-400 ml-auto text-xs"><i class="fa-solid fa-volume-high"></i></button>
+                        </div>
+                        <div id="feedback-q4" class="hidden text-xs mt-1 p-2 rounded bg-gray-800"></div>
+                    </div>
+
+                    <!-- Sentence 5 -->
+                    <div class="p-3.5 bg-gray-900/50 rounded-xl border border-gray-700/60 hover:border-gray-600 transition flex flex-col space-y-2">
+                        <div class="flex items-baseline space-x-2 text-sm text-gray-200 flex-wrap">
+                            <span class="font-bold text-amber-400">5.</span>
+                            <span>El análisis financiero ya</span>
+                            <input type="text" id="q5" onfocus="activeInput = this" class="bg-gray-800 border border-gray-600 rounded px-2.5 py-1 text-amber-300 font-semibold focus:outline-none focus:border-amber-500 w-28 text-center" placeholder="(ser/estar)" autocomplete="off">
+                            <span>terminado.</span>
+                            <button type="button" onclick="speakText('El análisis financiero ya terminado.')" class="text-gray-400 hover:text-amber-400 ml-auto text-xs"><i class="fa-solid fa-volume-high"></i></button>
+                        </div>
+                        <div id="feedback-q5" class="hidden text-xs mt-1 p-2 rounded bg-gray-800"></div>
+                    </div>
+
+                    <!-- ACTION BUTTONS -->
+                    <div class="flex justify-between items-center pt-3 border-t border-gray-700">
+                        <button type="button" onclick="resetForm()" class="px-4 py-2 bg-gray-700 hover:bg-gray-600 text-gray-200 text-sm font-semibold rounded-xl border border-gray-600 transition">
+                            <i class="fa-solid fa-rotate-right mr-1.5"></i> Reiniciar
+                        </button>
+                        <button type="submit" class="px-6 py-2.5 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-gray-950 font-bold text-sm rounded-xl shadow-lg transition transform active:scale-95 flex items-center gap-2">
+                            <i class="fa-solid fa-check-double"></i> Evaluar Respuestas
+                        </button>
+                    </div>
+                </form>
+
+                <!-- OVERALL EVALUATION SUMMARY PANEL -->
+                <div id="overallEvaluation" class="hidden mt-4 p-4 rounded-xl border bg-gray-900/90"></div>
+            </section>
+
+            <!-- GRAMMAR RULE CARDS -->
+            <section class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="bg-gray-800 p-4 rounded-2xl border border-gray-700 shadow-sm">
+                    <div class="flex items-center space-x-2 text-amber-400 font-bold mb-2">
+                        <i class="fa-solid fa-shield-halved"></i>
+                        <h4>Regla de Oro: SER (DOCTOR)</h4>
+                    </div>
+                    <ul class="text-xs text-gray-300 space-y-1.5 list-disc list-inside">
+                        <li><strong class="text-white">D</strong>escripción: <em>Ella es ingeniera.</em></li>
+                        <li><strong class="text-white">O</strong>rigen / Nacionalidad: <em>Soy de España.</em></li>
+                        <li><strong class="text-white">C</strong>aracterísticas permanentes: <em>El proyecto es complejo.</em></li>
+                        <li><strong class="text-white">T</strong>iempo / Eventos: <em>La reunión es a las 10:00.</em></li>
+                        <li><strong class="text-white">O</strong>cupación: <em>Gabor es consultor.</em></li>
+                        <li><strong class="text-white">R</strong>elación: <em>Es mi cliente principal.</em></li>
+                    </ul>
+                </div>
+
+                <div class="bg-gray-800 p-4 rounded-2xl border border-gray-700 shadow-sm">
+                    <div class="flex items-center space-x-2 text-blue-400 font-bold mb-2">
+                        <i class="fa-solid fa-location-dot"></i>
+                        <h4>Regla de Oro: ESTAR (PLACE)</h4>
+                    </div>
+                    <ul class="text-xs text-gray-300 space-y-1.5 list-disc list-inside">
+                        <li><strong class="text-white">P</strong>osición física: <em>El informe está sobre la mesa.</em></li>
+                        <li><strong class="text-white">L</strong>ugares (Ubicación): <em>¿Dónde está la oficina?</em></li>
+                        <li><strong class="text-white">A</strong>cción en progreso (Gerundio): <em>Estoy redactando.</em></li>
+                        <li><strong class="text-white">C</strong>ondición temporal / Salud: <em>El sistema está listo.</em></li>
+                        <li><strong class="text-white">E</strong>stado emocional: <em>Estamos muy satisfechos.</em></li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- VERB CONJUGATION MATRIX (SIDE-BY-SIDE REFERENCE) -->
+            <section class="bg-gray-800 p-5 rounded-2xl border border-gray-700 shadow-md">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="font-bold text-white flex items-center gap-2">
+                        <i class="fa-solid fa-table text-amber-400"></i> Matriz de Conjugación B1
+                    </h3>
+                    <span class="text-xs text-gray-400">Presente de Indicativo</span>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-xs text-gray-300 border-collapse">
+                        <thead>
+                            <tr class="bg-gray-900/80 text-amber-400 border-b border-gray-700">
+                                <th class="p-2 font-bold">Pronombre</th>
+                                <th class="p-2 font-bold">SER (Identidad/Evento)</th>
+                                <th class="p-2 font-bold">ESTAR (Estado/Ubicación)</th>
+                                <th class="p-2 font-bold">TENER (Posesión)</th>
+                                <th class="p-2 font-bold">HACER (Acción)</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-700/50">
+                            <tr class="hover:bg-gray-700/30">
+                                <td class="p-2 font-medium text-gray-400">Yo</td>
+                                <td class="p-2 font-semibold text-white">soy</td>
+                                <td class="p-2 font-semibold text-white">estoy</td>
+                                <td class="p-2">tengo</td>
+                                <td class="p-2">hago</td>
+                            </tr>
+                            <tr class="hover:bg-gray-700/30">
+                                <td class="p-2 font-medium text-gray-400">Tú</td>
+                                <td class="p-2 font-semibold text-white">eres</td>
+                                <td class="p-2 font-semibold text-white">estás</td>
+                                <td class="p-2">tienes</td>
+                                <td class="p-2">haces</td>
+                            </tr>
+                            <tr class="hover:bg-gray-700/30">
+                                <td class="p-2 font-medium text-gray-400">Él / Ella / Ud.</td>
+                                <td class="p-2 font-semibold text-amber-300">es</td>
+                                <td class="p-2 font-semibold text-amber-300">está</td>
+                                <td class="p-2">tiene</td>
+                                <td class="p-2">hace</td>
+                            </tr>
+                            <tr class="hover:bg-gray-700/30">
+                                <td class="p-2 font-medium text-gray-400">Nosotros/as</td>
+                                <td class="p-2 font-semibold text-white">somos</td>
+                                <td class="p-2 font-semibold text-white">estamos</td>
+                                <td class="p-2">tenemos</td>
+                                <td class="p-2">hacemos</td>
+                            </tr>
+                            <tr class="hover:bg-gray-700/30">
+                                <td class="p-2 font-medium text-gray-400">Vosotros/as</td>
+                                <td class="p-2 font-semibold text-white">sois</td>
+                                <td class="p-2 font-semibold text-white">estáis</td>
+                                <td class="p-2">tenéis</td>
+                                <td class="p-2">hacéis</td>
+                            </tr>
+                            <tr class="hover:bg-gray-700/30">
+                                <td class="p-2 font-medium text-gray-400">Ellos / Ellas / Uds.</td>
+                                <td class="p-2 font-semibold text-white">son</td>
+                                <td class="p-2 font-semibold text-white">están</td>
+                                <td class="p-2">tienen</td>
+                                <td class="p-2">hacen</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+
+        <!-- RIGHT COLUMN: PROGRESS TRACKER, FLASHCARDS & CHAT DRAWER (4 COLS) -->
+        <aside class="lg:col-span-4 flex flex-col space-y-6">
+
+            <!-- PROGRESS & SCORE TRACKER -->
+            <section class="bg-gray-800 rounded-2xl border border-gray-700 p-5 shadow-md">
+                <h3 class="font-bold text-white text-base mb-3 flex items-center gap-2">
+                    <i class="fa-solid fa-chart-line text-amber-400"></i> Progreso de Dominio (Mastery)
+                </h3>
+                
+                <!-- Score Circle / Bar -->
+                <div class="space-y-3">
+                    <div class="flex justify-between items-baseline">
+                        <span class="text-xs text-gray-400">Puntuación Actual:</span>
+                        <span id="scoreText" class="text-xl font-extrabold text-amber-400">0%</span>
+                    </div>
+                    <div class="w-full bg-gray-900 rounded-full h-3 overflow-hidden border border-gray-700">
+                        <div id="progressBar" class="bg-gradient-to-r from-amber-500 to-emerald-400 h-3 rounded-full transition-all duration-500 w-0"></div>
+                    </div>
+                    <div class="flex justify-between text-[10px] text-gray-400">
+                        <span>0%</span>
+                        <span class="text-amber-400 font-bold">Meta: 80% (Pase B1)</span>
+                        <span>100%</span>
+                    </div>
+                </div>
+
+                <!-- Weakness Log -->
+                <div class="mt-4 pt-3 border-t border-gray-700/70">
+                    <h4 class="text-xs font-semibold text-gray-300 mb-1 flex items-center gap-1">
+                        <i class="fa-solid fa-bug text-red-400"></i> Registro de Debilidades:
+                    </h4>
+                    <p id="weaknessLog" class="text-xs text-gray-400 italic">
+                        Sin errores registrados aún. ¡Completa los ejercicios!
+                    </p>
+                </div>
+            </section>
+
+            <!-- INTERACTIVE FLASHCARD DECK -->
+            <section class="bg-gray-800 rounded-2xl border border-gray-700 p-5 shadow-md flex flex-col items-center">
+                <div class="w-full flex justify-between items-center mb-3">
+                    <h3 class="font-bold text-white text-sm flex items-center gap-1.5">
+                        <i class="fa-solid fa-clone text-amber-400"></i> Tarjetas Memoria (Flashcards)
+                    </h3>
+                    <span id="cardCounter" class="text-xs text-gray-400">1 / 4</span>
+                </div>
+
+                <!-- Flip Card Element -->
+                <div id="flashcard" onclick="flipCard()" class="flip-card w-full h-44 cursor-pointer select-none">
+                    <div class="flip-card-inner relative w-full h-full rounded-xl shadow-lg border border-gray-700 bg-gray-900">
+                        <!-- Front -->
+                        <div class="flip-card-front absolute inset-0 rounded-xl p-4 flex flex-col justify-between items-center text-center bg-gradient-to-b from-gray-800 to-gray-900">
+                            <span class="text-[10px] text-amber-400 uppercase tracking-widest font-semibold">Español</span>
+                            <p id="cardFrontText" class="text-lg font-bold text-white my-auto">¿Cuándo se usa "SER" para un lugar?</p>
+                            <span class="text-[10px] text-gray-500"><i class="fa-solid fa-rotate mr-1"></i>Haz clic para girar</span>
+                        </div>
+                        <!-- Back -->
+                        <div class="flip-card-back absolute inset-0 rounded-xl p-4 flex flex-col justify-between items-center text-center bg-gray-900 border-2 border-amber-500/50">
+                            <span class="text-[10px] text-emerald-400 uppercase tracking-widest font-semibold">Explicación</span>
+                            <p id="cardBackText" class="text-sm text-gray-200 my-auto">Solo para <strong>EVENTOS</strong> o celebraciones.<br>Ej: <em>"La reunión ES en la sala 3."</em></p>
+                            <span class="text-[10px] text-gray-500"><i class="fa-solid fa-rotate mr-1"></i>Haz clic para volver</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card Controls -->
+                <div class="flex justify-between items-center w-full mt-3">
+                    <button onclick="prevCard()" class="p-2 bg-gray-700 hover:bg-gray-600 text-gray-200 rounded-lg text-xs transition">
+                        <i class="fa-solid fa-chevron-left mr-1"></i> Anterior
+                    </button>
+                    <button onclick="speakCurrentCard()" class="p-2 bg-amber-500/20 text-amber-400 hover:bg-amber-500/30 rounded-lg text-xs border border-amber-500/30 transition">
+                        <i class="fa-solid fa-volume-high"></i>
+                    </button>
+                    <button onclick="nextCard()" class="p-2 bg-gray-700 hover:bg-gray-600 text-gray-200 rounded-lg text-xs transition">
+                        Siguiente <i class="fa-solid fa-chevron-right ml-1"></i>
+                    </button>
+                </div>
+            </section>
+
+            <!-- LIVE AI CHAT DRAWER -->
+            <section class="bg-gray-800 rounded-2xl border border-gray-700 shadow-md flex flex-col h-80">
+                <div class="p-3 bg-gray-900/80 rounded-t-2xl border-b border-gray-700 flex justify-between items-center">
+                    <div class="flex items-center space-x-2">
+                        <span class="w-2.5 h-2.5 bg-emerald-500 rounded-full animate-pulse"></span>
+                        <h3 class="font-bold text-white text-xs">Asistente B1 en Vivo</h3>
+                    </div>
+                    <span class="text-[10px] text-gray-400">Gabor's Coach</span>
+                </div>
+
+                <!-- Chat Messages Scroll Area -->
+                <div id="chatMessages" class="flex-1 p-3 overflow-y-auto space-y-2.5 text-xs">
+                    <div class="bg-gray-700/50 p-2.5 rounded-xl border border-gray-600/50 text-gray-200 max-w-[85%]">
+                        ¡Hola Gabor! Soy tu tutor B1. Hazme cualquier pregunta sobre gramática o sobre este ejercicio.
+                    </div>
+                </div>
+
+                <!-- Chat Input Form -->
+                <form onsubmit="sendChatMessage(event)" class="p-2 border-t border-gray-700 bg-gray-900/60 rounded-b-2xl flex gap-1.5">
+                    <input type="text" id="chatInput" class="flex-1 bg-gray-800 border border-gray-600 rounded-lg px-3 py-1.5 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-amber-500" placeholder="Escribe una duda aquí..." autocomplete="off">
+                    <button type="submit" class="bg-amber-500 hover:bg-amber-400 text-gray-950 px-3 py-1.5 rounded-lg font-bold text-xs transition">
+                        <i class="fa-solid fa-paper-plane"></i>
+                    </button>
+                </form>
+            </section>
+
+        </aside>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="bg-gray-800 border-t border-gray-700 py-3 text-center text-xs text-gray-500 mt-auto">
+        Español B1 Mastery Coach Workspace &bull; Diseñado especialmente para Gabor &bull; B1 SIELE Preparation
+    </footer>
+
+    <!-- JAVASCRIPT ENGINE -->
+    <script>
+        // Global States & Persistence
+        let activeInput = null;
+        let autoStart = localStorage.getItem('espanol_autostart') !== 'false';
+        let currentCardIndex = 0;
+
+        // Correct Exercise Answers & Explanation Metadata
+        const exercises = {
+            q1: { answer: "soy", verb: "ser", altWithoutTilde: "soy", rule: "Profesión / Ocupación permanente." },
+            q2: { answer: "están", verb: "estar", altWithoutTilde: "estan", rule: "Ubicación de objetos/documentos." },
+            q3: { answer: "es", verb: "ser", altWithoutTilde: "es", rule: "Ubicación de EVENTOS / reuniones (ocurre a cierta hora)." },
+            q4: { answer: "estamos", verb: "estar", altWithoutTilde: "estamos", rule: "Estado emocional / condición temporal." },
+            q5: { answer: "está", verb: "estar", altWithoutTilde: "esta", rule: "Estado/resultado de una acción terminada." }
+        };
+
+        // Flashcards Data
+        const flashcards = [
+            {
+                front: '¿Cuándo se usa "SER" para un lugar?',
+                back: 'Solo para EVENTOS o reuniones.<br>Ej: <em>"La conferencia es en la sala principal."</em>'
+            },
+            {
+                front: '¿Cuál es la diferencia entre "Es listo" y "Está listo"?',
+                back: '<strong>Es listo:</strong> Inteligente (cualidad).<br><strong>Está listo:</strong> Preparado (estado temporal).'
+            },
+            {
+                front: '¿Qué verbo se usa para la ubicación de documentos o cosas?',
+                back: 'Siempre <strong>ESTAR</strong>.<br>Ej: <em>"Los informes están en el escritorio."</em>'
+            },
+            {
+                front: '¿Cómo se dice "We are satisfied with the results"?',
+                back: '<em>"Estamos satisfechos con los resultados."</em> (Usa ESTAR por ser un estado de ánimo).'
+            }
+        ];
+
+        // Init setup on window load
+        window.onload = function() {
+            // Restore AutoStart visual state
+            updateAutoStartUI();
+
+            // Set default active input
+            activeInput = document.getElementById('q1');
+
+            // Render Flashcard
+            renderCard();
+        };
+
+        // Tilde Toolbar Action
+        function insertAccent(char) {
+            if (!activeInput) activeInput = document.getElementById('q1');
+            const start = activeInput.selectionStart || activeInput.value.length;
+            const end = activeInput.selectionEnd || activeInput.value.length;
+            const text = activeInput.value;
+            activeInput.value = text.substring(0, start) + char + text.substring(end);
+            activeInput.focus();
+            activeInput.setSelectionRange(start + 1, start + 1);
+        }
+
+        // Toggle AutoStart Setting
+        function toggleAutoStart() {
+            autoStart = !autoStart;
+            localStorage.setItem('espanol_autostart', autoStart);
+            updateAutoStartUI();
+        }
+
+        function updateAutoStartUI() {
+            const toggle = document.getElementById('autoStartToggle');
+            const dot = document.getElementById('autoStartDot');
+            if (autoStart) {
+                toggle.classList.replace('bg-gray-700', 'bg-amber-500');
+                dot.classList.replace('translate-x-0', 'translate-x-4');
+            } else {
+                toggle.classList.replace('bg-amber-500', 'bg-gray-700');
+                dot.classList.replace('translate-x-4', 'translate-x-0');
+            }
+        }
+
+        // Change Level Selector Notification
+        function changeLevel(lvl) {
+            appendChatMessage("Tutor", `Has cambiado al nivel **${lvl}**. Ajustando el plan de estudio...`);
+        }
+
+        // Evaluate Exercises Logic
+        function evaluateExercises(e) {
+            e.preventDefault();
+            let correctCount = 0;
+            let total = 5;
+            let weaknesses = [];
+
+            for (let key in exercises) {
+                const input = document.getElementById(key);
+                const feedbackDiv = document.getElementById(`feedback-${key}`);
+                const userVal = input.value.trim().toLowerCase();
+                const item = exercises[key];
+
+                feedbackDiv.classList.remove('hidden', 'bg-emerald-900/30', 'bg-red-900/30', 'bg-amber-900/30', 'border-emerald-700', 'border-red-700', 'border-amber-700');
+                feedbackDiv.classList.add('border');
+
+                if (userVal === item.answer) {
+                    // Perfect Answer
+                    correctCount++;
+                    feedbackDiv.classList.add('bg-emerald-900/30', 'border-emerald-700', 'text-emerald-300');
+                    feedbackDiv.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-400 mr-1"></i> <strong>¡Correcto!</strong> (${item.rule})`;
+                } else if (userVal === item.altWithoutTilde) {
+                    // Correct verb, missing tilde accent
+                    correctCount += 0.8;
+                    feedbackDiv.classList.add('bg-amber-900/30', 'border-amber-700', 'text-amber-300');
+                    feedbackDiv.innerHTML = `<i class="fa-solid fa-triangle-exclamation text-amber-400 mr-1"></i> <strong>Casi perfecto:</strong> La palabra exacta es <strong>"${item.answer}"</strong> (no olvides la tilde en la vocal).`;
+                } else {
+                    // Incorrect Answer
+                    weaknesses.push(`Pregunta ${key.substring(1)}: Confusión entre Ser/Estar en "${item.rule}"`);
+                    feedbackDiv.classList.add('bg-red-900/30', 'border-red-700', 'text-red-300');
+                    feedbackDiv.innerHTML = `<i class="fa-solid fa-circle-xmark text-red-400 mr-1"></i> <strong>Incorrecto:</strong> La respuesta correcta es <strong>"${item.answer}"</strong>. <br><span class="text-gray-400">Explicación: ${item.rule}</span>`;
+                }
+            }
+
+            // Calculate Score Percentage
+            const percentage = Math.round((correctCount / total) * 100);
+            
+            // Update Progress UI
+            const scoreText = document.getElementById('scoreText');
+            const progressBar = document.getElementById('progressBar');
+            scoreText.textContent = `${percentage}%`;
+            progressBar.style.width = `${percentage}%`;
+
+            // Update Weakness Log
+            const weaknessLog = document.getElementById('weaknessLog');
+            if (weaknesses.length === 0) {
+                weaknessLog.innerHTML = `<span class="text-emerald-400 font-semibold"><i class="fa-solid fa-check mr-1"></i> ¡Excelente dominio! Sin debilidades en este bloque.</span>`;
+            } else {
+                weaknessLog.innerHTML = `<ul class="list-disc list-inside text-red-300 space-y-1">${weaknesses.map(w => `<li>${w}</li>`).join('')}</ul>`;
+            }
+
+            // Overall Summary Box
+            const overall = document.getElementById('overallEvaluation');
+            overall.classList.remove('hidden', 'border-emerald-500', 'border-red-500');
+            
+            if (percentage >= 80) {
+                overall.classList.add('border-emerald-500', 'bg-emerald-950/40');
+                overall.innerHTML = `
+                    <div class="flex items-center space-x-3">
+                        <i class="fa-solid fa-trophy text-amber-400 text-2xl"></i>
+                        <div>
+                            <h4 class="font-bold text-emerald-400">¡Felicidades Gabor! Has superado la meta (Puntuación: ${percentage}%)</h4>
+                            <p class="text-xs text-gray-300">Has alcanzado el 80% de dominio requerido para avanzar en el temario B1.</p>
+                        </div>
+                    </div>
+                `;
+            } else {
+                overall.classList.add('border-amber-500', 'bg-amber-950/40');
+                overall.innerHTML = `
+                    <div class="flex items-center space-x-3">
+                        <i class="fa-solid fa-arrows-rotate text-amber-400 text-2xl"></i>
+                        <div>
+                            <h4 class="font-bold text-amber-400">Resultado: ${percentage}% (Meta B1: 80%)</h4>
+                            <p class="text-xs text-gray-300">Revisa las explicaciones arriba y la regla DOCTOR/PLACE, e inténtalo de nuevo.</p>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        // Reset Form
+        function resetForm() {
+            document.getElementById('exerciseForm').reset();
+            for (let i = 1; i <= 5; i++) {
+                const fb = document.getElementById(`feedback-q${i}`);
+                fb.classList.add('hidden');
+            }
+            document.getElementById('overallEvaluation').classList.add('hidden');
+        }
+
+        // Speech Synthesis Audio TTS
+        function speakText(text) {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel(); // stop current audio
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = 'es-ES';
+                utterance.rate = 0.9;
+                window.speechSynthesis.speak(utterance);
+            } else {
+                alert("La síntesis de voz no está soportada en tu navegador.");
+            }
+        }
+
+        // Flashcards Carousel Logic
+        function renderCard() {
+            const card = flashcards[currentCardIndex];
+            document.getElementById('cardFrontText').innerText = card.front;
+            document.getElementById('cardBackText').innerHTML = card.back;
+            document.getElementById('cardCounter').innerText = `${currentCardIndex + 1} / ${flashcards.length}`;
+            document.getElementById('flashcard').classList.remove('flipped');
+        }
+
+        function flipCard() {
+            document.getElementById('flashcard').classList.toggle('flipped');
+        }
+
+        function nextCard() {
+            currentCardIndex = (currentCardIndex + 1) % flashcards.length;
+            renderCard();
+        }
+
+        function prevCard() {
+            currentCardIndex = (currentCardIndex - 1 + flashcards.length) % flashcards.length;
+            renderCard();
+        }
+
+        function speakCurrentCard() {
+            const card = flashcards[currentCardIndex];
+            speakText(card.front);
+        }
+
+        // Live AI Chat Logic
+        function sendChatMessage(e) {
+            e.preventDefault();
+            const input = document.getElementById('chatInput');
+            const msg = input.value.trim();
+            if (!msg) return;
+
+            // User Message
+            appendChatMessage("Gabor", msg, true);
+            input.value = "";
+
+            // Bot Response Simulation
+            setTimeout(() => {
+                let botReply = "¡Buena pregunta! Recuerda que en nivel B1 la regla clave para 'Ser vs Estar' radica en diferenciar entre características permanentes y estados temporales o eventos.";
+                if (msg.toLowerCase().includes("tilde") || msg.toLowerCase().includes("acento")) {
+                    botReply = "Las tildes en 'está' o 'están' son cruciales porque cambian la pronunciación y el significado respecto al demostrativo 'esta'.";
+                } else if (msg.toLowerCase().includes("reunión") || msg.toLowerCase().includes("evento")) {
+                    botReply = "Para los eventos (reuniones, clases, conciertos) siempre usamos **SER** para indicar dónde ocurren. Ej: 'La reunión es en la sala A'.";
+                }
+                appendChatMessage("Tutor", botReply, false);
+            }, 600);
+        }
+
+        function appendChatMessage(sender, text, isUser = false) {
+            const container = document.getElementById('chatMessages');
+            const wrapper = document.createElement('div');
+            wrapper.className = isUser ? "flex justify-end" : "flex justify-start";
+
+            const bubble = document.createElement('div');
+            bubble.className = isUser 
+                ? "bg-amber-500/20 border border-amber-500/40 text-amber-200 p-2.5 rounded-xl max-w-[85%]" 
+                : "bg-gray-700/50 border border-gray-600/50 text-gray-200 p-2.5 rounded-xl max-w-[85%]";
+            
+            bubble.innerHTML = `<strong class="block text-[10px] ${isUser ? 'text-amber-400' : 'text-emerald-400'} mb-0.5">${sender}</strong>${text}`;
+            wrapper.appendChild(bubble);
+            container.appendChild(wrapper);
+            container.scrollTop = container.scrollHeight;
+        }
+    </script>
+</body>
+</html>
