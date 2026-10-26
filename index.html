@@ -3,158 +3,409 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Español A2-B1 Mastery Coach</title>
+  <title>Español A2 - B1 Mastery Coach</title>
+  <!-- 1. Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
+  <!-- 2. React & ReactDOM CDNs -->
   <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
   <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+  <!-- 3. Babel for live browser compilation of JSX -->
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <!-- 4. Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
 </head>
-<body class="bg-slate-900 text-slate-100 font-sans">
+<body class="bg-slate-900 text-slate-100 font-sans min-h-screen">
   <div id="root"></div>
 
   <script type="text/babel">
     const { useState, useEffect, useRef } = React;
 
     const initialProgress = {
-      cefrLevel: 'A2 / B1 Entry',
-      streak: 1,
-      totalAttempted: 15,
-      correct: 10,
-      partiallyCorrect: 3,
+      learnerName: 'Gabor',
+      cefrLevel: 'A2 -> B1 Transition',
+      targetGoal: 'SIELE B2 Certification',
+      streak: 4,
+      lessonsCompleted: 12,
+      activitiesCompleted: 28,
+      totalAttempted: 20,
+      correct: 14,
+      partiallyCorrect: 4,
       incorrect: 2,
-      sieleScores: { reading: 65, listening: 55, writing: 40, speaking: 45 },
+      sieleScores: { reading: 68, listening: 62, writing: 54, speaking: 50 },
       topicMastery: {
-        'Ser vs Estar': 65,
-        'Present Tense Regular': 80,
-        'Pretérito Indefinido': 45,
-        'Pretérito Imperfecto': 35,
-        'Direct Object Pronouns': 50,
-        'Gustar & Similar Verbs': 70
+        'Ser vs Estar': 75,
+        'Present Tense Regular': 85,
+        'Pretérito Indefinido': 55,
+        'Pretérito Imperfecto': 45,
+        'Direct Object Pronouns': 60,
+        'Gustar & Similar Verbs': 70,
+        'Subjunctive Basics (A2/B1)': 40
       },
-      wordsToReview: ['desarrollar', 'sin embargo', 'además', 'lograr', 'aprovechar']
+      wordsToReview: ['desarrollar', 'sin embargo', 'además', 'lograr', 'aprovechar', 'por lo tanto']
     };
+
+    const questionBank = [
+      {
+        id: 1,
+        type: 'MULTIPLE_CHOICE',
+        skillCategory: 'Grammar',
+        topic: 'Ser vs Estar',
+        question: 'Selecciona la combinación correcta para completar la frase:',
+        context: 'Hola, mi nombre ___ Gabor y ___ estudiando español para obtener el certificado SIELE.',
+        options: [
+          { id: 'A', text: 'es / estoy' },
+          { id: 'B', text: 'está / soy' },
+          { id: 'C', text: 'es / soy' },
+          { id: 'D', text: 'está / estoy' }
+        ],
+        correctAnswer: 'A',
+        keyPoint: 'Use "ser" for identity/names and "estar" + gerund (-ando/-iendo) for continuous actions.',
+        explanation: '"Mi nombre es" defines personal identity (essential characteristic = SER). "Estoy estudiando" forms the present continuous tense (ESTAR + gerund).'
+      },
+      {
+        id: 2,
+        type: 'FILL_IN_THE_BLANK',
+        skillCategory: 'Grammar',
+        topic: 'Pretérito Indefinido',
+        question: 'Completa la frase con la forma correcta del verbo entre paréntesis en Pretérito Indefinido:',
+        sentenceBefore: 'Ayer por la tarde, yo ',
+        sentenceAfter: ' (estudiar) tres horas en la biblioteca.',
+        correctAnswer: 'estudié',
+        keyPoint: 'Regular -AR verbs take the "-é" ending for the first person singular (yo) in Pretérito Indefinido.',
+        explanation: 'For completed past actions at a specific time point ("ayer"), use the Pretérito Indefinido form: Estudiar -> yo estudié.'
+      },
+      {
+        id: 3,
+        type: 'ENGLISH_TO_SPANISH',
+        skillCategory: 'Writing',
+        topic: 'Gustar & Similar Verbs',
+        question: 'Traduce la siguiente frase al español:',
+        promptEnglish: 'I am interested in improving my Spanish for work.',
+        acceptableAnswers: [
+          'me interesa mejorar mi español para el trabajo',
+          'me interesa mejorar mi espanol para el trabajo',
+          'me interesa mejorar mi español para trabajar',
+          'estoy interesado en mejorar mi español para el trabajo'
+        ],
+        modelAnswer: 'Me interesa mejorar mi español para el trabajo.',
+        keyPoint: '"Interesar" follows the "gustar" structure: Indirect pronoun (me) + verb (interesa) + infinitive.',
+        explanation: '"Me interesa" directly conveys "I am interested in". Purpose is expressed using "para".'
+      },
+      {
+        id: 4,
+        type: 'ERROR_CORRECTION',
+        skillCategory: 'Grammar',
+        topic: 'Ser vs Estar',
+        question: 'Encuentra el error gramatical y escribe la oración completa corregida:',
+        incorrectSentence: 'Hoy soy muy cansado porque trabajé diez horas.',
+        correctAnswer: 'Hoy estoy muy cansado porque trabajé diez horas.',
+        keyPoint: 'Temporary states, emotional conditions, and physical fatigue require ESTAR, not SER.',
+        explanation: 'Being tired ("cansado") is a temporary condition resulting from working, so "estoy" must replace "soy".'
+      },
+      {
+        id: 5,
+        type: 'SENTENCE_BUILDER',
+        skillCategory: 'Writing',
+        topic: 'Direct Object Pronouns',
+        question: 'Haz clic en las palabras para construir la frase en el orden correcto:',
+        words: ['mañana', 'los', 'documentos', 'enviar', 'Voy', 'a'],
+        modelAnswer: 'Voy a enviar los documentos mañana.',
+        alternativeOrders: ['Los documentos voy a enviar mañana', 'Mañana voy a enviar los documentos'],
+        keyPoint: 'Periphrastic future structure: Ir + a + Infinitive + Direct Object + Adverb.',
+        explanation: 'The conjugated auxiliary verb ("Voy") comes first, followed by preposition "a", infinitive "enviar", object "los documentos", and temporal modifier "mañana".'
+      }
+    ];
 
     function App() {
       const [activeTab, setActiveTab] = useState('practice');
       const [progress, setProgress] = useState(initialProgress);
+      const [currentIndex, setCurrentIndex] = useState(0);
       const [userText, setUserText] = useState('');
       const [selectedOpt, setSelectedOpt] = useState(null);
+      const [builtWords, setBuiltWords] = useState([]);
+      const [availableWords, setAvailableWords] = useState([]);
       const [submitted, setSubmitted] = useState(false);
-      const [feedback, setFeedback] = useState(null);
+      const [evaluation, setEvaluation] = useState(null);
+      const [showHint, setShowHint] = useState(false);
+      const [showRule, setShowRule] = useState(false);
+
+      const currentQ = questionBank[currentIndex];
+
+      useEffect(() => {
+        setSubmitted(false);
+        setEvaluation(null);
+        setUserText('');
+        setSelectedOpt(null);
+        setShowHint(false);
+        setShowRule(false);
+        if (currentQ.type === 'SENTENCE_BUILDER') {
+          setAvailableWords([...currentQ.words]);
+          setBuiltWords([]);
+        }
+      }, [currentIndex]);
 
       const insertAccent = (char) => setUserText(prev => prev + char);
 
+      const handleWordClick = (word, index, fromBuilt) => {
+        if (submitted) return;
+        if (fromBuilt) {
+          setBuiltWords(builtWords.filter((_, i) => i !== index));
+          setAvailableWords([...availableWords, word]);
+        } else {
+          setAvailableWords(availableWords.filter((_, i) => i !== index));
+          setBuiltWords([...builtWords, word]);
+        }
+      };
+
       const handleSubmit = () => {
-        if (!selectedOpt && !userText) return;
+        if (submitted) return;
+        let isCorrect = false;
+
+        if (currentQ.type === 'MULTIPLE_CHOICE') {
+          isCorrect = selectedOpt === currentQ.correctAnswer;
+        } else if (currentQ.type === 'FILL_IN_THE_BLANK' || currentQ.type === 'ERROR_CORRECTION') {
+          isCorrect = userText.trim().toLowerCase() === currentQ.correctAnswer.toLowerCase();
+        } else if (currentQ.type === 'ENGLISH_TO_SPANISH') {
+          const clean = userText.trim().toLowerCase().replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, "");
+          isCorrect = currentQ.acceptableAnswers.some(ans => ans.toLowerCase() === clean);
+        } else if (currentQ.type === 'SENTENCE_BUILDER') {
+          const res = builtWords.join(' ');
+          isCorrect = res === currentQ.modelAnswer || (currentQ.alternativeOrders && currentQ.alternativeOrders.includes(res));
+        }
+
+        const resStatus = isCorrect ? 'CORRECT' : 'INCORRECT';
+        setEvaluation(resStatus);
         setSubmitted(true);
-        setFeedback(selectedOpt === 'A' ? 'CORRECT' : 'INCORRECT');
+
+        setProgress(prev => ({
+          ...prev,
+          totalAttempted: prev.totalAttempted + 1,
+          correct: isCorrect ? prev.correct + 1 : prev.correct,
+          incorrect: !isCorrect ? prev.incorrect + 1 : prev.incorrect
+        }));
       };
 
       return (
-        <div className="max-w-4xl mx-auto p-4 md:p-6 space-y-6">
-          {/* Top Bar */}
-          <header className="flex justify-between items-center border-b border-slate-700 pb-4">
-            <div>
-              <h1 className="text-2xl font-bold text-amber-400">Español A2-B1 Mastery Coach</h1>
-              <p className="text-xs text-slate-400">Learner: Gabor • Target: SIELE B2</p>
+        <div className="max-w-5xl mx-auto p-4 md:p-6 space-y-6">
+          {/* Header */}
+          <header className="bg-slate-800 p-4 rounded-xl border border-slate-700 flex flex-wrap justify-between items-center gap-4 shadow-lg">
+            <div className="flex items-center space-x-3">
+              <div className="bg-amber-500 text-slate-950 font-black px-3 py-1.5 rounded-lg text-lg">
+                SIELE
+              </div>
+              <div>
+                <h1 className="text-lg font-bold text-white">Español A2 - B1 Mastery Coach</h1>
+                <p className="text-xs text-amber-400">Learner: Gabor • Streak: 🔥 {progress.streak} Days</p>
+              </div>
             </div>
             <div className="flex gap-2">
-              <button 
+              <button
                 onClick={() => setActiveTab('practice')}
-                className={`px-3 py-1.5 rounded-lg text-xs font-bold ${activeTab === 'practice' ? 'bg-amber-500 text-slate-950' : 'bg-slate-800 text-slate-300'}`}
+                className={`px-4 py-2 rounded-lg text-xs font-bold transition ${activeTab === 'practice' ? 'bg-amber-500 text-slate-950' : 'bg-slate-700 text-slate-300 hover:bg-slate-600'}`}
               >
-                Practice
+                Interactive Session
               </button>
-              <button 
+              <button
                 onClick={() => setActiveTab('dashboard')}
-                className={`px-3 py-1.5 rounded-lg text-xs font-bold ${activeTab === 'dashboard' ? 'bg-amber-500 text-slate-950' : 'bg-slate-800 text-slate-300'}`}
+                className={`px-4 py-2 rounded-lg text-xs font-bold transition ${activeTab === 'dashboard' ? 'bg-amber-500 text-slate-950' : 'bg-slate-700 text-slate-300 hover:bg-slate-600'}`}
               >
-                Dashboard
+                View My Progress
               </button>
             </div>
           </header>
 
           {activeTab === 'practice' ? (
-            <main className="bg-slate-800 p-6 rounded-xl border border-slate-700 space-y-6 shadow-xl">
-              <div className="flex justify-between items-center border-b border-slate-700 pb-3">
-                <span className="text-xs font-bold bg-amber-500/20 text-amber-300 px-3 py-1 rounded">Question 1 of 5</span>
-                <span className="text-xs text-slate-400">Topic: Ser vs Estar</span>
+            <main className="bg-slate-800 p-6 rounded-xl border border-slate-700 shadow-2xl space-y-6">
+              {/* Question Banner */}
+              <div className="flex justify-between items-center border-b border-slate-700 pb-3 text-xs">
+                <span className="bg-amber-500/20 text-amber-300 border border-amber-500/40 px-3 py-1 rounded font-bold">
+                  Question {currentIndex + 1} of {questionBank.length}
+                </span>
+                <span className="text-slate-400">Topic: <strong className="text-white">{currentQ.topic}</strong></span>
+                <span className="text-emerald-400 font-bold">Score: {progress.correct}/{progress.totalAttempted}</span>
               </div>
 
+              {/* Question Text */}
               <div>
                 <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">QUESTION</h3>
-                <p className="text-lg text-slate-100 font-serif">"Hola, mi nombre ___ Gabor y ___ aprendiendo español para el examen SIELE."</p>
-              </div>
-
-              {/* Accent Keys */}
-              <div className="bg-slate-900/60 p-2.5 rounded-lg border border-slate-700/80">
-                <span className="text-xs text-slate-400 block mb-1">On-Screen Accent Keys:</span>
-                <div className="flex flex-wrap gap-1.5">
-                  {['á', 'é', 'í', 'ó', 'ú', 'ñ', 'ü', '¿', '¡'].map((c) => (
-                    <button 
-                      key={c} 
-                      onClick={() => insertAccent(c)} 
-                      className="w-8 h-8 bg-slate-700 text-amber-300 hover:bg-amber-500 hover:text-slate-950 rounded font-bold transition"
-                    >
-                      {c}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* Options */}
-              <div className="space-y-2">
-                {[
-                  { id: 'A', text: 'es / estoy' },
-                  { id: 'B', text: 'está / soy' },
-                  { id: 'C', text: 'es / soy' },
-                  { id: 'D', text: 'está / estoy' }
-                ].map((opt) => (
-                  <button
-                    key={opt.id}
-                    onClick={() => setSelectedOpt(opt.id)}
-                    className={`w-full text-left p-3.5 rounded-lg border transition ${
-                      selectedOpt === opt.id ? 'bg-amber-500/20 border-amber-500 text-amber-200' : 'bg-slate-900/60 border-slate-700 text-slate-200'
-                    }`}
-                  >
-                    <strong className="mr-2 text-amber-400">{opt.id})</strong> {opt.text}
-                  </button>
-                ))}
-              </div>
-
-              <div className="flex gap-2 pt-2 border-t border-slate-700">
-                {!submitted ? (
-                  <button onClick={handleSubmit} className="bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold px-6 py-2 rounded-lg text-sm transition">
-                    Submit Answer
-                  </button>
-                ) : (
-                  <button onClick={() => setSubmitted(false)} className="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold px-6 py-2 rounded-lg text-sm transition">
-                    Continue
-                  </button>
+                <p className="text-base md:text-lg font-semibold text-amber-200">{currentQ.question}</p>
+                {currentQ.context && (
+                  <div className="mt-3 p-3 bg-slate-900 rounded-lg border-l-4 border-amber-500 font-serif italic text-slate-200">
+                    "{currentQ.context}"
+                  </div>
                 )}
               </div>
 
+              {/* Special Accents Bar */}
+              {(currentQ.type === 'FILL_IN_THE_BLANK' || currentQ.type === 'ENGLISH_TO_SPANISH' || currentQ.type === 'ERROR_CORRECTION') && (
+                <div className="bg-slate-900/60 p-2.5 rounded-lg border border-slate-700">
+                  <span className="text-xs text-slate-400 block mb-1 font-medium">Spanish Accent Helper (Click to insert):</span>
+                  <div className="flex flex-wrap gap-1.5">
+                    {['á', 'é', 'í', 'ó', 'ú', 'ñ', 'ü', '¿', '¡'].map(c => (
+                      <button
+                        key={c}
+                        type="button"
+                        onClick={() => insertAccent(c)}
+                        className="w-8 h-8 bg-slate-700 hover:bg-amber-500 hover:text-slate-950 text-amber-300 font-bold rounded transition"
+                      >
+                        {c}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Answer Area */}
+              <div className="space-y-3">
+                <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider">ANSWER AREA</h4>
+
+                {/* Multiple Choice */}
+                {currentQ.type === 'MULTIPLE_CHOICE' && (
+                  <div className="space-y-2">
+                    {currentQ.options.map(opt => (
+                      <button
+                        key={opt.id}
+                        disabled={submitted}
+                        onClick={() => setSelectedOpt(opt.id)}
+                        className={`w-full text-left p-3.5 rounded-lg border transition ${selectedOpt === opt.id ? 'bg-amber-500/20 border-amber-500 text-amber-200 font-bold' : 'bg-slate-900/60 border-slate-700 text-slate-200 hover:bg-slate-700/50'}`}
+                      >
+                        <span className="mr-2 text-amber-400">{opt.id})</span> {opt.text}
+                      </button>
+                    ))}
+                  </div>
+                )}
+
+                {/* Fill in the Blank */}
+                {currentQ.type === 'FILL_IN_THE_BLANK' && (
+                  <div className="bg-slate-900 p-4 rounded-xl border border-slate-700 flex flex-wrap items-center gap-2 text-lg">
+                    <span>{currentQ.sentenceBefore}</span>
+                    <input
+                      type="text"
+                      disabled={submitted}
+                      value={userText}
+                      onChange={e => setUserText(e.target.value)}
+                      placeholder="type here..."
+                      className="bg-slate-800 border-2 border-amber-500/80 text-amber-300 px-3 py-1 rounded font-bold focus:outline-none"
+                    />
+                    <span>{currentQ.sentenceAfter}</span>
+                  </div>
+                )}
+
+                {/* Text Entry */}
+                {(currentQ.type === 'ENGLISH_TO_SPANISH' || currentQ.type === 'ERROR_CORRECTION') && (
+                  <div className="space-y-2">
+                    {currentQ.promptEnglish && <p className="text-xs text-slate-300">English: <strong className="text-white">{currentQ.promptEnglish}</strong></p>}
+                    {currentQ.incorrectSentence && <p className="text-xs text-rose-300">Incorrect Sentence: <span className="line-through">{currentQ.incorrectSentence}</span></p>}
+                    <textarea
+                      disabled={submitted}
+                      rows={3}
+                      value={userText}
+                      onChange={e => setUserText(e.target.value)}
+                      placeholder="Escribe tu respuesta en español..."
+                      className="w-full bg-slate-900 border border-slate-700 text-slate-100 p-3 rounded-lg focus:outline-none focus:border-amber-500"
+                    />
+                  </div>
+                )}
+
+                {/* Sentence Builder */}
+                {currentQ.type === 'SENTENCE_BUILDER' && (
+                  <div className="space-y-3">
+                    <div className="min-h-[50px] p-3 bg-slate-900 rounded-lg border-2 border-dashed border-slate-700 flex flex-wrap gap-2 items-center">
+                      {builtWords.length === 0 ? (
+                        <span className="text-xs text-slate-500">Click word blocks below to construct sentence...</span>
+                      ) : (
+                        builtWords.map((w, i) => (
+                          <button key={i} disabled={submitted} onClick={() => handleWordClick(w, i, true)} className="bg-amber-500 text-slate-950 font-bold px-3 py-1 rounded text-sm">
+                            {w}
+                          </button>
+                        ))
+                      )}
+                    </div>
+                    <div className="flex flex-wrap gap-2">
+                      {availableWords.map((w, i) => (
+                        <button key={i} disabled={submitted} onClick={() => handleWordClick(w, i, false)} className="bg-slate-700 hover:bg-slate-600 text-slate-200 px-3 py-1 rounded text-sm">
+                          {w}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Action Buttons */}
+              <div className="pt-3 border-t border-slate-700 flex flex-wrap justify-between gap-2">
+                <div className="flex gap-2">
+                  {!submitted ? (
+                    <button onClick={handleSubmit} className="bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold px-5 py-2 rounded-lg text-sm shadow">
+                      Submit Answer
+                    </button>
+                  ) : (
+                    <button onClick={() => setCurrentIndex((currentIndex + 1) % questionBank.length)} className="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold px-5 py-2 rounded-lg text-sm shadow">
+                      Continue
+                    </button>
+                  )}
+                  <button onClick={() => setShowHint(!showHint)} className="bg-slate-700 hover:bg-slate-600 text-slate-200 px-3 py-2 rounded-lg text-xs font-semibold">
+                    {showHint ? 'Hide Hint' : 'Give Me a Hint'}
+                  </button>
+                  <button onClick={() => setShowRule(!showRule)} className="bg-slate-700 hover:bg-slate-600 text-slate-200 px-3 py-2 rounded-lg text-xs font-semibold">
+                    {showRule ? 'Hide Rule' : 'Explain the Rule'}
+                  </button>
+                </div>
+              </div>
+
+              {showHint && <div className="p-3 bg-amber-500/10 border-l-4 border-amber-400 rounded text-xs text-amber-200 font-medium">💡 Hint: {currentQ.keyPoint}</div>}
+              {showRule && <div className="p-3 bg-slate-900 border border-slate-700 rounded text-xs text-slate-300"><strong>Rule Breakdown:</strong> {currentQ.explanation}</div>}
+
+              {/* Feedback */}
               {submitted && (
-                <div className="p-4 bg-slate-900 rounded-lg border border-slate-700 space-y-2">
-                  <span className="text-xs font-bold px-2.5 py-1 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/40">
-                    🟢 Correct
-                  </span>
-                  <p className="text-xs text-slate-300 pt-1">
-                    <strong>Explanation:</strong> Use "ser" for identity/names (es) and "estar" + gerund for continuous actions (estoy aprendiendo).
-                  </p>
+                <div className="p-4 bg-slate-900 rounded-xl border border-slate-700 space-y-2">
+                  <div className="flex items-center gap-2">
+                    {evaluation === 'CORRECT' ? (
+                      <span className="px-3 py-1 bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 rounded-full text-xs font-bold">🟢 Correct</span>
+                    ) : (
+                      <span className="px-3 py-1 bg-rose-500/20 text-rose-400 border border-rose-500/40 rounded-full text-xs font-bold">🔴 Incorrect</span>
+                    )}
+                  </div>
+                  <p className="text-xs text-slate-300 pt-1"><strong>Model Answer:</strong> <span className="text-emerald-300 font-mono">{currentQ.modelAnswer || currentQ.correctAnswer}</span></p>
+                  <p className="text-xs text-slate-300"><strong>Explanation:</strong> {currentQ.explanation}</p>
                 </div>
               )}
             </main>
           ) : (
+            /* Dashboard View */
             <main className="bg-slate-800 p-6 rounded-xl border border-slate-700 space-y-6">
-              <h2 className="text-xl font-bold text-white border-b border-slate-700 pb-3">Learner Dashboard</h2>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                {Object.entries(progress.sieleScores).map(([skill, score]) => (
-                  <div key={skill} className="bg-slate-900 p-3.5 rounded-xl border border-slate-700 text-center">
-                    <span className="text-xs text-slate-400 uppercase font-bold block mb-1">{skill}</span>
-                    <span className="text-2xl font-black text-amber-400">{score}%</span>
-                  </div>
-                ))}
+              <h2 className="text-xl font-bold text-white border-b border-slate-700 pb-3">Learner Progress Dashboard (Gabor)</h2>
+              
+              <div>
+                <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">SIELE Skill Breakdown</h3>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                  {Object.entries(progress.sieleScores).map(([skill, score]) => (
+                    <div key={skill} className="bg-slate-900 p-4 rounded-xl border border-slate-700 text-center">
+                      <span className="text-xs text-slate-400 uppercase font-bold block mb-1">{skill}</span>
+                      <span className="text-2xl font-black text-amber-400">{score}%</span>
+                      <div className="w-full bg-slate-800 rounded-full h-1.5 mt-2">
+                        <div className="bg-amber-500 h-1.5 rounded-full" style={{ width: `${score}%` }}></div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div>
+                <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">Grammar Mastery Ratings</h3>
+                <div className="space-y-3">
+                  {Object.entries(progress.topicMastery).map(([topic, pct]) => (
+                    <div key={topic} className="bg-slate-900 p-3 rounded-lg border border-slate-700 flex justify-between items-center text-xs">
+                      <span className="font-semibold text-slate-200">{topic}</span>
+                      <div className="flex items-center space-x-3">
+                        <div className="w-32 bg-slate-800 rounded-full h-2">
+                          <div className={`h-2 rounded-full ${pct >= 75 ? 'bg-emerald-500' : pct >= 50 ? 'bg-amber-500' : 'bg-rose-500'}`} style={{ width: `${pct}%` }}></div>
+                        </div>
+                        <span className="font-bold text-amber-400 w-8 text-right">{pct}%</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </div>
             </main>
           )}
