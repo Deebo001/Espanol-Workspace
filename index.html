@@ -9,7 +9,7 @@
   <!-- React & ReactDOM CDNs -->
   <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
   <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
-  <!-- Babel CDN for in-browser JSX compiling -->
+  <!-- Babel CDN for browser JSX execution -->
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 </head>
 <body class="bg-slate-900 text-slate-100 font-sans min-h-screen">
@@ -29,21 +29,35 @@
       incorrect: 3,
       sieleScores: { reading: 68, listening: 62, writing: 54, speaking: 50 },
       topicMastery: {
-        'Ser vs Estar': 75,
-        'Present Tense Regular': 85,
-        'Pretérito Indefinido': 55,
-        'Pretérito Imperfecto': 45,
-        'Direct Object Pronouns': 60,
-        'Gustar & Similar Verbs': 70,
-        'Subjunctive Basics (A2/B1)': 40
-      }
+        'W1: Present Tense Regular/Irregular': 85,
+        'W2: Ser vs. Estar & Gustar': 75,
+        'W3: Pretérito Indefinido': 55,
+        'W4: Pretérito Imperfecto': 45,
+        'W5: Indefinido vs. Imperfecto': 50,
+        'W6: Pretérito Perfecto': 60,
+        'W7: Direct & Indirect Object Pronouns': 55,
+        'W8: Reflexive Verbs': 65,
+        'W11: Conditional Simple': 45,
+        'W12: B1 Discourse Markers': 60,
+        'W13: Present Subjunctive': 35,
+        'W17: Por vs. Para & Prepositions': 50,
+        'W21: SIELE Task 1 & 2 Written': 45
+      },
+      wordsToReview: [
+        { word: 'Desarrollar', meaning: 'To develop / grow', status: 'UNSURE' },
+        { word: 'Sin embargo', meaning: 'However', status: 'KNOW' },
+        { word: 'Por lo tanto', meaning: 'Therefore', status: 'UNSURE' },
+        { word: 'Aprovechar', meaning: 'To take advantage of / make the most of', status: 'DONT_KNOW' },
+        { word: 'Lograr', meaning: 'To achieve / attain', status: 'DONT_KNOW' }
+      ]
     };
 
     const questionBank = [
+      // Interactive Multiple Choice
       {
         id: 1,
+        topic: 'W2: Ser vs. Estar & Gustar',
         type: 'MULTIPLE_CHOICE',
-        topic: 'Ser vs Estar',
         question: 'Selecciona la combinación correcta para completar la frase:',
         context: 'Hola, mi nombre ___ Gabor y ___ estudiando español para obtener el certificado SIELE.',
         options: [
@@ -54,23 +68,25 @@
         ],
         correctAnswer: 'A',
         keyPoint: 'Use "ser" for identity/names and "estar" + gerund (-ando/-iendo) for continuous actions.',
-        explanation: '"Mi nombre es" defines personal identity (essential characteristic = SER). "Estoy estudiando" forms the present continuous tense (ESTAR + gerund).'
+        explanation: '"Mi nombre es" defines personal identity (SER). "Estoy estudiando" forms the present continuous (ESTAR + gerund).'
       },
+      // Interactive Fill-in-the-Blank
       {
         id: 2,
+        topic: 'W3: Pretérito Indefinido',
         type: 'FILL_IN_THE_BLANK',
-        topic: 'Pretérito Indefinido',
         question: 'Completa la frase con la forma correcta del verbo entre paréntesis en Pretérito Indefinido:',
         sentenceBefore: 'Ayer por la tarde, yo ',
         sentenceAfter: ' (estudiar) tres horas en la biblioteca.',
         correctAnswer: 'estudié',
         keyPoint: 'Regular -AR verbs take the "-é" ending for the first person singular (yo) in Pretérito Indefinido.',
-        explanation: 'For completed past actions at a specific time point ("ayer"), use the Pretérito Indefinido form: Estudiar -> yo estudié.'
+        explanation: 'For completed past actions at a specific time point ("ayer"), use the Pretérito Indefinido: Estudiar -> yo estudié.'
       },
+      // Interactive English to Spanish
       {
         id: 3,
+        topic: 'W2: Ser vs. Estar & Gustar',
         type: 'ENGLISH_TO_SPANISH',
-        topic: 'Gustar & Similar Verbs',
         question: 'Traduce la siguiente frase al español:',
         promptEnglish: 'I am interested in improving my Spanish for work.',
         acceptableAnswers: [
@@ -83,31 +99,45 @@
         keyPoint: '"Interesar" follows the "gustar" structure: Indirect pronoun (me) + verb (interesa) + infinitive.',
         explanation: '"Me interesa" directly conveys "I am interested in". Purpose is expressed using "para".'
       },
+      // Interactive Error Correction
       {
         id: 4,
+        topic: 'W2: Ser vs. Estar & Gustar',
         type: 'ERROR_CORRECTION',
-        topic: 'Ser vs Estar',
         question: 'Encuentra el error gramatical y escribe la oración completa corregida:',
         incorrectSentence: 'Hoy soy muy cansado porque trabajé diez horas.',
         correctAnswer: 'Hoy estoy muy cansado porque trabajé diez horas.',
         keyPoint: 'Temporary states, emotional conditions, and physical fatigue require ESTAR, not SER.',
         explanation: 'Being tired ("cansado") is a temporary condition resulting from working, so "estoy" must replace "soy".'
       },
+      // Interactive Sentence Builder
       {
         id: 5,
+        topic: 'W7: Direct & Indirect Object Pronouns',
         type: 'SENTENCE_BUILDER',
-        topic: 'Direct Object Pronouns',
         question: 'Haz clic en las palabras para construir la frase en el orden correcto:',
         words: ['mañana', 'los', 'documentos', 'enviar', 'Voy', 'a'],
         modelAnswer: 'Voy a enviar los documentos mañana.',
         alternativeOrders: ['Los documentos voy a enviar mañana', 'Mañana voy a enviar los documentos'],
         keyPoint: 'Periphrastic future structure: Ir + a + Infinitive + Direct Object + Adverb.',
         explanation: 'The conjugated auxiliary verb ("Voy") comes first, followed by preposition "a", infinitive "enviar", object "los documentos", and temporal modifier "mañana".'
+      },
+      // Interactive Vocabulary Flashcard
+      {
+        id: 6,
+        topic: 'W12: B1 Discourse Markers',
+        type: 'FLASHCARD',
+        question: 'Evalúa tu conocimiento del siguiente término clave para el examen SIELE:',
+        word: 'Sin embargo',
+        definition: 'However / Nevertheless',
+        example: 'Estudió mucho; sin embargo, la prueba fue difícil.',
+        keyPoint: 'Essential discourse connective for structuring contrast in B1/B2 writing and speaking.',
+        explanation: 'Use "sin embargo" at the beginning of a clause to introduce a contrasting point.'
       }
     ];
 
     function App() {
-      const [activeTab, setActiveTab] = useState('practice');
+      const [activeTab, setActiveTab] = useState('practice'); // 'practice' | 'vocabulary' | 'dashboard'
       const [selectedTopicFilter, setSelectedTopicFilter] = useState('ALL');
       const [progress, setProgress] = useState(() => {
         const saved = localStorage.getItem('gabor_siele_progress');
@@ -119,16 +149,18 @@
         return savedIndex ? parseInt(savedIndex, 10) : 0;
       });
 
+      // Transient exercise states
       const [userText, setUserText] = useState('');
       const [selectedOpt, setSelectedOpt] = useState(null);
       const [builtWords, setBuiltWords] = useState([]);
       const [availableWords, setAvailableWords] = useState([]);
+      const [flashcardChoice, setFlashcardChoice] = useState(null);
       const [submitted, setSubmitted] = useState(false);
       const [evaluation, setEvaluation] = useState(null);
       const [showHint, setShowHint] = useState(false);
       const [showRule, setShowRule] = useState(false);
 
-      // Filter question set dynamically based on topic selection
+      // Filter questions according to dropdown choice
       const filteredQuestions = selectedTopicFilter === 'ALL' 
         ? questionBank 
         : questionBank.filter(q => q.topic === selectedTopicFilter);
@@ -149,6 +181,7 @@
         setEvaluation(null);
         setUserText('');
         setSelectedOpt(null);
+        setFlashcardChoice(null);
         setShowHint(false);
         setShowRule(false);
         if (currentQ && currentQ.type === 'SENTENCE_BUILDER') {
@@ -177,6 +210,7 @@
       const handleSubmit = () => {
         if (submitted) return;
         let isCorrect = false;
+        let isPartial = false;
 
         if (currentQ.type === 'MULTIPLE_CHOICE') {
           isCorrect = selectedOpt === currentQ.correctAnswer;
@@ -188,15 +222,18 @@
         } else if (currentQ.type === 'SENTENCE_BUILDER') {
           const res = builtWords.join(' ');
           isCorrect = res === currentQ.modelAnswer || (currentQ.alternativeOrders && currentQ.alternativeOrders.includes(res));
+        } else if (currentQ.type === 'FLASHCARD') {
+          isCorrect = flashcardChoice === 'KNOW';
+          isPartial = flashcardChoice === 'UNSURE';
         }
 
-        const resStatus = isCorrect ? 'CORRECT' : 'INCORRECT';
+        const resStatus = isCorrect ? 'CORRECT' : isPartial ? 'PARTIAL' : 'INCORRECT';
         setEvaluation(resStatus);
         setSubmitted(true);
 
         setProgress(prev => {
           const newCorrect = isCorrect ? prev.correct + 1 : prev.correct;
-          const newIncorrect = !isCorrect ? prev.incorrect + 1 : prev.incorrect;
+          const newIncorrect = (!isCorrect && !isPartial) ? prev.incorrect + 1 : prev.incorrect;
           const topicName = currentQ.topic;
           const currentTopicMastery = prev.topicMastery[topicName] || 50;
           const updatedMastery = isCorrect 
@@ -221,13 +258,17 @@
         setCurrentIndex(nextIdx);
       };
 
-      const handleRedoQuestion = () => {
-        resetQuestionState();
+      const handleVocabRating = (wordIndex, newStatus) => {
+        setProgress(prev => {
+          const updatedList = [...prev.wordsToReview];
+          updatedList[wordIndex].status = newStatus;
+          return { ...prev, wordsToReview: updatedList };
+        });
       };
 
       return (
         <div className="max-w-5xl mx-auto p-4 md:p-6 space-y-6">
-          {/* Header Bar with Topic Selector & View Tabs */}
+          {/* Header Bar */}
           <header className="bg-slate-800 p-4 rounded-xl border border-slate-700 flex flex-wrap justify-between items-center gap-4 shadow-lg">
             <div className="flex items-center space-x-3">
               <div className="bg-amber-500 text-slate-950 font-black px-3 py-1.5 rounded-lg text-lg">
@@ -239,51 +280,56 @@
               </div>
             </div>
 
+            {/* Navigation Tabs */}
             <div className="flex flex-wrap items-center gap-3">
-              {/* Topic Selector Dropdown */}
-              <div className="flex items-center space-x-1.5 bg-slate-900 px-3 py-1.5 rounded-lg border border-slate-700">
-                <span className="text-xs text-slate-400 font-medium">Topic:</span>
-                <select
-                  value={selectedTopicFilter}
-                  onChange={(e) => {
-                    setSelectedTopicFilter(e.target.value);
-                    setCurrentIndex(0);
-                  }}
-                  className="bg-transparent text-xs font-bold text-amber-300 focus:outline-none cursor-pointer"
-                >
-                  <option value="ALL">All Topics</option>
-                  <option value="Ser vs Estar">Ser vs Estar</option>
-                  <option value="Pretérito Indefinido">Pretérito Indefinido</option>
-                  <option value="Direct Object Pronouns">Direct Object Pronouns</option>
-                  <option value="Gustar & Similar Verbs">Gustar & Similar Verbs</option>
-                </select>
-              </div>
-
               <div className="flex gap-2">
                 <button
                   onClick={() => setActiveTab('practice')}
-                  className={`px-4 py-2 rounded-lg text-xs font-bold transition ${activeTab === 'practice' ? 'bg-amber-500 text-slate-950' : 'bg-slate-700 text-slate-300 hover:bg-slate-600'}`}
+                  className={`px-3.5 py-2 rounded-lg text-xs font-bold transition ${activeTab === 'practice' ? 'bg-amber-500 text-slate-950' : 'bg-slate-700 text-slate-300 hover:bg-slate-600'}`}
                 >
-                  Interactive Session
+                  Interactive Practice
+                </button>
+                <button
+                  onClick={() => setActiveTab('vocabulary')}
+                  className={`px-3.5 py-2 rounded-lg text-xs font-bold transition ${activeTab === 'vocabulary' ? 'bg-amber-500 text-slate-950' : 'bg-slate-700 text-slate-300 hover:bg-slate-600'}`}
+                >
+                  Vocabulary Deck
                 </button>
                 <button
                   onClick={() => setActiveTab('dashboard')}
-                  className={`px-4 py-2 rounded-lg text-xs font-bold transition ${activeTab === 'dashboard' ? 'bg-amber-500 text-slate-950' : 'bg-slate-700 text-slate-300 hover:bg-slate-600'}`}
+                  className={`px-3.5 py-2 rounded-lg text-xs font-bold transition ${activeTab === 'dashboard' ? 'bg-amber-500 text-slate-950' : 'bg-slate-700 text-slate-300 hover:bg-slate-600'}`}
                 >
-                  View My Progress
+                  View Progress
                 </button>
               </div>
             </div>
           </header>
 
-          {activeTab === 'practice' ? (
+          {/* TAB 1: INTERACTIVE PRACTICE */}
+          {activeTab === 'practice' && (
             <main className="bg-slate-800 p-6 rounded-xl border border-slate-700 shadow-2xl space-y-6">
-              {/* Status Header */}
-              <div className="flex justify-between items-center border-b border-slate-700 pb-3 text-xs">
-                <span className="bg-amber-500/20 text-amber-300 border border-amber-500/40 px-3 py-1 rounded font-bold">
-                  Question {activeIndex + 1} of {filteredQuestions.length}
-                </span>
-                <span className="text-slate-400">Topic: <strong className="text-amber-300">{currentQ.topic}</strong></span>
+              {/* Question Bar Header */}
+              <div className="flex flex-wrap justify-between items-center border-b border-slate-700 pb-3 gap-2 text-xs">
+                <div className="flex items-center space-x-2">
+                  <span className="bg-amber-500/20 text-amber-300 border border-amber-500/40 px-3 py-1 rounded font-bold">
+                    Question {activeIndex + 1} of {filteredQuestions.length}
+                  </span>
+                  {/* Topic Selector */}
+                  <select
+                    value={selectedTopicFilter}
+                    onChange={(e) => {
+                      setSelectedTopicFilter(e.target.value);
+                      setCurrentIndex(0);
+                    }}
+                    className="bg-slate-900 text-xs font-bold text-amber-300 px-2 py-1 rounded border border-slate-700 focus:outline-none cursor-pointer"
+                  >
+                    <option value="ALL">All Curriculum Topics</option>
+                    <option value="W2: Ser vs. Estar & Gustar">W2: Ser vs. Estar & Gustar</option>
+                    <option value="W3: Pretérito Indefinido">W3: Pretérito Indefinido</option>
+                    <option value="W7: Direct & Indirect Object Pronouns">W7: Object Pronouns</option>
+                    <option value="W12: B1 Discourse Markers">W12: Discourse Markers</option>
+                  </select>
+                </div>
                 <span className="text-emerald-400 font-bold">Score: {progress.correct}/{progress.totalAttempted}</span>
               </div>
 
@@ -298,7 +344,7 @@
                 )}
               </div>
 
-              {/* Spanish Keyboard Accents */}
+              {/* On-Screen Accent Keypad */}
               {(currentQ.type === 'FILL_IN_THE_BLANK' || currentQ.type === 'ENGLISH_TO_SPANISH' || currentQ.type === 'ERROR_CORRECTION') && (
                 <div className="bg-slate-900/60 p-2.5 rounded-lg border border-slate-700">
                   <span className="text-xs text-slate-400 block mb-1 font-medium">Spanish Accent Helper (Click to insert):</span>
@@ -317,10 +363,11 @@
                 </div>
               )}
 
-              {/* Answer Control Area */}
+              {/* Answer Area */}
               <div className="space-y-3">
                 <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider">ANSWER AREA</h4>
 
+                {/* Multiple Choice */}
                 {currentQ.type === 'MULTIPLE_CHOICE' && (
                   <div className="space-y-2">
                     {currentQ.options.map(opt => (
@@ -336,6 +383,7 @@
                   </div>
                 )}
 
+                {/* Fill in the Blank */}
                 {currentQ.type === 'FILL_IN_THE_BLANK' && (
                   <div className="bg-slate-900 p-4 rounded-xl border border-slate-700 flex flex-wrap items-center gap-2 text-lg">
                     <span>{currentQ.sentenceBefore}</span>
@@ -351,6 +399,7 @@
                   </div>
                 )}
 
+                {/* Text Production */}
                 {(currentQ.type === 'ENGLISH_TO_SPANISH' || currentQ.type === 'ERROR_CORRECTION') && (
                   <div className="space-y-2">
                     {currentQ.promptEnglish && <p className="text-xs text-slate-300">English: <strong className="text-white">{currentQ.promptEnglish}</strong></p>}
@@ -366,6 +415,7 @@
                   </div>
                 )}
 
+                {/* Sentence Builder */}
                 {currentQ.type === 'SENTENCE_BUILDER' && (
                   <div className="space-y-3">
                     <div className="min-h-[50px] p-3 bg-slate-900 rounded-lg border-2 border-dashed border-slate-700 flex flex-wrap gap-2 items-center">
@@ -388,9 +438,40 @@
                     </div>
                   </div>
                 )}
+
+                {/* Flashcard Activity */}
+                {currentQ.type === 'FLASHCARD' && (
+                  <div className="bg-slate-900 p-6 rounded-xl border border-slate-700 text-center space-y-3">
+                    <span className="text-xs text-amber-400 font-bold uppercase tracking-widest">Vocabulary Flashcard</span>
+                    <h2 className="text-3xl font-extrabold text-white">{currentQ.word}</h2>
+                    <p className="text-slate-300 text-sm italic">"{currentQ.example}"</p>
+                    <p className="text-slate-400 text-xs">Meaning: {currentQ.definition}</p>
+
+                    <div className="pt-3 flex justify-center gap-2">
+                      <button
+                        onClick={() => setFlashcardChoice('KNOW')}
+                        className={`px-4 py-2 rounded-lg text-xs font-bold transition ${flashcardChoice === 'KNOW' ? 'bg-emerald-500 text-slate-950' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+                      >
+                        I Know It (🟢)
+                      </button>
+                      <button
+                        onClick={() => setFlashcardChoice('UNSURE')}
+                        className={`px-4 py-2 rounded-lg text-xs font-bold transition ${flashcardChoice === 'UNSURE' ? 'bg-amber-500 text-slate-950' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+                      >
+                        Not Sure (🟡)
+                      </button>
+                      <button
+                        onClick={() => setFlashcardChoice('DONT_KNOW')}
+                        className={`px-4 py-2 rounded-lg text-xs font-bold transition ${flashcardChoice === 'DONT_KNOW' ? 'bg-rose-500 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+                      >
+                        I Don't Know It (🔴)
+                      </button>
+                    </div>
+                  </div>
+                )}
               </div>
 
-              {/* Action Buttons: Submit, Hint, Rule, Redo, and Continue */}
+              {/* Action Buttons */}
               <div className="pt-3 border-t border-slate-700 flex flex-wrap justify-between gap-2">
                 <div className="flex flex-wrap gap-2">
                   {!submitted ? (
@@ -402,7 +483,7 @@
                       <button onClick={handleNextQuestion} className="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold px-5 py-2 rounded-lg text-sm shadow">
                         Continue →
                       </button>
-                      <button onClick={handleRedoQuestion} className="bg-amber-500/20 text-amber-300 border border-amber-500/40 hover:bg-amber-500/30 font-bold px-4 py-2 rounded-lg text-sm transition flex items-center gap-1">
+                      <button onClick={resetQuestionState} className="bg-amber-500/20 text-amber-300 border border-amber-500/40 hover:bg-amber-500/30 font-bold px-4 py-2 rounded-lg text-sm transition">
                         🔄 Redo / Try Again
                       </button>
                     </div>
@@ -419,28 +500,83 @@
               {showHint && <div className="p-3 bg-amber-500/10 border-l-4 border-amber-400 rounded text-xs text-amber-200 font-medium">💡 Hint: {currentQ.keyPoint}</div>}
               {showRule && <div className="p-3 bg-slate-900 border border-slate-700 rounded text-xs text-slate-300"><strong>Rule Breakdown:</strong> {currentQ.explanation}</div>}
 
-              {/* Feedback Banner */}
+              {/* Feedback Display */}
               {submitted && (
                 <div className="p-4 bg-slate-900 rounded-xl border border-slate-700 space-y-2">
                   <div className="flex items-center gap-2">
-                    {evaluation === 'CORRECT' ? (
-                      <span className="px-3 py-1 bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 rounded-full text-xs font-bold">🟢 Correct</span>
-                    ) : (
-                      <span className="px-3 py-1 bg-rose-500/20 text-rose-400 border border-rose-500/40 rounded-full text-xs font-bold">🔴 Incorrect</span>
-                    )}
+                    {evaluation === 'CORRECT' && <span className="px-3 py-1 bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 rounded-full text-xs font-bold">🟢 Correct</span>}
+                    {evaluation === 'PARTIAL' && <span className="px-3 py-1 bg-amber-500/20 text-amber-400 border border-amber-500/40 rounded-full text-xs font-bold">🟡 Partially Correct</span>}
+                    {evaluation === 'INCORRECT' && <span className="px-3 py-1 bg-rose-500/20 text-rose-400 border border-rose-500/40 rounded-full text-xs font-bold">🔴 Incorrect</span>}
                   </div>
-                  <p className="text-xs text-slate-300 pt-1"><strong>Model Answer:</strong> <span className="text-emerald-300 font-mono">{currentQ.modelAnswer || currentQ.correctAnswer}</span></p>
+                  <p className="text-xs text-slate-300 pt-1"><strong>Model Answer:</strong> <span className="text-emerald-300 font-mono">{currentQ.modelAnswer || currentQ.correctAnswer || 'Self-assessed flashcard'}</span></p>
                   <p className="text-xs text-slate-300"><strong>Explanation:</strong> {currentQ.explanation}</p>
                 </div>
               )}
             </main>
-          ) : (
-            /* Dashboard View */
+          )}
+
+          {/* TAB 2: VOCABULARY PRACTICE DECK */}
+          {activeTab === 'vocabulary' && (
             <main className="bg-slate-800 p-6 rounded-xl border border-slate-700 space-y-6">
-              <h2 className="text-xl font-bold text-white border-b border-slate-700 pb-3">Learner Progress Dashboard (Gabor)</h2>
+              <div className="flex justify-between items-center border-b border-slate-700 pb-3">
+                <div>
+                  <h2 className="text-xl font-bold text-white">Vocabulary Practice Deck</h2>
+                  <p className="text-xs text-slate-400">Targeted review queue for words marked "Not Sure" or "I Don't Know It".</p>
+                </div>
+                <span className="text-xs font-bold bg-amber-500/20 text-amber-300 px-3 py-1.5 rounded border border-amber-500/30">
+                  {progress.wordsToReview.length} Target Words
+                </span>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {progress.wordsToReview.map((item, idx) => (
+                  <div key={idx} className="bg-slate-900 p-4 rounded-xl border border-slate-700 space-y-2">
+                    <div className="flex justify-between items-start">
+                      <h3 className="text-lg font-bold text-amber-300">{item.word}</h3>
+                      <span className={`text-[10px] font-extrabold px-2 py-0.5 rounded ${
+                        item.status === 'KNOW' ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/40' :
+                        item.status === 'UNSURE' ? 'bg-amber-500/20 text-amber-400 border border-amber-500/40' :
+                        'bg-rose-500/20 text-rose-400 border border-rose-500/40'
+                      }`}>
+                        {item.status === 'KNOW' ? 'KNOW IT' : item.status === 'UNSURE' ? 'NEEDS REVIEW' : 'PRIORITY'}
+                      </span>
+                    </div>
+                    <p className="text-xs text-slate-300">Meaning: <strong>{item.meaning}</strong></p>
+                    
+                    <div className="pt-2 flex gap-1.5">
+                      <button
+                        onClick={() => handleVocabRating(idx, 'KNOW')}
+                        className={`text-xs px-2.5 py-1 rounded font-bold transition ${item.status === 'KNOW' ? 'bg-emerald-500 text-slate-950' : 'bg-slate-800 text-slate-400 hover:bg-slate-700'}`}
+                      >
+                        I Know It
+                      </button>
+                      <button
+                        onClick={() => handleVocabRating(idx, 'UNSURE')}
+                        className={`text-xs px-2.5 py-1 rounded font-bold transition ${item.status === 'UNSURE' ? 'bg-amber-500 text-slate-950' : 'bg-slate-800 text-slate-400 hover:bg-slate-700'}`}
+                      >
+                        Not Sure
+                      </button>
+                      <button
+                        onClick={() => handleVocabRating(idx, 'DONT_KNOW')}
+                        className={`text-xs px-2.5 py-1 rounded font-bold transition ${item.status === 'DONT_KNOW' ? 'bg-rose-500 text-white' : 'bg-slate-800 text-slate-400 hover:bg-slate-700'}`}
+                      >
+                        Don't Know It
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </main>
+          )}
+
+          {/* TAB 3: LEARNER DASHBOARD */}
+          {activeTab === 'dashboard' && (
+            <main className="bg-slate-800 p-6 rounded-xl border border-slate-700 space-y-6">
+              <h2 className="text-xl font-bold text-white border-b border-slate-700 pb-3">Learner Dashboard (Gabor)</h2>
               
+              {/* SIELE Readiness */}
               <div>
-                <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">SIELE Skill Breakdown</h3>
+                <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">SIELE Skill Readiness</h3>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                   {Object.entries(progress.sieleScores).map(([skill, score]) => (
                     <div key={skill} className="bg-slate-900 p-4 rounded-xl border border-slate-700 text-center">
@@ -454,9 +590,10 @@
                 </div>
               </div>
 
+              {/* Grammar Mastery */}
               <div>
-                <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">Grammar Topic Mastery Ratings</h3>
-                <div className="space-y-3">
+                <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">Grammar Mastery Ratings</h3>
+                <div className="space-y-2 max-h-80 overflow-y-auto pr-2">
                   {Object.entries(progress.topicMastery).map(([topic, pct]) => (
                     <div key={topic} className="bg-slate-900 p-3 rounded-lg border border-slate-700 flex justify-between items-center text-xs">
                       <span className="font-semibold text-slate-200">{topic}</span>
