@@ -4,979 +4,165 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Español A2-B1 Mastery Coach</title>
-
-  <!-- 1. Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
-
-  <!-- 2. React & ReactDOM -->
   <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
   <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
-
-  <!-- 3. Babel for live JSX compilation -->
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-
-  <!-- 4. Lucide Icons CDN -->
-  <script src="https://unpkg.com/lucide@latest"></script>
 </head>
-<body class="bg-slate-950 text-slate-100 font-sans min-h-screen">
-
-  <!-- React Mount Root -->
+<body class="bg-slate-900 text-slate-100 font-sans">
   <div id="root"></div>
 
-  <!-- React Application Logic -->
   <script type="text/babel">
     const { useState, useEffect, useRef } = React;
 
-    // Direct SVG Icon components for browser stability without bundlers
-    const CheckCircle = () => <span class="text-emerald-400 font-bold">✓</span>;
-    const XCircle = () => <span class="text-rose-400 font-bold">✕</span>;
-    const AlertCircle = () => <span class="text-amber-400 font-bold">⚠</span>;
-
-    // Initial learner default state for Gabor
     const initialProgress = {
-      learnerName: 'Gabor',
-      cefrLevel: 'A2 → B1 Transition',
-      targetGoal: 'SIELE B2 Certification',
-      streak: 4,
-      lessonsCompleted: 12,
-      activitiesCompleted: 28,
-      totalAttempted: 20,
-      correct: 14,
-      partiallyCorrect: 4,
+      cefrLevel: 'A2 / B1 Entry',
+      streak: 1,
+      totalAttempted: 15,
+      correct: 10,
+      partiallyCorrect: 3,
       incorrect: 2,
-      sieleScores: {
-        reading: 68,
-        listening: 62,
-        writing: 54,
-        speaking: 50
-      },
+      sieleScores: { reading: 65, listening: 55, writing: 40, speaking: 45 },
       topicMastery: {
-        'Ser vs Estar': 75,
-        'Present Tense Regular': 85,
-        'Pretérito Indefinido': 55,
-        'Pretérito Imperfecto': 45,
-        'Direct Object Pronouns': 60,
-        'Gustar & Similar Verbs': 70,
-        'Subjunctive Basics (A2/B1)': 40
+        'Ser vs Estar': 65,
+        'Present Tense Regular': 80,
+        'Pretérito Indefinido': 45,
+        'Pretérito Imperfecto': 35,
+        'Direct Object Pronouns': 50,
+        'Gustar & Similar Verbs': 70
       },
-      wordsToReview: ['desarrollar', 'sin embargo', 'además', 'lograr', 'aprovechar', 'por lo tanto']
+      wordsToReview: ['desarrollar', 'sin embargo', 'además', 'lograr', 'aprovechar']
     };
-
-    // Question Bank featuring ALL 11 interactive exercise types
-    const questionBank = [
-      {
-        id: 1,
-        type: 'MULTIPLE_CHOICE',
-        skillCategory: 'Grammar',
-        topic: 'Ser vs Estar',
-        question: 'Selecciona la combinación correcta para completar la frase:',
-        context: 'Hola, mi nombre ___ Gabor y ___ estudiando español para obtener el certificado SIELE.',
-        options: [
-          { id: 'A', text: 'es / estoy' },
-          { id: 'B', text: 'está / soy' },
-          { id: 'C', text: 'es / soy' },
-          { id: 'D', text: 'está / estoy' }
-        ],
-        correctAnswer: 'A',
-        keyPoint: 'Use "ser" for identity/names and "estar" + gerund (-ando/-iendo) for continuous actions.',
-        explanation: '"Mi nombre es" defines personal identity (essential characteristic = SER). "Estoy estudiando" forms the present continuous tense (ESTAR + gerund).'
-      },
-      {
-        id: 2,
-        type: 'FILL_IN_THE_BLANK',
-        skillCategory: 'Grammar',
-        topic: 'Pretérito Indefinido',
-        question: 'Completa la frase con la forma correcta del verbo entre paréntesis en Pretérito Indefinido:',
-        sentenceBefore: 'Ayer por la tarde, yo ',
-        sentenceAfter: ' (estudiar) tres horas en la biblioteca.',
-        correctAnswer: 'estudié',
-        keyPoint: 'Regular -AR verbs take the "-é" ending for the first person singular (yo) in Pretérito Indefinido.',
-        explanation: 'For completed past actions at a specific time point ("ayer"), use the Pretérito Indefinido form: Estudiar -> yo estudié.'
-      },
-      {
-        id: 3,
-        type: 'ENGLISH_TO_SPANISH',
-        skillCategory: 'Writing',
-        topic: 'Gustar & Similar Verbs',
-        question: 'Traduce la siguiente frase al español:',
-        promptEnglish: 'I am interested in improving my Spanish for work.',
-        acceptableAnswers: [
-          'me interesa mejorar mi español para el trabajo',
-          'me interesa mejorar mi espanol para el trabajo',
-          'me interesa mejorar mi español para trabajar',
-          'estoy interesado en mejorar mi español para el trabajo'
-        ],
-        modelAnswer: 'Me interesa mejorar mi español para el trabajo.',
-        keyPoint: '"Interesar" follows the "gustar" structure: Indirect pronoun (me) + verb (interesa) + infinitive.',
-        explanation: '"Me interesa" directly conveys "I am interested in". Purpose is expressed using "para".'
-      },
-      {
-        id: 4,
-        type: 'SPANISH_TO_ENGLISH',
-        skillCategory: 'Reading',
-        topic: 'Subjunctive Basics (A2/B1)',
-        question: 'Traduce o selecciona el significado más preciso en inglés:',
-        context: 'Es necesario que practiques español todos los días.',
-        options: [
-          { id: 'A', text: 'It is necessary that you practice Spanish every day.' },
-          { id: 'B', text: 'You practiced Spanish yesterday because it was necessary.' },
-          { id: 'C', text: 'It is necessary for me to practice Spanish every day.' },
-          { id: 'D', text: 'I practice Spanish every day when it is necessary.' }
-        ],
-        correctAnswer: 'A',
-        keyPoint: 'Impersonal expressions ("es necesario que...") trigger the present subjunctive ("practiques").',
-        explanation: '"Es necesario que" + subjunctive subject (tú) translates directly to "It is necessary that you practice".'
-      },
-      {
-        id: 5,
-        type: 'ERROR_CORRECTION',
-        skillCategory: 'Grammar',
-        topic: 'Ser vs Estar',
-        question: 'Encuentra el error gramatical y escribe la oración completa corregida:',
-        incorrectSentence: 'Hoy soy muy cansado porque trabajé diez horas.',
-        correctAnswer: 'Hoy estoy muy cansado porque trabajé diez horas.',
-        keyPoint: 'Temporary states, emotional conditions, and physical fatigue require ESTAR, not SER.',
-        explanation: 'Being tired ("cansado") is a temporary condition resulting from working, so "estoy" must replace "soy".'
-      },
-      {
-        id: 6,
-        type: 'SENTENCE_BUILDER',
-        skillCategory: 'Writing',
-        topic: 'Direct Object Pronouns',
-        question: 'Haz clic en las palabras para construir la frase en el orden correcto:',
-        words: ['mañana', 'los', 'documentos', 'enviar', 'Voy', 'a'],
-        modelAnswer: 'Voy a enviar los documentos mañana.',
-        alternativeOrders: ['Los documentos voy a enviar mañana', 'Mañana voy a enviar los documentos'],
-        keyPoint: 'Periphrastic future structure: Ir + a + Infinitive + Direct Object + Adverb.',
-        explanation: 'The conjugated auxiliary verb ("Voy") comes first, followed by preposition "a", infinitive "enviar", object "los documentos", and temporal modifier "mañana".'
-      },
-      {
-        id: 7,
-        type: 'MATCHING',
-        skillCategory: 'Vocabulary',
-        topic: 'Connectors & Discourse Markers',
-        question: 'Empareja cada conector en español con su traducción correspondiente en inglés:',
-        pairs: [
-          { spanish: 'Sin embargo', english: 'However' },
-          { spanish: 'Por lo tanto', english: 'Therefore' },
-          { spanish: 'Además', english: 'Furthermore' },
-          { spanish: 'Aunque', english: 'Although' }
-        ],
-        keyPoint: 'Discourse connectives add cohesion and structure to SIELE written and spoken tasks.',
-        explanation: 'Connecting clauses with markers like "sin embargo" and "por lo tanto" boosts your cohesion score in B1/B2 exams.'
-      },
-      {
-        id: 8,
-        type: 'FLASHCARDS',
-        skillCategory: 'Vocabulary',
-        topic: 'B2 Academic & Business Words',
-        question: 'Evalúa tu nivel de conocimiento del siguiente término clave:',
-        word: 'Desarrollar',
-        definition: 'To develop, elaborate, grow, or build up (an idea, project, or competence).',
-        example: 'Es fundamental desarrollar estrategias efectivas de comunicación.',
-        keyPoint: 'High-frequency verb required for expressing progress and development in B1/B2 writing.'
-      },
-      {
-        id: 9,
-        type: 'VISUAL_EXERCISE',
-        skillCategory: 'Speaking/Writing',
-        topic: 'Scene Description',
-        question: 'Observa la imagen y responde a la pregunta de descripción:',
-        imageUrl: 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=800&q=80',
-        promptText: '¿Qué están haciendo las personas en la imagen y qué ambiente se proyecta?',
-        keyPoint: 'Combine continuous present ("están trabajando"), connective phrases, and opinion structures ("me parece que...").',
-        explanation: 'In the SIELE exam, describing visual context tests your range of vocabulary, prepositions, and natural hypotheses.'
-      },
-      {
-        id: 10,
-        type: 'CONVERSATION_SIMULATION',
-        skillCategory: 'Oral interaction',
-        topic: 'Professional Negotiation',
-        scenario: 'Estás en una reunión de trabajo con tu supervisor. Necesitas pedir una extensión de plazo para entregar el informe.',
-        partnerPrompt: 'Gabor, ¿tienes preparado el informe consolidado para la reunión de esta tarde?',
-        options: [
-          { id: 'A', text: 'No, no lo tengo listo. Tengo mucho trabajo.', feedback: 'Too direct and lacks professional politeness or alternative solutions.' },
-          { id: 'B', text: 'Disculpe, todavía no está terminado. ¿Sería posible entregarlo mañana a primera hora?', feedback: 'Excellent! Uses polite conditional phrasing and offers a clear professional alternative.' },
-          { id: 'C', text: 'Sí, por supuesto, no hay ningún problema.', feedback: 'Inaccurate if the report is not actually ready.' }
-        ],
-        correctAnswer: 'B',
-        keyPoint: 'Use conditional courtesy ("¿Sería posible...?") to handle delicate business situations in Spanish.',
-        explanation: 'Option B demonstrates upper-intermediate (B1/B2) pragmatic competence and professional politeness.'
-      },
-      {
-        id: 11,
-        type: 'SIELE_PRACTICE',
-        skillCategory: 'Written expression',
-        topic: 'SIELE Tarea 1 - Correo Formal',
-        instructions: 'Escribe un correo electrónico formal (40-60 palabras) pidiendo información sobre un curso de preparación SIELE.',
-        wordLimit: { min: 40, max: 60 },
-        keyPoint: 'Structure: Formal opening (Estimado/a...), body request, and formal sign-off (Atentamente / Un cordial saludo).',
-        explanation: 'Adhering strictly to word count ranges and appropriate formal register is critical for maximum points on SIELE Tarea 1.'
-      }
-    ];
 
     function App() {
       const [activeTab, setActiveTab] = useState('practice');
       const [progress, setProgress] = useState(initialProgress);
-      const [storageStatus, setStorageStatus] = useState('Checking Storage...');
-
-      const [currentIndex, setCurrentIndex] = useState(0);
-
       const [userText, setUserText] = useState('');
-      const [selectedOption, setSelectedOption] = useState(null);
-      const [builtWords, setBuiltWords] = useState([]);
-      const [availableWords, setAvailableWords] = useState([]);
-      const [matchingSelections, setMatchingSelections] = useState({});
-      const [flashcardRating, setFlashcardRating] = useState(null);
-
+      const [selectedOpt, setSelectedOpt] = useState(null);
       const [submitted, setSubmitted] = useState(false);
-      const [evaluation, setEvaluation] = useState(null);
-      const [showHint, setShowHint] = useState(false);
-      const [showRule, setShowRule] = useState(false);
+      const [feedback, setFeedback] = useState(null);
 
-      const currentQ = questionBank[currentIndex];
-      const inputRef = useRef(null);
-
-      useEffect(() => {
-        try {
-          const stored = localStorage.getItem('siele_coach_progress');
-          if (stored) {
-            setProgress(JSON.parse(stored));
-            setStorageStatus('Saved to Local Progress Store');
-          } else {
-            localStorage.setItem('siele_coach_progress', JSON.stringify(initialProgress));
-            setStorageStatus('Saved to Local Progress Store');
-          }
-        } catch (err) {
-          setStorageStatus('Session Only (Storage Restricted)');
-        }
-      }, []);
-
-      const updateProgress = (newProgress) => {
-        setProgress(newProgress);
-        try {
-          localStorage.setItem('siele_coach_progress', JSON.stringify(newProgress));
-          setStorageStatus('Saved to Local Progress Store');
-        } catch (e) {
-          setStorageStatus('Session Only');
-        }
-      };
-
-      useEffect(() => {
-        setSubmitted(false);
-        setEvaluation(null);
-        setUserText('');
-        setSelectedOption(null);
-        setShowHint(false);
-        setShowRule(false);
-        setMatchingSelections({});
-        setFlashcardRating(null);
-
-        if (currentQ.type === 'SENTENCE_BUILDER') {
-          setAvailableWords([...currentQ.words]);
-          setBuiltWords([]);
-        }
-      }, [currentIndex]);
-
-      const insertAccent = (char) => {
-        if (submitted) return;
-        const input = inputRef.current;
-        if (input) {
-          const start = input.selectionStart ?? userText.length;
-          const end = input.selectionEnd ?? userText.length;
-          const newText = userText.substring(0, start) + char + userText.substring(end);
-          setUserText(newText);
-          
-          setTimeout(() => {
-            input.focus();
-            input.setSelectionRange(start + char.length, start + char.length);
-          }, 0);
-        } else {
-          setUserText((prev) => prev + char);
-        }
-      };
-
-      const handleWordClick = (word, index, isFromBuilt) => {
-        if (submitted) return;
-        if (isFromBuilt) {
-          setBuiltWords(builtWords.filter((_, i) => i !== index));
-          setAvailableWords([...availableWords, word]);
-        } else {
-          setAvailableWords(availableWords.filter((_, i) => i !== index));
-          setBuiltWords([...builtWords, word]);
-        }
-      };
+      const insertAccent = (char) => setUserText(prev => prev + char);
 
       const handleSubmit = () => {
-        if (submitted) return;
-
-        let isCorrect = false;
-        let isPartial = false;
-
-        switch (currentQ.type) {
-          case 'MULTIPLE_CHOICE':
-          case 'SPANISH_TO_ENGLISH':
-          case 'CONVERSATION_SIMULATION':
-            isCorrect = selectedOption === currentQ.correctAnswer;
-            break;
-
-          case 'FILL_IN_THE_BLANK':
-          case 'ERROR_CORRECTION': {
-            const cleanUser = userText.trim().toLowerCase();
-            const cleanTarget = currentQ.correctAnswer.toLowerCase();
-            isCorrect = cleanUser === cleanTarget;
-            if (!isCorrect) {
-              const normalize = (str) => str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-              if (normalize(cleanUser) === normalize(cleanTarget)) {
-                isPartial = true;
-              }
-            }
-            break;
-          }
-
-          case 'ENGLISH_TO_SPANISH': {
-            const cleanUser = userText.trim().toLowerCase().replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, "");
-            isCorrect = currentQ.acceptableAnswers.some(ans => 
-              ans.toLowerCase().replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, "") === cleanUser
-            );
-            if (!isCorrect && cleanUser.length > 5) {
-              isPartial = currentQ.acceptableAnswers.some(ans => cleanUser.includes('interesa'));
-            }
-            break;
-          }
-
-          case 'SENTENCE_BUILDER': {
-            const constructed = builtWords.join(' ');
-            isCorrect = constructed === currentQ.modelAnswer || (currentQ.alternativeOrders && currentQ.alternativeOrders.includes(constructed));
-            break;
-          }
-
-          case 'MATCHING': {
-            const totalPairs = currentQ.pairs.length;
-            let matchedCount = 0;
-            currentQ.pairs.forEach((p) => {
-              if (matchingSelections[p.spanish] === p.english) {
-                matchedCount++;
-              }
-            });
-            if (matchedCount === totalPairs) {
-              isCorrect = true;
-            } else if (matchedCount > 0) {
-              isPartial = true;
-            }
-            break;
-          }
-
-          case 'FLASHCARDS': {
-            if (flashcardRating === 'KNOW') isCorrect = true;
-            else if (flashcardRating === 'UNSURE') isPartial = true;
-            break;
-          }
-
-          case 'VISUAL_EXERCISE':
-            isCorrect = userText.trim().length >= 15;
-            if (!isCorrect && userText.trim().length >= 5) isPartial = true;
-            break;
-
-          case 'SIELE_PRACTICE': {
-            const words = userText.trim() ? userText.trim().split(/\s+/).length : 0;
-            if (words >= currentQ.wordLimit.min && words <= currentQ.wordLimit.max) {
-              isCorrect = true;
-            } else if (words > 10) {
-              isPartial = true;
-            }
-            break;
-          }
-
-          default:
-            break;
-        }
-
-        const evalResult = isCorrect ? 'CORRECT' : isPartial ? 'PARTIAL' : 'INCORRECT';
-        setEvaluation(evalResult);
+        if (!selectedOpt && !userText) return;
         setSubmitted(true);
-
-        const topic = currentQ.topic;
-        const currentTopicRating = progress.topicMastery[topic] || 50;
-        const ratingDelta = isCorrect ? 5 : isPartial ? 2 : -5;
-        const updatedTopicRating = Math.max(0, Math.min(100, currentTopicRating + ratingDelta));
-
-        const updated = {
-          ...progress,
-          totalAttempted: progress.totalAttempted + 1,
-          correct: isCorrect ? progress.correct + 1 : progress.correct,
-          partiallyCorrect: isPartial ? progress.partiallyCorrect + 1 : progress.partiallyCorrect,
-          incorrect: !isCorrect && !isPartial ? progress.incorrect + 1 : progress.incorrect,
-          topicMastery: {
-            ...progress.topicMastery,
-            [topic]: updatedTopicRating
-          }
-        };
-
-        updateProgress(updated);
-      };
-
-      const handleNextQuestion = () => {
-        setCurrentIndex((prev) => (prev + 1) % questionBank.length);
-      };
-
-      const handleTryAgain = () => {
-        setSubmitted(false);
-        setEvaluation(null);
-        if (currentQ.type === 'SENTENCE_BUILDER') {
-          setAvailableWords([...currentQ.words]);
-          setBuiltWords([]);
-        }
+        setFeedback(selectedOpt === 'A' ? 'CORRECT' : 'INCORRECT');
       };
 
       return (
-        <div className="min-h-screen bg-slate-950 text-slate-100 font-sans flex flex-col">
-          
-          <header className="bg-slate-900 border-b border-slate-800 sticky top-0 z-50 shadow-md">
-            <div className="max-w-6xl mx-auto px-4 py-3 flex flex-wrap justify-between items-center gap-3">
-              <div className="flex items-center space-x-3">
-                <div className="bg-gradient-to-br from-amber-400 to-amber-600 p-2 rounded-xl text-slate-950 font-black text-xs tracking-wider shadow">
-                  SIELE
-                </div>
-                <div>
-                  <div className="flex items-center space-x-2">
-                    <h1 className="text-base md:text-lg font-bold text-white leading-none">Español A2 - B1 Mastery Coach</h1>
-                    <span className="bg-emerald-500/20 text-emerald-400 text-[10px] px-2 py-0.5 rounded-full font-semibold border border-emerald-500/30">
-                      Target: B2
-                    </span>
-                  </div>
-                  <p className="text-xs text-slate-400 mt-0.5">
-                    Bienvenido de nuevo, <strong className="text-amber-400">{progress.learnerName}</strong> • {progress.targetGoal}
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex items-center space-x-2">
-                <button
-                  onClick={() => setActiveTab('practice')}
-                  className={`px-3.5 py-1.5 rounded-lg text-xs md:text-sm font-semibold transition flex items-center space-x-1.5 ${
-                    activeTab === 'practice' 
-                      ? 'bg-amber-500 text-slate-950 shadow-md' 
-                      : 'bg-slate-800 text-slate-300 hover:bg-slate-700 hover:text-white'
-                  }`}
-                >
-                  <span>Interactive Session</span>
-                </button>
-                <button
-                  onClick={() => setActiveTab('dashboard')}
-                  className={`px-3.5 py-1.5 rounded-lg text-xs md:text-sm font-semibold transition flex items-center space-x-1.5 ${
-                    activeTab === 'dashboard' 
-                      ? 'bg-amber-500 text-slate-950 shadow-md' 
-                      : 'bg-slate-800 text-slate-300 hover:bg-slate-700 hover:text-white'
-                  }`}
-                >
-                  <span>Progress Dashboard</span>
-                </button>
-              </div>
+        <div className="max-w-4xl mx-auto p-4 md:p-6 space-y-6">
+          {/* Top Bar */}
+          <header className="flex justify-between items-center border-b border-slate-700 pb-4">
+            <div>
+              <h1 className="text-2xl font-bold text-amber-400">Español A2-B1 Mastery Coach</h1>
+              <p className="text-xs text-slate-400">Learner: Gabor • Target: SIELE B2</p>
+            </div>
+            <div className="flex gap-2">
+              <button 
+                onClick={() => setActiveTab('practice')}
+                className={`px-3 py-1.5 rounded-lg text-xs font-bold ${activeTab === 'practice' ? 'bg-amber-500 text-slate-950' : 'bg-slate-800 text-slate-300'}`}
+              >
+                Practice
+              </button>
+              <button 
+                onClick={() => setActiveTab('dashboard')}
+                className={`px-3 py-1.5 rounded-lg text-xs font-bold ${activeTab === 'dashboard' ? 'bg-amber-500 text-slate-950' : 'bg-slate-800 text-slate-300'}`}
+              >
+                Dashboard
+              </button>
             </div>
           </header>
 
-          <main className="flex-1 max-w-6xl w-full mx-auto p-4 md:p-6 grid grid-cols-1 lg:grid-cols-4 gap-6">
-            
-            <aside className="lg:col-span-1 space-y-4">
-              <div className="bg-slate-900 rounded-2xl p-4 border border-slate-800 shadow-sm space-y-3">
-                <div className="flex items-center justify-between pb-2 border-b border-slate-800">
-                  <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">Learner Ledger</span>
-                  <span className="flex items-center gap-1 text-xs text-orange-400 font-bold bg-orange-500/10 px-2 py-0.5 rounded border border-orange-500/20">
-                    🔥 {progress.streak} Day Streak
-                  </span>
-                </div>
-
-                <div className="space-y-2 text-xs">
-                  <div className="flex justify-between py-1 border-b border-slate-800/60">
-                    <span className="text-slate-400">Current CEFR:</span>
-                    <span className="font-bold text-amber-400">{progress.cefrLevel}</span>
-                  </div>
-                  <div className="flex justify-between py-1 border-b border-slate-800/60">
-                    <span className="text-slate-400">Total Answered:</span>
-                    <span className="font-bold text-white">{progress.totalAttempted}</span>
-                  </div>
-                  <div className="flex justify-between py-1">
-                    <span className="text-slate-400">Accuracy Rate:</span>
-                    <span className="font-bold text-emerald-400">
-                      {progress.totalAttempted > 0 ? Math.round((progress.correct / progress.totalAttempted) * 100) : 0}%
-                    </span>
-                  </div>
-                </div>
-
-                <div className="pt-2">
-                  <div className="text-[11px] text-slate-400 mb-1 font-medium">Storage State:</div>
-                  <div className="text-[11px] bg-slate-950 text-slate-300 p-2 rounded-lg border border-slate-800 flex items-center justify-between">
-                    <span className="truncate">{storageStatus}</span>
-                    <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shrink-0"></span>
-                  </div>
-                </div>
+          {activeTab === 'practice' ? (
+            <main className="bg-slate-800 p-6 rounded-xl border border-slate-700 space-y-6 shadow-xl">
+              <div className="flex justify-between items-center border-b border-slate-700 pb-3">
+                <span className="text-xs font-bold bg-amber-500/20 text-amber-300 px-3 py-1 rounded">Question 1 of 5</span>
+                <span className="text-xs text-slate-400">Topic: Ser vs Estar</span>
               </div>
 
-              <div className="bg-slate-900 rounded-2xl p-4 border border-slate-800 shadow-sm space-y-3">
-                <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider">Grammar Mastery Snapshot</h3>
-                <div className="space-y-2.5">
-                  {Object.entries(progress.topicMastery).slice(0, 5).map(([topic, pct]) => (
-                    <div key={topic} className="space-y-1">
-                      <div className="flex justify-between text-xs">
-                        <span className="text-slate-300 truncate max-w-[140px]">{topic}</span>
-                        <span className={`font-bold ${pct >= 75 ? 'text-emerald-400' : pct >= 50 ? 'text-amber-400' : 'text-rose-400'}`}>
-                          {pct}%
-                        </span>
-                      </div>
-                      <div className="w-full bg-slate-800 rounded-full h-1.5">
-                        <div 
-                          className={`h-1.5 rounded-full transition-all duration-500 ${
-                            pct >= 75 ? 'bg-emerald-500' : pct >= 50 ? 'bg-amber-500' : 'bg-rose-500'
-                          }`}
-                          style={{ width: `${pct}%` }}
-                        ></div>
-                      </div>
-                    </div>
+              <div>
+                <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">QUESTION</h3>
+                <p className="text-lg text-slate-100 font-serif">"Hola, mi nombre ___ Gabor y ___ aprendiendo español para el examen SIELE."</p>
+              </div>
+
+              {/* Accent Keys */}
+              <div className="bg-slate-900/60 p-2.5 rounded-lg border border-slate-700/80">
+                <span className="text-xs text-slate-400 block mb-1">On-Screen Accent Keys:</span>
+                <div className="flex flex-wrap gap-1.5">
+                  {['á', 'é', 'í', 'ó', 'ú', 'ñ', 'ü', '¿', '¡'].map((c) => (
+                    <button 
+                      key={c} 
+                      onClick={() => insertAccent(c)} 
+                      className="w-8 h-8 bg-slate-700 text-amber-300 hover:bg-amber-500 hover:text-slate-950 rounded font-bold transition"
+                    >
+                      {c}
+                    </button>
                   ))}
                 </div>
               </div>
-            </aside>
 
-            <section className="lg:col-span-3">
-              {activeTab === 'practice' ? (
-                <div className="bg-slate-900 rounded-2xl border border-slate-800 p-5 md:p-6 shadow-xl space-y-6">
-                  
-                  <div className="flex flex-wrap justify-between items-center pb-4 border-b border-slate-800 gap-2">
-                    <div className="flex items-center space-x-2">
-                      <span className="px-2.5 py-1 bg-amber-500/10 text-amber-400 border border-amber-500/20 rounded-lg text-xs font-bold">
-                        Exercise {currentIndex + 1} of {questionBank.length}
-                      </span>
-                      <span className="px-2.5 py-1 bg-slate-800 text-slate-300 rounded-lg text-xs font-semibold">
-                        Type: {currentQ.type.replace(/_/g, ' ')}
-                      </span>
-                    </div>
-                    <span className="text-xs text-slate-400">
-                      Topic: <strong className="text-slate-200">{currentQ.topic}</strong>
-                    </span>
-                  </div>
+              {/* Options */}
+              <div className="space-y-2">
+                {[
+                  { id: 'A', text: 'es / estoy' },
+                  { id: 'B', text: 'está / soy' },
+                  { id: 'C', text: 'es / soy' },
+                  { id: 'D', text: 'está / estoy' }
+                ].map((opt) => (
+                  <button
+                    key={opt.id}
+                    onClick={() => setSelectedOpt(opt.id)}
+                    className={`w-full text-left p-3.5 rounded-lg border transition ${
+                      selectedOpt === opt.id ? 'bg-amber-500/20 border-amber-500 text-amber-200' : 'bg-slate-900/60 border-slate-700 text-slate-200'
+                    }`}
+                  >
+                    <strong className="mr-2 text-amber-400">{opt.id})</strong> {opt.text}
+                  </button>
+                ))}
+              </div>
 
-                  <div className="space-y-2">
-                    <h2 className="text-base md:text-lg font-bold text-amber-300">{currentQ.question}</h2>
-                    {currentQ.context && (
-                      <p className="p-3.5 bg-slate-950 rounded-xl text-slate-200 font-serif text-base italic border-l-4 border-amber-500">
-                        "{currentQ.context}"
-                      </p>
-                    )}
-                  </div>
+              <div className="flex gap-2 pt-2 border-t border-slate-700">
+                {!submitted ? (
+                  <button onClick={handleSubmit} className="bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold px-6 py-2 rounded-lg text-sm transition">
+                    Submit Answer
+                  </button>
+                ) : (
+                  <button onClick={() => setSubmitted(false)} className="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold px-6 py-2 rounded-lg text-sm transition">
+                    Continue
+                  </button>
+                )}
+              </div>
 
-                  {(currentQ.type === 'FILL_IN_THE_BLANK' || 
-                    currentQ.type === 'ENGLISH_TO_SPANISH' || 
-                    currentQ.type === 'ERROR_CORRECTION' || 
-                    currentQ.type === 'VISUAL_EXERCISE' || 
-                    currentQ.type === 'SIELE_PRACTICE') && (
-                    <div className="bg-slate-950/70 p-3 rounded-xl border border-slate-800 space-y-1.5">
-                      <div className="text-[11px] text-slate-400 font-semibold uppercase tracking-wider flex items-center justify-between">
-                        <span>Special Spanish Accents Keypad:</span>
-                        <span className="text-amber-400/80">Click to insert at cursor</span>
-                      </div>
-                      <div className="flex flex-wrap gap-1.5">
-                        {['á', 'é', 'í', 'ó', 'ú', 'ñ', 'ü', '¿', '¡'].map((char) => (
-                          <button
-                            key={char}
-                            type="button"
-                            onClick={() => insertAccent(char)}
-                            className="w-9 h-9 bg-slate-800 hover:bg-amber-500 hover:text-slate-950 text-amber-300 font-bold rounded-lg transition text-base shadow border border-slate-700/80 active:scale-95"
-                          >
-                            {char}
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-
-                  <div className="space-y-4 py-2">
-                    {(currentQ.type === 'MULTIPLE_CHOICE' || 
-                      currentQ.type === 'SPANISH_TO_ENGLISH' || 
-                      currentQ.type === 'CONVERSATION_SIMULATION') && (
-                      <div className="space-y-2.5">
-                        {currentQ.partnerPrompt && (
-                          <div className="p-3.5 bg-slate-950 rounded-xl text-slate-200 text-sm border-l-2 border-amber-500 space-y-1">
-                            <span className="text-amber-400 font-bold block text-xs">Supervisor:</span>
-                            <p>"{currentQ.partnerPrompt}"</p>
-                          </div>
-                        )}
-                        {currentQ.options.map((opt) => (
-                          <button
-                            key={opt.id}
-                            disabled={submitted}
-                            onClick={() => setSelectedOption(opt.id)}
-                            className={`w-full p-4 rounded-xl text-left transition flex items-start space-x-3 border ${
-                              selectedOption === opt.id
-                                ? 'bg-amber-500/10 border-amber-500 text-amber-200 shadow'
-                                : 'bg-slate-950/60 border-slate-800 text-slate-200 hover:bg-slate-800/60'
-                            }`}
-                          >
-                            <span className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold shrink-0 mt-0.5 ${
-                              selectedOption === opt.id ? 'bg-amber-500 text-slate-950' : 'bg-slate-800 text-slate-400'
-                            }`}>
-                              {opt.id}
-                            </span>
-                            <span className="text-sm font-medium leading-relaxed">{opt.text}</span>
-                          </button>
-                        ))}
-                      </div>
-                    )}
-
-                    {currentQ.type === 'FILL_IN_THE_BLANK' && (
-                      <div className="bg-slate-950/60 p-5 rounded-2xl border border-slate-800 flex flex-wrap items-center gap-2 text-base md:text-lg">
-                        <span>{currentQ.sentenceBefore}</span>
-                        <input
-                          ref={inputRef}
-                          type="text"
-                          disabled={submitted}
-                          value={userText}
-                          onChange={(e) => setUserText(e.target.value)}
-                          placeholder="escribe..."
-                          className="bg-slate-900 border-2 border-amber-500/70 focus:border-amber-400 text-amber-300 px-3 py-1 rounded-lg font-bold focus:outline-none min-w-[140px]"
-                        />
-                        <span>{currentQ.sentenceAfter}</span>
-                      </div>
-                    )}
-
-                    {(currentQ.type === 'ENGLISH_TO_SPANISH' || currentQ.type === 'ERROR_CORRECTION') && (
-                      <div className="space-y-3">
-                        {currentQ.promptEnglish && (
-                          <div className="p-3 bg-slate-950 rounded-lg text-sm text-slate-300 border border-slate-800">
-                            <span className="text-slate-400 font-medium">English source: </span>
-                            <strong className="text-white">{currentQ.promptEnglish}</strong>
-                          </div>
-                        )}
-                        {currentQ.incorrectSentence && (
-                          <div className="p-3 bg-rose-950/30 border border-rose-900/50 rounded-lg text-sm text-rose-200">
-                            <span className="text-rose-400 font-medium">Original (with error): </span>
-                            <span className="line-through">{currentQ.incorrectSentence}</span>
-                          </div>
-                        )}
-                        <textarea
-                          ref={inputRef}
-                          disabled={submitted}
-                          rows={3}
-                          value={userText}
-                          onChange={(e) => setUserText(e.target.value)}
-                          placeholder="Escribe tu respuesta corregida en español..."
-                          className="w-full bg-slate-950 border border-slate-800 focus:border-amber-500 text-slate-100 p-3.5 rounded-xl focus:outline-none resize-none"
-                        />
-                      </div>
-                    )}
-
-                    {currentQ.type === 'SENTENCE_BUILDER' && (
-                      <div className="space-y-4">
-                        <div className="min-h-[64px] p-4 bg-slate-950 rounded-xl border-2 border-dashed border-slate-800 flex flex-wrap gap-2 items-center">
-                          {builtWords.length === 0 ? (
-                            <span className="text-slate-500 text-sm italic">Click words below in order to assemble the sentence...</span>
-                          ) : (
-                            builtWords.map((word, idx) => (
-                              <button
-                                key={idx}
-                                disabled={submitted}
-                                onClick={() => handleWordClick(word, idx, true)}
-                                className="bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold px-3 py-1.5 rounded-lg text-sm transition shadow"
-                              >
-                                {word}
-                              </button>
-                            ))
-                          )}
-                        </div>
-                        <div className="flex flex-wrap gap-2">
-                          {availableWords.map((word, idx) => (
-                            <button
-                              key={idx}
-                              disabled={submitted}
-                              onClick={() => handleWordClick(word, idx, false)}
-                              className="bg-slate-800 hover:bg-slate-700 text-slate-200 font-medium px-3 py-1.5 rounded-lg text-sm transition"
-                            >
-                              {word}
-                            </button>
-                          ))}
-                        </div>
-                      </div>
-                    )}
-
-                    {currentQ.type === 'MATCHING' && (
-                      <div className="space-y-3">
-                        {currentQ.pairs.map((pair) => (
-                          <div key={pair.spanish} className="flex flex-col md:flex-row md:items-center justify-between gap-3 p-3.5 bg-slate-950 rounded-xl border border-slate-800">
-                            <span className="font-bold text-amber-300 text-sm">{pair.spanish}</span>
-                            <select
-                              disabled={submitted}
-                              value={matchingSelections[pair.spanish] || ''}
-                              onChange={(e) => setMatchingSelections({ ...matchingSelections, [pair.spanish]: e.target.value })}
-                              className="bg-slate-900 border border-slate-700 text-slate-200 text-sm p-2 rounded-lg focus:outline-none focus:border-amber-500"
-                            >
-                              <option value="">-- Select English Match --</option>
-                              {currentQ.pairs.map(p => (
-                                <option key={p.english} value={p.english}>{p.english}</option>
-                              ))}
-                            </select>
-                          </div>
-                        ))}
-                      </div>
-                    )}
-
-                    {currentQ.type === 'FLASHCARDS' && (
-                      <div className="bg-slate-950 p-6 rounded-2xl border border-slate-800 text-center space-y-4 shadow-inner">
-                        <span className="text-xs uppercase text-amber-400 tracking-widest font-bold">Word Flashcard</span>
-                        <h3 className="text-3xl font-black text-white">{currentQ.word}</h3>
-                        <p className="text-slate-300 text-sm max-w-md mx-auto">{currentQ.definition}</p>
-                        <p className="text-slate-400 text-xs italic">Ejemplo: "{currentQ.example}"</p>
-                        
-                        <div className="pt-3 flex flex-wrap justify-center gap-2">
-                          <button
-                            onClick={() => setFlashcardRating('KNOW')}
-                            className={`px-4 py-2 rounded-xl text-xs font-bold transition ${
-                              flashcardRating === 'KNOW' ? 'bg-emerald-500 text-slate-950' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
-                            }`}
-                          >
-                            I Know It (🟢)
-                          </button>
-                          <button
-                            onClick={() => setFlashcardRating('UNSURE')}
-                            className={`px-4 py-2 rounded-xl text-xs font-bold transition ${
-                              flashcardRating === 'UNSURE' ? 'bg-amber-500 text-slate-950' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
-                            }`}
-                          >
-                            Not Sure (🟡)
-                          </button>
-                          <button
-                            onClick={() => setFlashcardRating('DONT_KNOW')}
-                            className={`px-4 py-2 rounded-xl text-xs font-bold transition ${
-                              flashcardRating === 'DONT_KNOW' ? 'bg-rose-500 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
-                            }`}
-                          >
-                            I Don't Know It (🔴)
-                          </button>
-                        </div>
-                      </div>
-                    )}
-
-                    {currentQ.type === 'VISUAL_EXERCISE' && (
-                      <div className="space-y-4">
-                        <img 
-                          src={currentQ.imageUrl} 
-                          alt="Visual Prompt" 
-                          className="w-full h-48 md:h-60 object-cover rounded-xl border border-slate-800" 
-                        />
-                        <p className="text-sm text-slate-300 font-medium">{currentQ.promptText}</p>
-                        <textarea
-                          ref={inputRef}
-                          disabled={submitted}
-                          rows={3}
-                          value={userText}
-                          onChange={(e) => setUserText(e.target.value)}
-                          placeholder="Describe la escena utilizando conectores y expresiones de opinión..."
-                          className="w-full bg-slate-950 border border-slate-800 text-slate-100 p-3.5 rounded-xl focus:outline-none resize-none"
-                        />
-                      </div>
-                    )}
-
-                    {currentQ.type === 'SIELE_PRACTICE' && (
-                      <div className="space-y-3">
-                        <div className="p-3 bg-amber-500/10 border border-amber-500/30 rounded-xl text-xs text-amber-300 space-y-1">
-                          <p><strong>SIELE Exam Requirements:</strong> {currentQ.instructions}</p>
-                          <p>Target range: {currentQ.wordLimit.min} to {currentQ.wordLimit.max} words.</p>
-                        </div>
-                        <textarea
-                          ref={inputRef}
-                          disabled={submitted}
-                          rows={5}
-                          value={userText}
-                          onChange={(e) => setUserText(e.target.value)}
-                          placeholder="Estimado/a Señor/a..."
-                          className="w-full bg-slate-950 border border-slate-800 text-slate-100 p-3.5 rounded-xl focus:outline-none resize-none"
-                        />
-                        <div className="text-xs text-slate-400 text-right font-medium">
-                          Current Word Count: <strong className="text-white">{userText.trim() ? userText.trim().split(/\s+/).length : 0}</strong> words
-                        </div>
-                      </div>
-                    )}
-                  </div>
-
-                  <div className="pt-2 border-t border-slate-800 flex flex-wrap gap-2 items-center justify-between">
-                    <div className="flex flex-wrap gap-2">
-                      {!submitted ? (
-                        <button
-                          onClick={handleSubmit}
-                          className="bg-amber-500 hover:bg-amber-400 text-slate-950 font-extrabold px-5 py-2.5 rounded-xl text-sm transition flex items-center gap-1.5 shadow-lg active:scale-95"
-                        >
-                          Submit Answer
-                        </button>
-                      ) : (
-                        <button
-                          onClick={handleNextQuestion}
-                          className="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold px-5 py-2.5 rounded-xl text-sm transition flex items-center gap-1.5 shadow-lg active:scale-95"
-                        >
-                          Continue →
-                        </button>
-                      )}
-
-                      <button
-                        onClick={() => setShowHint(!showHint)}
-                        className="bg-slate-800 hover:bg-slate-700 text-slate-200 px-3.5 py-2.5 rounded-xl text-xs font-bold transition"
-                      >
-                        {showHint ? 'Hide Hint' : 'Give Me a Hint'}
-                      </button>
-
-                      <button
-                        onClick={() => setShowRule(!showRule)}
-                        className="bg-slate-800 hover:bg-slate-700 text-slate-200 px-3.5 py-2.5 rounded-xl text-xs font-bold transition"
-                      >
-                        {showRule ? 'Hide Rule' : 'Explain the Rule'}
-                      </button>
-                    </div>
-
-                    {submitted && evaluation === 'INCORRECT' && (
-                      <button
-                        onClick={handleTryAgain}
-                        className="bg-rose-500/20 text-rose-300 border border-rose-500/40 hover:bg-rose-500/30 px-3.5 py-2.5 rounded-xl text-xs font-bold transition flex items-center gap-1"
-                      >
-                        Try Again
-                      </button>
-                    )}
-                  </div>
-
-                  {showHint && (
-                    <div className="p-3.5 bg-amber-500/10 border-l-4 border-amber-400 rounded-r-xl text-xs text-amber-200">
-                      <strong>💡 Hint:</strong> {currentQ.keyPoint}
-                    </div>
-                  )}
-
-                  {showRule && (
-                    <div className="p-4 bg-slate-950 border border-slate-800 rounded-xl text-xs text-slate-300 space-y-1">
-                      <strong className="text-amber-400 block mb-1">Grammatical Rule Breakdown:</strong>
-                      <p>{currentQ.explanation}</p>
-                    </div>
-                  )}
-
-                  {submitted && (
-                    <div className="mt-6 p-5 rounded-2xl bg-slate-950 border border-slate-800 space-y-4">
-                      <div className="flex items-center space-x-2">
-                        {evaluation === 'CORRECT' && (
-                          <span className="px-3 py-1 bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 rounded-full text-xs font-bold flex items-center gap-1">
-                            <CheckCircle /> 🟢 Correct
-                          </span>
-                        )}
-                        {evaluation === 'PARTIAL' && (
-                          <span className="px-3 py-1 bg-amber-500/20 text-amber-400 border border-amber-500/40 rounded-full text-xs font-bold flex items-center gap-1">
-                            <AlertCircle /> 🟡 Partially Correct
-                          </span>
-                        )}
-                        {evaluation === 'INCORRECT' && (
-                          <span className="px-3 py-1 bg-rose-500/20 text-rose-400 border border-rose-500/40 rounded-full text-xs font-bold flex items-center gap-1">
-                            <XCircle /> 🔴 Incorrect
-                          </span>
-                        )}
-                      </div>
-
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
-                        <div className="p-3 bg-slate-900 rounded-xl border border-slate-800">
-                          <span className="text-slate-400 block mb-1 font-medium">Your Answer:</span>
-                          <span className="text-white font-mono break-words">
-                            {currentQ.type === 'SENTENCE_BUILDER' 
-                              ? builtWords.join(' ') 
-                              : currentQ.type === 'MATCHING'
-                              ? JSON.stringify(matchingSelections)
-                              : userText || selectedOption || flashcardRating || '(No answer entered)'}
-                          </span>
-                        </div>
-
-                        <div className="p-3 bg-slate-900 rounded-xl border border-slate-800">
-                          <span className="text-slate-400 block mb-1 font-medium">Correct / Improved Answer:</span>
-                          <span className="text-emerald-300 font-mono break-words">
-                            {currentQ.modelAnswer || currentQ.correctAnswer || 'Evaluated based on SIELE grading guidelines.'}
-                          </span>
-                        </div>
-                      </div>
-
-                      <div className="text-xs text-slate-300 space-y-1.5 pt-1 border-t border-slate-900">
-                        <p><strong className="text-slate-400">Explanation:</strong> {currentQ.explanation}</p>
-                        <p><strong className="text-amber-400">Key Point:</strong> {currentQ.keyPoint}</p>
-                        <p><strong className="text-slate-400">Progress Update:</strong> Topic rating for "{currentQ.topic}" updated to {progress.topicMastery[currentQ.topic] || 50}%.</p>
-                      </div>
-                    </div>
-                  )}
-
-                </div>
-              ) : (
-                <div className="bg-slate-900 rounded-2xl border border-slate-800 p-6 space-y-6 shadow-xl">
-                  <div className="flex flex-wrap justify-between items-center pb-4 border-b border-slate-800 gap-2">
-                    <div>
-                      <h2 className="text-xl font-bold text-white">Learner Progress Dashboard</h2>
-                      <p className="text-xs text-slate-400">Learner: Gabor • Persistent Local Tracking Enabled</p>
-                    </div>
-                    <span className="bg-amber-500/10 text-amber-400 border border-amber-500/30 px-3 py-1 rounded-lg text-xs font-bold">
-                      Roadmap to SIELE B2
-                    </span>
-                  </div>
-
-                  <div>
-                    <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">SIELE 4-Skill Readiness Indicators</h3>
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                      {Object.entries(progress.sieleScores).map(([skill, score]) => (
-                        <div key={skill} className="bg-slate-950 p-4 rounded-xl border border-slate-800 text-center space-y-1">
-                          <span className="text-xs text-slate-400 uppercase font-semibold block">{skill}</span>
-                          <span className="text-2xl font-black text-amber-400">{score}%</span>
-                          <div className="w-full bg-slate-800 rounded-full h-1.5 mt-2">
-                            <div className="bg-amber-500 h-1.5 rounded-full" style={{ width: `${score}%` }}></div>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div>
-                    <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">Grammar Topic Mastery Ratings</h3>
-                    <div className="space-y-2.5">
-                      {Object.entries(progress.topicMastery).map(([topic, pct]) => (
-                        <div key={topic} className="bg-slate-950 p-3.5 rounded-xl border border-slate-800 flex flex-col md:flex-row md:items-center justify-between gap-3">
-                          <div>
-                            <span className="text-sm font-bold text-slate-200">{topic}</span>
-                            <span className="text-xs text-slate-400 block">
-                              Status: {pct >= 75 ? '🟢 Mastered' : pct >= 50 ? '🟡 Intermediate' : '🔴 Focus Required'}
-                            </span>
-                          </div>
-                          <div className="flex items-center space-x-3">
-                            <div className="w-36 bg-slate-800 rounded-full h-2">
-                              <div 
-                                className={`h-2 rounded-full ${pct >= 75 ? 'bg-emerald-500' : pct >= 50 ? 'bg-amber-500' : 'bg-rose-500'}`}
-                                style={{ width: `${pct}%` }}
-                              ></div>
-                            </div>
-                            <span className="text-xs font-black text-slate-200 min-w-[35px] text-right">{pct}%</span>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div className="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-2">
-                    <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider">Words Needing Review</h3>
-                    <div className="flex flex-wrap gap-2">
-                      {progress.wordsToReview.map((word) => (
-                        <span key={word} className="px-3 py-1 bg-amber-500/10 text-amber-300 border border-amber-500/30 rounded-lg text-xs font-semibold">
-                          {word}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
+              {submitted && (
+                <div className="p-4 bg-slate-900 rounded-lg border border-slate-700 space-y-2">
+                  <span className="text-xs font-bold px-2.5 py-1 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/40">
+                    🟢 Correct
+                  </span>
+                  <p className="text-xs text-slate-300 pt-1">
+                    <strong>Explanation:</strong> Use "ser" for identity/names (es) and "estar" + gerund for continuous actions (estoy aprendiendo).
+                  </p>
                 </div>
               )}
-            </section>
-
-          </main>
+            </main>
+          ) : (
+            <main className="bg-slate-800 p-6 rounded-xl border border-slate-700 space-y-6">
+              <h2 className="text-xl font-bold text-white border-b border-slate-700 pb-3">Learner Dashboard</h2>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                {Object.entries(progress.sieleScores).map(([skill, score]) => (
+                  <div key={skill} className="bg-slate-900 p-3.5 rounded-xl border border-slate-700 text-center">
+                    <span className="text-xs text-slate-400 uppercase font-bold block mb-1">{skill}</span>
+                    <span className="text-2xl font-black text-amber-400">{score}%</span>
+                  </div>
+                ))}
+              </div>
+            </main>
+          )}
         </div>
       );
     }
 
-    // Render the React App into DOM
-    const rootElement = document.getElementById('root');
-    const root = ReactDOM.createRoot(rootElement);
-    root.render(<App />);
+    ReactDOM.createRoot(document.getElementById('root')).render(<App />);
   </script>
 </body>
 </html>
