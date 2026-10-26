@@ -33,21 +33,57 @@
         'W3: Pretérito Indefinido': 55,
         'W4: Pretérito Imperfecto': 45,
         'W5: Indefinido vs. Imperfecto': 50,
+        'W6: Pretérito Perfecto': 60,
         'W7: Direct & Indirect Object Pronouns': 55,
+        'W8: Reflexive Verbs': 65,
+        'W9: Pretérito Pluscuamperfecto': 40,
+        'W10: Future Tenses': 50,
+        'W11: Conditional Simple': 45,
         'W12: B1 Discourse Markers': 60,
-        'W13: Present Subjunctive': 35
+        'W13: Present Subjunctive (Wishes & Needs)': 35,
+        'W14: Subjunctive (Emotion & Doubt)': 30,
+        'W15: Subjunctive vs. Indicative': 25,
+        'W16: Imperative Mood': 40,
+        'W17: Por vs. Para & Prepositions': 50,
+        'W18: Passive Voice & Impersonal Se': 35,
+        'W19: Imperfect Subjunctive & Conditional': 20,
+        'W20: Relative Pronouns': 30,
+        'W21: SIELE Task 1 & 2 Written': 45,
+        'W22: SIELE Oral Expression': 40,
+        'W23: SIELE Reading & Listening': 55,
+        'W24: SIELE Full Mock Exam': 35
       },
       wordsToReview: [
-        { word: 'Desarrollar', meaning: 'To develop / grow', status: 'UNSURE' },
-        { word: 'Sin embargo', meaning: 'However', status: 'KNOW' },
-        { word: 'Por lo tanto', meaning: 'Therefore', status: 'UNSURE' },
-        { word: 'Aprovechar', meaning: 'To take advantage of', status: 'DONT_KNOW' }
+        { word: 'Desarrollar', meaning: 'To develop, elaborate, grow, or build up', example: 'Es importante desarrollar buenas estrategias de estudio.', status: 'UNSURE' },
+        { word: 'Sin embargo', meaning: 'However / Nevertheless', example: 'Estudió mucho; sin embargo, la prueba fue difícil.', status: 'KNOW' },
+        { word: 'Por lo tanto', meaning: 'Therefore / Consequently', example: 'No practicó bastante; por lo tanto, no aprobó.', status: 'UNSURE' },
+        { word: 'Aprovechar', meaning: 'To take advantage of / make the most of', example: 'Debes aprovechar esta oportunidad.', status: 'DONT_KNOW' },
+        { word: 'Lograr', meaning: 'To achieve, attain, or manage to', example: 'Logró su objetivo de aprobar el SIELE.', status: 'DONT_KNOW' }
       ]
     };
 
     const questionBank = [
+      // MONTH 1: A2 Consolidation & Essential Tenses
       {
         id: 1,
+        month: 'Month 1',
+        topic: 'W1: Present Tense Regular/Irregular',
+        type: 'MULTIPLE_CHOICE',
+        question: 'Selecciona el verbo adecuado para expresar la rutina diaria:',
+        context: 'Todos los días yo ___ (despertarse) a las siete de la mañana.',
+        options: [
+          { id: 'A', text: 'me despierto' },
+          { id: 'B', text: 'despierto' },
+          { id: 'C', text: 'me desparto' },
+          { id: 'D', text: 'se despierta' }
+        ],
+        correctAnswer: 'A',
+        keyPoint: 'Despertarse is a reflexive verb with a stem change (e -> ie): yo me despierto.',
+        explanation: 'Reflexive pronouns match the subject (yo -> me) and "despertar" undergoes a stem change.'
+      },
+      {
+        id: 2,
+        month: 'Month 1',
         topic: 'W2: Ser vs. Estar & Gustar',
         type: 'MULTIPLE_CHOICE',
         question: 'Selecciona la combinación correcta para completar la frase:',
@@ -63,7 +99,8 @@
         explanation: '"Mi nombre es" defines personal identity (SER). "Estoy estudiando" forms the present continuous (ESTAR + gerund).'
       },
       {
-        id: 2,
+        id: 3,
+        month: 'Month 1',
         topic: 'W3: Pretérito Indefinido',
         type: 'FILL_IN_THE_BLANK',
         question: 'Completa la frase con la forma correcta del verbo entre paréntesis en Pretérito Indefinido:',
@@ -74,52 +111,154 @@
         explanation: 'For completed past actions at a specific time point ("ayer"), use the Pretérito Indefinido: Estudiar -> yo estudié.'
       },
       {
-        id: 3,
-        topic: 'W2: Ser vs. Estar & Gustar',
-        type: 'ENGLISH_TO_SPANISH',
-        question: 'Traduce la siguiente frase al español:',
-        promptEnglish: 'I am interested in improving my Spanish for work.',
-        acceptableAnswers: [
-          'me interesa mejorar mi español para el trabajo',
-          'me interesa mejorar mi espanol para el trabajo',
-          'me interesa mejorar mi español para trabajar',
-          'estoy interesado en mejorar mi español para el trabajo'
-        ],
-        modelAnswer: 'Me interesa mejorar mi español para el trabajo.',
-        keyPoint: '"Interesar" follows the "gustar" structure: Indirect pronoun (me) + verb (interesa) + infinitive.',
-        explanation: '"Me interesa" directly conveys "I am interested in". Purpose is expressed using "para".'
-      },
-      {
         id: 4,
-        topic: 'W2: Ser vs. Estar & Gustar',
-        type: 'ERROR_CORRECTION',
-        question: 'Encuentra el error gramatical y escribe la oración completa corregida:',
-        incorrectSentence: 'Hoy soy muy cansado porque trabajé diez horas.',
-        correctAnswer: 'Hoy estoy muy cansado porque trabajé diez horas.',
-        keyPoint: 'Temporary states, emotional conditions, and physical fatigue require ESTAR, not SER.',
-        explanation: 'Being tired ("cansado") is a temporary condition resulting from working, so "estoy" must replace "soy".'
+        month: 'Month 1',
+        topic: 'W4: Pretérito Imperfecto',
+        type: 'FILL_IN_THE_BLANK',
+        question: 'Escribe la forma del Pretérito Imperfecto para describir hábitos del pasado:',
+        sentenceBefore: 'Cuando era niño, siempre ',
+        sentenceAfter: ' (jugar) en el parque después de la escuela.',
+        correctAnswer: 'jugaba',
+        keyPoint: 'The Imperfect tense (-aba for -AR verbs) describes repeated actions or habitual states in the past.',
+        explanation: '"Jugaba" expresses habitual, repeated actions in the past ("siempre").'
       },
+
+      // MONTH 2: Past Tense Contrast & Pronouns
       {
         id: 5,
+        month: 'Month 2',
+        topic: 'W5: Indefinido vs. Imperfecto',
+        type: 'MULTIPLE_CHOICE',
+        question: 'Elige la combinación correcta para la narración en pasado:',
+        context: 'Mientras yo ___ (leer), mi amigo ___ (llamar) por teléfono.',
+        options: [
+          { id: 'A', text: 'leía / llamó' },
+          { id: 'B', text: 'leí / llamaba' },
+          { id: 'C', text: 'leía / llamaba' },
+          { id: 'D', text: 'leí / llamó' }
+        ],
+        correctAnswer: 'A',
+        keyPoint: 'Imperfect (leía) sets the background action in progress; Indefinido (llamó) interrupts it.',
+        explanation: 'Background ongoing action takes Imperfect ("leía") and interrupting event takes Indefinido ("llamó").'
+      },
+      {
+        id: 6,
+        month: 'Month 2',
+        topic: 'W6: Pretérito Perfecto',
+        type: 'FILL_IN_THE_BLANK',
+        question: 'Completa con el Pretérito Perfecto (Haber + Participio):',
+        sentenceBefore: 'Esta semana, yo ',
+        sentenceAfter: ' (aprender) mucho vocabulario nuevo.',
+        correctAnswer: 'he aprendido',
+        keyPoint: 'Pretérito Perfecto (he + participio) connects past actions to an open time frame ("esta semana").',
+        explanation: '"Esta semana" is an ongoing time frame requiring "he aprendido".'
+      },
+      {
+        id: 7,
+        month: 'Month 2',
         topic: 'W7: Direct & Indirect Object Pronouns',
         type: 'SENTENCE_BUILDER',
-        question: 'Haz clic en las palabras para construir la frase en el orden correcto:',
+        question: 'Ordena las palabras para colocar correctamente el pronombre directo:',
         words: ['mañana', 'los', 'documentos', 'enviar', 'Voy', 'a'],
         modelAnswer: 'Voy a enviar los documentos mañana.',
         alternativeOrders: ['Los documentos voy a enviar mañana', 'Mañana voy a enviar los documentos'],
         keyPoint: 'Periphrastic future structure: Ir + a + Infinitive + Direct Object + Adverb.',
-        explanation: 'The conjugated auxiliary verb ("Voy") comes first, followed by preposition "a", infinitive "enviar", object "los documentos", and temporal modifier "mañana".'
+        explanation: 'Standard order places conjugated auxiliary verb first.'
+      },
+
+      // MONTH 3: Future, Conditional & Discourse Markers
+      {
+        id: 8,
+        month: 'Month 3',
+        topic: 'W11: Conditional Simple',
+        type: 'ENGLISH_TO_SPANISH',
+        question: 'Traduce expresando cortesía profesional:',
+        promptEnglish: 'Could you give me more information about the exam?',
+        acceptableAnswers: [
+          '¿Podría darme más información sobre el examen?',
+          '¿Podría darme mas informacion sobre el examen?',
+          '¿Me podría dar más información sobre el examen?'
+        ],
+        modelAnswer: '¿Podría darme más información sobre el examen?',
+        keyPoint: 'Conditional "podría" softens requests politely for formal contexts.',
+        explanation: 'The conditional form of poder (podría) is ideal for B1/B2 professional politeness.'
+      },
+      {
+        id: 9,
+        month: 'Month 3',
+        topic: 'W12: B1 Discourse Markers',
+        type: 'MULTIPLE_CHOICE',
+        question: 'Selecciona el conector de contraste adecuado para el texto:',
+        context: 'Gabor estudió mucho; ___, el examen presentó preguntas complejas.',
+        options: [
+          { id: 'A', text: 'sin embargo' },
+          { id: 'B', text: 'por lo tanto' },
+          { id: 'C', text: 'además' },
+          { id: 'D', text: 'porque' }
+        ],
+        correctAnswer: 'A',
+        keyPoint: '"Sin embargo" introduces contrast ("however") crucial for B1/B2 cohesion.',
+        explanation: '"Sin embargo" translates to "however", showing opposition between effort and test difficulty.'
+      },
+
+      // MONTH 4: The Subjunctive Mood
+      {
+        id: 10,
+        month: 'Month 4',
+        topic: 'W13: Present Subjunctive (Wishes & Needs)',
+        type: 'FILL_IN_THE_BLANK',
+        question: 'Completa la frase con el presente de subjuntivo:',
+        sentenceBefore: 'Es necesario que tú ',
+        sentenceAfter: ' (practicar) español diariamente.',
+        correctAnswer: 'practiques',
+        keyPoint: 'Impersonal expressions of necessity (es necesario que) trigger the Subjunctive mood.',
+        explanation: 'Practicar -> (tú) practiques in Present Subjunctive.'
+      },
+
+      // MONTH 5 & 6: SIELE Exam Preparation
+      {
+        id: 11,
+        month: 'Month 5',
+        topic: 'W17: Por vs. Para & Prepositions',
+        type: 'MULTIPLE_CHOICE',
+        question: 'Selecciona la preposición correcta para indicar finalidad o propósito:',
+        context: 'Estoy estudiando español ___ conseguir la certificación SIELE B2.',
+        options: [
+          { id: 'A', text: 'para' },
+          { id: 'B', text: 'por' },
+          { id: 'C', text: 'de' },
+          { id: 'D', text: 'con' }
+        ],
+        correctAnswer: 'A',
+        keyPoint: 'Use "para" + infinitive to state purpose or objective.',
+        explanation: '"Para" expresses goal, deadline, or objective (in order to).'
+      },
+      {
+        id: 12,
+        month: 'Month 6',
+        topic: 'W21: SIELE Task 1 & 2 Written',
+        type: 'ENGLISH_TO_SPANISH',
+        question: 'Traduce esta frase formal de despedida para un correo SIELE:',
+        promptEnglish: 'I look forward to hearing from you soon. Yours sincerely,',
+        acceptableAnswers: [
+          'Quedo a la espera de su respuesta. Atentamente,',
+          'Quedo a la espera de su respuesta. Le saluda atentamente,',
+          'A la espera de su respuesta, le saluda atentamente,'
+        ],
+        modelAnswer: 'Quedo a la espera de su respuesta. Atentamente,',
+        keyPoint: 'Formal emails require standardized closing formulas like "Atentamente".',
+        explanation: 'Essential register requirement for SIELE Written Expression Task 1.'
       }
     ];
 
     function App() {
       const [activeTab, setActiveTab] = useState('practice'); // 'practice' | 'vocabulary' | 'dashboard'
       const [selectedTopicFilter, setSelectedTopicFilter] = useState('ALL');
-      
-      // Persistent state initialization
+
+      // Persistent Storage Initialization
       const [progress, setProgress] = useState(() => {
         try {
-          const saved = localStorage.getItem('gabor_siele_progress_v2');
+          const saved = localStorage.getItem('gabor_siele_progress_v3');
           return saved ? JSON.parse(saved) : initialProgress;
         } catch (e) {
           return initialProgress;
@@ -128,14 +267,14 @@
 
       const [currentIndex, setCurrentIndex] = useState(() => {
         try {
-          const savedIndex = localStorage.getItem('gabor_siele_index_v2');
+          const savedIndex = localStorage.getItem('gabor_siele_index_v3');
           return savedIndex ? parseInt(savedIndex, 10) : 0;
         } catch (e) {
           return 0;
         }
       });
 
-      // Transient Question States
+      // Transient Exercise States
       const [userText, setUserText] = useState('');
       const [selectedOpt, setSelectedOpt] = useState(null);
       const [builtWords, setBuiltWords] = useState([]);
@@ -145,24 +284,24 @@
       const [showHint, setShowHint] = useState(false);
       const [showRule, setShowRule] = useState(false);
 
-      // Filter questions based on topic selection
+      // Filter questions by selected topic
       const filteredQuestions = selectedTopicFilter === 'ALL' 
         ? questionBank 
-        : questionBank.filter(q => q.topic === selectedTopicFilter);
+        : questionBank.filter(q => q.topic === selectedTopicFilter || q.month === selectedTopicFilter);
 
       const activeIndex = currentIndex < filteredQuestions.length ? currentIndex : 0;
       const currentQ = filteredQuestions[activeIndex] || questionBank[0];
 
-      // Save to localStorage automatically on state change
+      // Save state changes automatically to localStorage
       useEffect(() => {
         try {
-          localStorage.setItem('gabor_siele_progress_v2', JSON.stringify(progress));
+          localStorage.setItem('gabor_siele_progress_v3', JSON.stringify(progress));
         } catch (e) {}
       }, [progress]);
 
       useEffect(() => {
         try {
-          localStorage.setItem('gabor_siele_index_v2', currentIndex.toString());
+          localStorage.setItem('gabor_siele_index_v3', currentIndex.toString());
         } catch (e) {}
       }, [currentIndex]);
 
@@ -202,7 +341,7 @@
 
         if (currentQ.type === 'MULTIPLE_CHOICE') {
           isCorrect = selectedOpt === currentQ.correctAnswer;
-        } else if (currentQ.type === 'FILL_IN_THE_BLANK' || currentQ.type === 'ERROR_CORRECTION') {
+        } else if (currentQ.type === 'FILL_IN_THE_BLANK') {
           isCorrect = userText.trim().toLowerCase() === currentQ.correctAnswer.toLowerCase();
         } else if (currentQ.type === 'ENGLISH_TO_SPANISH') {
           const clean = userText.trim().toLowerCase().replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, "");
@@ -253,7 +392,7 @@
 
       return (
         <div className="max-w-5xl mx-auto p-4 md:p-6 space-y-6">
-          {/* Header Navigation Bar */}
+          {/* Top Header & Navigation */}
           <header className="bg-slate-800 p-4 rounded-xl border border-slate-700 flex flex-wrap justify-between items-center gap-4 shadow-lg">
             <div className="flex items-center space-x-3">
               <div className="bg-amber-500 text-slate-950 font-black px-3 py-1.5 rounded-lg text-lg">
@@ -295,18 +434,38 @@
                   <span className="bg-amber-500/20 text-amber-300 border border-amber-500/40 px-3 py-1 rounded font-bold">
                     Question {activeIndex + 1} of {filteredQuestions.length}
                   </span>
+                  {/* Topic / Month Selector */}
                   <select
                     value={selectedTopicFilter}
                     onChange={(e) => {
                       setSelectedTopicFilter(e.target.value);
                       setCurrentIndex(0);
                     }}
-                    className="bg-slate-900 text-xs font-bold text-amber-300 px-2.5 py-1.5 rounded border border-slate-700 focus:outline-none cursor-pointer"
+                    className="bg-slate-900 text-xs font-bold text-amber-300 px-2.5 py-1.5 rounded border border-slate-700 focus:outline-none cursor-pointer max-w-[240px]"
                   >
-                    <option value="ALL">All Curriculum Topics</option>
-                    <option value="W2: Ser vs. Estar & Gustar">W2: Ser vs. Estar & Gustar</option>
-                    <option value="W3: Pretérito Indefinido">W3: Pretérito Indefinido</option>
-                    <option value="W7: Direct & Indirect Object Pronouns">W7: Object Pronouns</option>
+                    <option value="ALL">🌟 All Curriculum Topics (W1 - W24)</option>
+                    <optgroup label="Month 1">
+                      <option value="W1: Present Tense Regular/Irregular">Week 1: Present Tense</option>
+                      <option value="W2: Ser vs. Estar & Gustar">Week 2: Ser vs. Estar & Gustar</option>
+                      <option value="W3: Pretérito Indefinido">Week 3: Pretérito Indefinido</option>
+                      <option value="W4: Pretérito Imperfecto">Week 4: Pretérito Imperfecto</option>
+                    </optgroup>
+                    <optgroup label="Month 2">
+                      <option value="W5: Indefinido vs. Imperfecto">Week 5: Indefinido vs. Imperfecto</option>
+                      <option value="W6: Pretérito Perfecto">Week 6: Pretérito Perfecto</option>
+                      <option value="W7: Direct & Indirect Object Pronouns">Week 7: Object Pronouns</option>
+                    </optgroup>
+                    <optgroup label="Month 3">
+                      <option value="W11: Conditional Simple">Week 11: Conditional</option>
+                      <option value="W12: B1 Discourse Markers">Week 12: Discourse Markers</option>
+                    </optgroup>
+                    <optgroup label="Month 4">
+                      <option value="W13: Present Subjunctive (Wishes & Needs)">Week 13: Subjunctive Basics</option>
+                    </optgroup>
+                    <optgroup label="Month 5 & 6">
+                      <option value="W17: Por vs. Para & Prepositions">Week 17: Por vs. Para</option>
+                      <option value="W21: SIELE Task 1 & 2 Written">Week 21: SIELE Practice</option>
+                    </optgroup>
                   </select>
                 </div>
                 <span className="text-emerald-400 font-bold">Score: {progress.correct}/{progress.totalAttempted}</span>
@@ -323,7 +482,7 @@
               </div>
 
               {/* Accent Keys */}
-              {(currentQ.type === 'FILL_IN_THE_BLANK' || currentQ.type === 'ENGLISH_TO_SPANISH' || currentQ.type === 'ERROR_CORRECTION') && (
+              {(currentQ.type === 'FILL_IN_THE_BLANK' || currentQ.type === 'ENGLISH_TO_SPANISH') && (
                 <div className="bg-slate-900/60 p-2.5 rounded-lg border border-slate-700">
                   <span className="text-xs text-slate-400 block mb-1 font-medium">Spanish Accent Helper (Click to insert):</span>
                   <div className="flex flex-wrap gap-1.5">
@@ -375,10 +534,9 @@
                   </div>
                 )}
 
-                {(currentQ.type === 'ENGLISH_TO_SPANISH' || currentQ.type === 'ERROR_CORRECTION') && (
+                {currentQ.type === 'ENGLISH_TO_SPANISH' && (
                   <div className="space-y-2">
                     {currentQ.promptEnglish && <p className="text-xs text-slate-300">English: <strong className="text-white">{currentQ.promptEnglish}</strong></p>}
-                    {currentQ.incorrectSentence && <p className="text-xs text-rose-300">Incorrect Sentence: <span className="line-through">{currentQ.incorrectSentence}</span></p>}
                     <textarea
                       disabled={submitted}
                       rows={3}
@@ -487,25 +645,26 @@
                       </span>
                     </div>
                     <p className="text-xs text-slate-300">Meaning: <strong>{item.meaning}</strong></p>
+                    <p className="text-xs text-slate-400 italic">"{item.example}"</p>
                     
                     <div className="pt-2 flex gap-1.5">
                       <button
                         onClick={() => handleVocabRating(idx, 'KNOW')}
                         className={`text-xs px-2.5 py-1 rounded font-bold transition ${item.status === 'KNOW' ? 'bg-emerald-500 text-slate-950' : 'bg-slate-800 text-slate-400 hover:bg-slate-700'}`}
                       >
-                        I Know It
+                        I Know It (🟢)
                       </button>
                       <button
                         onClick={() => handleVocabRating(idx, 'UNSURE')}
                         className={`text-xs px-2.5 py-1 rounded font-bold transition ${item.status === 'UNSURE' ? 'bg-amber-500 text-slate-950' : 'bg-slate-800 text-slate-400 hover:bg-slate-700'}`}
                       >
-                        Not Sure
+                        Not Sure (🟡)
                       </button>
                       <button
                         onClick={() => handleVocabRating(idx, 'DONT_KNOW')}
                         className={`text-xs px-2.5 py-1 rounded font-bold transition ${item.status === 'DONT_KNOW' ? 'bg-rose-500 text-white' : 'bg-slate-800 text-slate-400 hover:bg-slate-700'}`}
                       >
-                        Don't Know It
+                        Don't Know (🔴)
                       </button>
                     </div>
                   </div>
@@ -535,7 +694,7 @@
               </div>
 
               <div>
-                <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">Grammar Mastery Ratings</h3>
+                <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">6-Month Curriculum Grammar Mastery</h3>
                 <div className="space-y-2 max-h-80 overflow-y-auto pr-2">
                   {Object.entries(progress.topicMastery).map(([topic, pct]) => (
                     <div key={topic} className="bg-slate-900 p-3 rounded-lg border border-slate-700 flex justify-between items-center text-xs">
