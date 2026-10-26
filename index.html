@@ -36,7 +36,7 @@
                 </div>
             </div>
             <div class="bg-slate-800 px-3 py-1.5 rounded border border-slate-700 text-xs">
-                <span class="text-slate-400">Estado:</span> <span class="text-emerald-400 font-bold">Todos los Temas Desbloqueados</span>
+                <span class="text-slate-400">Estado:</span> <span class="text-emerald-400 font-bold">16 Módulos Desbloqueados</span>
             </div>
         </div>
     </header>
@@ -47,13 +47,13 @@
         <!-- Left/Center Column: Practice Block & Curriculum Navigator -->
         <section class="lg:col-span-2 space-y-6">
             
-            <!-- Module Navigator Panel (Solves dropdown visibility limits) -->
+            <!-- Module Navigator Panel Grid -->
             <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 shadow-lg space-y-3">
                 <h3 class="text-sm font-bold text-amber-400 flex items-center gap-2">
-                    <i class="fa-solid fa-compass"></i> Selecciona Mes y Semana de Estudio (16 Módulos Desbloqueados)
+                    <i class="fa-solid fa-compass"></i> Navegador de Módulos (Plan Completo de 4 Meses)
                 </h3>
                 <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
-                    <button onclick="changeModule('m1w1')" id="btn_m1w1" class="p-2 rounded bg-slate-800 hover:bg-amber-500 hover:text-slate-950 text-left transition-colors font-medium border border-slate-700">M1 W1: Indefinido</button>
+                    <button onclick="changeModule('m1w1')" id="btn_m1w1" class="p-2 rounded bg-amber-500 text-slate-950 font-bold text-left transition-colors border border-slate-700">M1 W1: Indefinido</button>
                     <button onclick="changeModule('m1w2')" id="btn_m1w2" class="p-2 rounded bg-slate-800 hover:bg-amber-500 hover:text-slate-950 text-left transition-colors font-medium border border-slate-700">M1 W2: Perfecto</button>
                     <button onclick="changeModule('m1w3')" id="btn_m1w3" class="p-2 rounded bg-slate-800 hover:bg-amber-500 hover:text-slate-950 text-left transition-colors font-medium border border-slate-700">M1 W3: Pluscuam.</button>
                     <button onclick="changeModule('m1w4')" id="btn_m1w4" class="p-2 rounded bg-slate-800 hover:bg-amber-500 hover:text-slate-950 text-left transition-colors font-medium border border-slate-700">M1 W4: Narrativa</button>
@@ -405,7 +405,6 @@
         document.addEventListener('DOMContentLoaded', () => { loadModule(currentModuleKey); updateFlashcard(); });
 
         function changeModule(key) {
-            // Highlight active button
             document.querySelectorAll('.grid button').forEach(b => b.classList.remove('bg-amber-500', 'text-slate-950', 'font-bold'));
             const activeBtn = document.getElementById('btn_' + key);
             if (activeBtn) {
@@ -425,7 +424,7 @@
             document.getElementById('ruleTextEs').textContent = data.ruleEs;
             document.getElementById('ruleTextEn').textContent = data.ruleEn;
             document.getElementById('ruleExtraEs').textContent = data.extraEs;
-            document.getElementById('ruleExtraEn').textContent = data.extraExtraEn || data.extraEn;
+            document.getElementById('ruleExtraEn').textContent = data.extraEn;
 
             const container = document.getElementById('questionsContainer');
             container.innerHTML = '';
