@@ -62,8 +62,9 @@
       ]
     };
 
+    // Full 24-Week Curriculum Question Bank covering Month 1 to Month 6
     const questionBank = [
-      // MONTH 1: A2 Consolidation & Essential Tenses
+      // MONTH 1
       {
         id: 1,
         month: 'Month 1',
@@ -123,7 +124,7 @@
         explanation: '"Jugaba" expresses habitual, repeated actions in the past ("siempre").'
       },
 
-      // MONTH 2: Past Tense Contrast & Pronouns
+      // MONTH 2
       {
         id: 5,
         month: 'Month 2',
@@ -165,10 +166,51 @@
         keyPoint: 'Periphrastic future structure: Ir + a + Infinitive + Direct Object + Adverb.',
         explanation: 'Standard order places conjugated auxiliary verb first.'
       },
-
-      // MONTH 3: Future, Conditional & Discourse Markers
       {
         id: 8,
+        month: 'Month 2',
+        topic: 'W8: Reflexive Verbs',
+        type: 'MULTIPLE_CHOICE',
+        question: 'Selecciona la forma correcta del verbo reflexivo:',
+        context: 'Antes de salir de casa, Carla ___ (maquillarse) rápidamente.',
+        options: [
+          { id: 'A', text: 'se maquilla' },
+          { id: 'B', text: 'maquilla' },
+          { id: 'C', text: 'te maquillas' },
+          { id: 'D', text: 'nos maquillamos' }
+        ],
+        correctAnswer: 'A',
+        keyPoint: 'Third-person singular reflexive pronoun is "se" paired with "maquilla".',
+        explanation: 'Carla is third person singular, so the reflexive pronoun is "se".'
+      },
+
+      // MONTH 3
+      {
+        id: 9,
+        month: 'Month 3',
+        topic: 'W9: Pretérito Pluscuamperfecto',
+        type: 'FILL_IN_THE_BLANK',
+        question: 'Completa con el Pluscuamperfecto (había + participio):',
+        sentenceBefore: 'Cuando llegué a la estación, el tren ya ',
+        sentenceAfter: ' (salir).',
+        correctAnswer: 'había salido',
+        keyPoint: 'Pluscuamperfecto expresses an action completed before another past action.',
+        explanation: 'Había + salido indicates the earlier past action.'
+      },
+      {
+        id: 10,
+        month: 'Month 3',
+        topic: 'W10: Future Tenses',
+        type: 'FILL_IN_THE_BLANK',
+        question: 'Completa con el Futuro Simple:',
+        sentenceBefore: 'El próximo año, nosotros ',
+        sentenceAfter: ' (viajar) a España.',
+        correctAnswer: 'viajaremos',
+        keyPoint: 'Regular -AR verbs in future tense take the "-emos" ending for "nosotros".',
+        explanation: 'Viajar -> nosotros viajaremos.'
+      },
+      {
+        id: 11,
         month: 'Month 3',
         topic: 'W11: Conditional Simple',
         type: 'ENGLISH_TO_SPANISH',
@@ -184,7 +226,7 @@
         explanation: 'The conditional form of poder (podría) is ideal for B1/B2 professional politeness.'
       },
       {
-        id: 9,
+        id: 12,
         month: 'Month 3',
         topic: 'W12: B1 Discourse Markers',
         type: 'MULTIPLE_CHOICE',
@@ -201,9 +243,9 @@
         explanation: '"Sin embargo" translates to "however", showing opposition between effort and test difficulty.'
       },
 
-      // MONTH 4: The Subjunctive Mood
+      // MONTH 4
       {
-        id: 10,
+        id: 13,
         month: 'Month 4',
         topic: 'W13: Present Subjunctive (Wishes & Needs)',
         type: 'FILL_IN_THE_BLANK',
@@ -214,10 +256,56 @@
         keyPoint: 'Impersonal expressions of necessity (es necesario que) trigger the Subjunctive mood.',
         explanation: 'Practicar -> (tú) practiques in Present Subjunctive.'
       },
-
-      // MONTH 5 & 6: SIELE Exam Preparation
       {
-        id: 11,
+        id: 14,
+        month: 'Month 4',
+        topic: 'W14: Subjunctive (Emotion & Doubt)',
+        type: 'MULTIPLE_CHOICE',
+        question: 'Selecciona la opción correcta con subjuntivo:',
+        context: 'Dudo que Gabor ___ (aprobar) el examen sin estudiar.',
+        options: [
+          { id: 'A', text: 'apruebe' },
+          { id: 'B', text: 'aprueba' },
+          { id: 'C', text: 'aprobará' },
+          { id: 'D', text: 'aprobó' }
+        ],
+        correctAnswer: 'A',
+        keyPoint: 'Expressions of doubt (dudo que) require the subjunctive mood.',
+        explanation: 'Aprobar -> apruebe in present subjunctive for third-person singular.'
+      },
+      {
+        id: 15,
+        month: 'Month 4',
+        topic: 'W15: Subjunctive vs. Indicative',
+        type: 'MULTIPLE_CHOICE',
+        question: 'Selecciona la forma verbal adecuada:',
+        context: 'Sé que Gabor ___ (tener) mucha experiencia.',
+        options: [
+          { id: 'A', text: 'tiene' },
+          { id: 'B', text: 'tenga' },
+          { id: 'C', text: 'tuviera' },
+          { id: 'D', text: 'tendrá' }
+        ],
+        correctAnswer: 'A',
+        keyPoint: 'Verbs of certainty (sé que) take the indicative mood.',
+        explanation: '"Sé que" expresses certainty, so it requires the indicative ("tiene").'
+      },
+      {
+        id: 16,
+        month: 'Month 4',
+        topic: 'W16: Imperative Mood',
+        type: 'FILL_IN_THE_BLANK',
+        question: 'Da una instrucción formal (usted) usando el imperativo del verbo hablar:',
+        sentenceBefore: 'Por favor, ',
+        sentenceAfter: ' más despacio.',
+        correctAnswer: 'hable',
+        keyPoint: 'Formal imperative (usted) for -AR verbs uses the -e ending.',
+        explanation: 'Hablar -> hable (usted command).'
+      },
+
+      // MONTH 5
+      {
+        id: 17,
         month: 'Month 5',
         topic: 'W17: Por vs. Para & Prepositions',
         type: 'MULTIPLE_CHOICE',
@@ -234,7 +322,50 @@
         explanation: '"Para" expresses goal, deadline, or objective (in order to).'
       },
       {
-        id: 12,
+        id: 18,
+        month: 'Month 5',
+        topic: 'W18: Passive Voice & Impersonal Se',
+        type: 'FILL_IN_THE_BLANK',
+        question: 'Completa con la construcción impersonal con "se":',
+        sentenceBefore: 'En esta oficina ',
+        sentenceAfter: ' (hablar) español.',
+        correctAnswer: 'se habla',
+        keyPoint: 'Impersonal passive with "se" uses third-person singular for general statements.',
+        explanation: 'Hablar -> se habla.'
+      },
+      {
+        id: 19,
+        month: 'Month 5',
+        topic: 'W19: Imperfect Subjunctive & Conditional',
+        type: 'FILL_IN_THE_BLANK',
+        question: 'Completa la oración condicional (Si + imperfecto de subjuntivo):',
+        sentenceBefore: 'Si yo tuviera más tiempo, ',
+        sentenceAfter: ' (viajar) por todo el mundo.',
+        correctAnswer: 'viajaría',
+        keyPoint: 'Conditional sentences type 2 use Imperfect Subjunctive (tuviera) + Conditional (viajaría).',
+        explanation: 'Viajar -> viajaría in the main clause.'
+      },
+      {
+        id: 20,
+        month: 'Month 5',
+        topic: 'W20: Relative Pronouns',
+        type: 'MULTIPLE_CHOICE',
+        question: 'Selecciona el pronombre relativo adecuado:',
+        context: 'El libro ___ compré ayer es muy útil para el examen.',
+        options: [
+          { id: 'A', text: 'que' },
+          { id: 'B', text: 'quien' },
+          { id: 'C', text: 'cuyo' },
+          { id: 'D', text: 'donde' }
+        ],
+        correctAnswer: 'A',
+        keyPoint: '"Que" is the most common relative pronoun for things and general clauses.',
+        explanation: '"Que" connects the object "el libro" to the clause "compré ayer".'
+      },
+
+      // MONTH 6
+      {
+        id: 21,
         month: 'Month 6',
         topic: 'W21: SIELE Task 1 & 2 Written',
         type: 'ENGLISH_TO_SPANISH',
@@ -248,6 +379,51 @@
         modelAnswer: 'Quedo a la espera de su respuesta. Atentamente,',
         keyPoint: 'Formal emails require standardized closing formulas like "Atentamente".',
         explanation: 'Essential register requirement for SIELE Written Expression Task 1.'
+      },
+      {
+        id: 22,
+        month: 'Month 6',
+        topic: 'W22: SIELE Oral Expression',
+        type: 'ENGLISH_TO_SPANISH',
+        question: 'Traduce una frase de opinión para una tarea oral SIELE:',
+        promptEnglish: 'From my point of view, digital tools are extremely useful for learning languages.',
+        acceptableAnswers: [
+          'desde mi punto de vista las herramientas digitales son extremadamente útiles para aprender idiomas',
+          'desde mi punto de vista, las herramientas digitales son muy útiles para aprender lenguas',
+          'en mi opinión, las herramientas digitales son extremadamente útiles para aprender idiomas'
+        ],
+        modelAnswer: 'Desde mi punto de vista, las herramientas digitales son extremadamente útiles para aprender idiomas.',
+        keyPoint: 'Use professional opinion connectors like "Desde mi punto de vista" for SIELE speaking tasks.',
+        explanation: 'Demonstrates B2 discourse competence and advanced vocabulary.'
+      },
+      {
+        id: 23,
+        month: 'Month 6',
+        topic: 'W23: SIELE Reading & Listening',
+        type: 'MULTIPLE_CHOICE',
+        question: 'Elige el sinónimo más adecuado para la palabra "principalmente":',
+        context: 'El curso está diseñado principalmente para profesionales.',
+        options: [
+          { id: 'A', text: 'sobre todo / especialmente' },
+          { id: 'B', text: 'únicamente' },
+          { id: 'C', text: 'raramente' },
+          { id: 'D', text: 'difícilmente' }
+        ],
+        correctAnswer: 'A',
+        keyPoint: '"Principalmente" means chiefly, mainly, or especially ("sobre todo").',
+        explanation: 'Helps improve reading comprehension vocabulary matching in SIELE.'
+      },
+      {
+        id: 24,
+        month: 'Month 6',
+        topic: 'W24: SIELE Full Mock Exam',
+        type: 'FILL_IN_THE_BLANK',
+        question: 'Completa la frase con la forma correcta del subjuntivo para el examen final:',
+        sentenceBefore: 'Ojalá que Gabor ',
+        sentenceAfter: ' (tener) mucho éxito en su examen SIELE.',
+        correctAnswer: 'tenga',
+        keyPoint: '"Ojalá (que)" always triggers the subjunctive mood.',
+        explanation: 'Tener -> tenga in present subjunctive.'
       }
     ];
 
@@ -258,7 +434,7 @@
       // Persistent Storage Initialization
       const [progress, setProgress] = useState(() => {
         try {
-          const saved = localStorage.getItem('gabor_siele_progress_v3');
+          const saved = localStorage.getItem('gabor_siele_progress_v4');
           return saved ? JSON.parse(saved) : initialProgress;
         } catch (e) {
           return initialProgress;
@@ -267,7 +443,7 @@
 
       const [currentIndex, setCurrentIndex] = useState(() => {
         try {
-          const savedIndex = localStorage.getItem('gabor_siele_index_v3');
+          const savedIndex = localStorage.getItem('gabor_siele_index_v4');
           return savedIndex ? parseInt(savedIndex, 10) : 0;
         } catch (e) {
           return 0;
@@ -284,7 +460,7 @@
       const [showHint, setShowHint] = useState(false);
       const [showRule, setShowRule] = useState(false);
 
-      // Filter questions by selected topic
+      // Filter questions by selected topic or month
       const filteredQuestions = selectedTopicFilter === 'ALL' 
         ? questionBank 
         : questionBank.filter(q => q.topic === selectedTopicFilter || q.month === selectedTopicFilter);
@@ -295,13 +471,13 @@
       // Save state changes automatically to localStorage
       useEffect(() => {
         try {
-          localStorage.setItem('gabor_siele_progress_v3', JSON.stringify(progress));
+          localStorage.setItem('gabor_siele_progress_v4', JSON.stringify(progress));
         } catch (e) {}
       }, [progress]);
 
       useEffect(() => {
         try {
-          localStorage.setItem('gabor_siele_index_v3', currentIndex.toString());
+          localStorage.setItem('gabor_siele_index_v4', currentIndex.toString());
         } catch (e) {}
       }, [currentIndex]);
 
@@ -434,37 +610,57 @@
                   <span className="bg-amber-500/20 text-amber-300 border border-amber-500/40 px-3 py-1 rounded font-bold">
                     Question {activeIndex + 1} of {filteredQuestions.length}
                   </span>
-                  {/* Topic / Month Selector */}
+                  {/* Full 24-Week Curriculum Topic Selector */}
                   <select
                     value={selectedTopicFilter}
                     onChange={(e) => {
                       setSelectedTopicFilter(e.target.value);
                       setCurrentIndex(0);
                     }}
-                    className="bg-slate-900 text-xs font-bold text-amber-300 px-2.5 py-1.5 rounded border border-slate-700 focus:outline-none cursor-pointer max-w-[240px]"
+                    className="bg-slate-900 text-xs font-bold text-amber-300 px-2.5 py-1.5 rounded border border-slate-700 focus:outline-none cursor-pointer max-w-[260px]"
                   >
                     <option value="ALL">🌟 All Curriculum Topics (W1 - W24)</option>
-                    <optgroup label="Month 1">
-                      <option value="W1: Present Tense Regular/Irregular">Week 1: Present Tense</option>
-                      <option value="W2: Ser vs. Estar & Gustar">Week 2: Ser vs. Estar & Gustar</option>
-                      <option value="W3: Pretérito Indefinido">Week 3: Pretérito Indefinido</option>
-                      <option value="W4: Pretérito Imperfecto">Week 4: Pretérito Imperfecto</option>
+                    
+                    <optgroup label="Month 1: A2 Consolidation">
+                      <option value="W1: Present Tense Regular/Irregular">W1: Present Tense</option>
+                      <option value="W2: Ser vs. Estar & Gustar">W2: Ser vs. Estar & Gustar</option>
+                      <option value="W3: Pretérito Indefinido">W3: Pretérito Indefinido</option>
+                      <option value="W4: Pretérito Imperfecto">W4: Pretérito Imperfecto</option>
                     </optgroup>
-                    <optgroup label="Month 2">
-                      <option value="W5: Indefinido vs. Imperfecto">Week 5: Indefinido vs. Imperfecto</option>
-                      <option value="W6: Pretérito Perfecto">Week 6: Pretérito Perfecto</option>
-                      <option value="W7: Direct & Indirect Object Pronouns">Week 7: Object Pronouns</option>
+
+                    <optgroup label="Month 2: Past Tense Contrast & Pronouns">
+                      <option value="W5: Indefinido vs. Imperfecto">W5: Indefinido vs. Imperfecto</option>
+                      <option value="W6: Pretérito Perfecto">W6: Pretérito Perfecto</option>
+                      <option value="W7: Direct & Indirect Object Pronouns">W7: Object Pronouns</option>
+                      <option value="W8: Reflexive Verbs">W8: Reflexive Verbs</option>
                     </optgroup>
-                    <optgroup label="Month 3">
-                      <option value="W11: Conditional Simple">Week 11: Conditional</option>
-                      <option value="W12: B1 Discourse Markers">Week 12: Discourse Markers</option>
+
+                    <optgroup label="Month 3: Future, Conditional & Discourse">
+                      <option value="W9: Pretérito Pluscuamperfecto">W9: Pluscuamperfecto</option>
+                      <option value="W10: Future Tenses">W10: Future Tenses</option>
+                      <option value="W11: Conditional Simple">W11: Conditional Simple</option>
+                      <option value="W12: B1 Discourse Markers">W12: Discourse Markers</option>
                     </optgroup>
-                    <optgroup label="Month 4">
-                      <option value="W13: Present Subjunctive (Wishes & Needs)">Week 13: Subjunctive Basics</option>
+
+                    <optgroup label="Month 4: The Subjunctive Mood">
+                      <option value="W13: Present Subjunctive (Wishes & Needs)">W13: Present Subjunctive</option>
+                      <option value="W14: Subjunctive (Emotion & Doubt)">W14: Subjunctive (Emotion)</option>
+                      <option value="W15: Subjunctive vs. Indicative">W15: Subjunctive vs Indicative</option>
+                      <option value="W16: Imperative Mood">W16: Imperative Mood</option>
                     </optgroup>
-                    <optgroup label="Month 5 & 6">
-                      <option value="W17: Por vs. Para & Prepositions">Week 17: Por vs. Para</option>
-                      <option value="W21: SIELE Task 1 & 2 Written">Week 21: SIELE Practice</option>
+
+                    <optgroup label="Month 5: Advanced B1 Syntax">
+                      <option value="W17: Por vs. Para & Prepositions">W17: Por vs. Para</option>
+                      <option value="W18: Passive Voice & Impersonal Se">W18: Passive & Impersonal</option>
+                      <option value="W19: Imperfect Subjunctive & Conditional">W19: Imperfect Subjunctive</option>
+                      <option value="W20: Relative Pronouns">W20: Relative Pronouns</option>
+                    </optgroup>
+
+                    <optgroup label="Month 6: SIELE B2 Preparation">
+                      <option value="W21: SIELE Task 1 & 2 Written">W21: SIELE Written Practice</option>
+                      <option value="W22: SIELE Oral Expression">W22: SIELE Oral Expression</option>
+                      <option value="W23: SIELE Reading & Listening">W23: SIELE Reading & Listening</option>
+                      <option value="W24: SIELE Full Mock Exam">W24: SIELE Mock Exam</option>
                     </optgroup>
                   </select>
                 </div>
