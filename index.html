@@ -1,540 +1,890 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Español B1 Mastery Coach Workspace</title>
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- FontAwesome CDN for Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        .accent-btn {
-            background-color: #334155; color: #fbbf24; font-weight: bold; padding: 0.25rem 0.625rem; border-radius: 0.375rem; transition: background-color 0.2s; font-size: 0.875rem; border: 1px solid #475569; cursor: pointer;
-        }
-        .accent-btn:hover { background-color: #475569; }
-        .inline-input {
-            background-color: #030712; border: 2px solid #475569; color: #fde047; font-weight: 600; padding: 0.25rem 0.75rem; border-radius: 0.375rem; display: inline-block; text-align: center; min-width: 140px; outline: none; transition: all 0.2s;
-        }
-        .inline-input:focus { border-color: #fbbf24; }
-        .inline-input.correct { border-color: #10b981; background-color: rgba(6, 78, 59, 0.4); color: #6ee7b7; }
-        .inline-input.incorrect { border-color: #f43f5e; background-color: rgba(136, 19, 55, 0.4); color: #fda4af; }
-    </style>
-</head>
-<body class="bg-slate-950 text-slate-100 min-h-screen font-sans antialiased">
+import React, { useState, useEffect, useRef } from 'react';
+import { 
+  CheckCircle, XCircle, AlertCircle, RefreshCw, BookOpen, 
+  Trophy, Award, BarChart2, Flame, ArrowRight, RotateCcw, 
+  Sparkles, Check, HelpCircle, Layers, Volume2, Clock, Send
+} from 'lucide-react';
 
-    <!-- Top Navigation Bar -->
-    <header class="bg-slate-900 border-b border-slate-800 sticky top-0 z-50 shadow-md">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-            <div class="flex items-center space-x-3">
-                <div class="bg-amber-500 text-slate-950 p-2 rounded-lg font-bold text-xl">
-                    <i class="fa-solid fa-graduation-cap"></i> B1
-                </div>
-                <div>
-                    <h1 class="font-bold text-lg text-slate-100 leading-tight">Español B1 Coach</h1>
-                    <p class="text-xs text-amber-400">Workspace Personalizado para Gabor (A2 ➔ B1)</p>
-                </div>
+// Default initial state
+const initialProgress = {
+  cefrLevel: 'A2 / B1 Entry',
+  streak: 1,
+  lessonsCompleted: 1,
+  activitiesCompleted: 3,
+  totalAttempted: 15,
+  correct: 10,
+  partiallyCorrect: 3,
+  incorrect: 2,
+  sieleScores: {
+    reading: 65,
+    listening: 55,
+    writing: 40,
+    speaking: 45
+  },
+  topicMastery: {
+    'Ser vs Estar': 65,
+    'Present Tense Regular': 80,
+    'Pretérito Indefinido': 45,
+    'Pretérito Imperfecto': 35,
+    'Direct Object Pronouns': 50,
+    'Gustar & Similar Verbs': 70
+  },
+  wordsToReview: ['desarrollar', 'sin embargo', 'además', 'lograr', 'aprovechar']
+};
+
+// Comprehensive Question Bank across the 11 interactive exercise types
+const sampleQuestions = [
+  {
+    id: 1,
+    type: 'MULTIPLE_CHOICE',
+    skillCategory: 'Grammar',
+    topic: 'Ser vs Estar',
+    question: 'Selecciona la opción correcta para completar la frase:',
+    context: 'Hola, mi nombre ___ Gabor y ___ aprendiendo español para aprobar el examen SIELE.',
+    options: [
+      { id: 'A', text: 'es / estoy' },
+      { id: 'B', text: 'está / soy' },
+      { id: 'C', text: 'es / soy' },
+      { id: 'D', text: 'está / estoy' }
+    ],
+    correctAnswer: 'A',
+    keyPoint: 'Use "ser" for identity/names and "estar" + gerund for continuous actions.',
+    explanation: '"Mi nombre es" identifies who you are (essential identity = SER). "Estoy aprendiendo" uses ESTAR + gerund to express an action currently in progress.'
+  },
+  {
+    id: 2,
+    type: 'FILL_IN_THE_BLANK',
+    skillCategory: 'Grammar',
+    topic: 'Pretérito Indefinido',
+    question: 'Completa la frase con la forma correcta del verbo entre paréntesis en Pretérito Indefinido:',
+    sentenceBefore: 'Ayer yo ',
+    sentenceAfter: ' (estudiar) tres horas para el examen de español.',
+    correctAnswer: 'estudié',
+    keyPoint: 'Regular -AR verbs end in "-é" in the first-person singular (yo) in the Pretérito Indefinido.',
+    explanation: 'For past completed actions at a specific time (ayer), use the Pretérito Indefinido. Estudiar -> yo estudié.'
+  },
+  {
+    id: 3,
+    type: 'ENGLISH_TO_SPANISH',
+    skillCategory: 'Writing',
+    topic: 'Gustar & Similar Verbs',
+    question: 'Translate the following sentence into Spanish:',
+    promptEnglish: 'I am interested in improving my Spanish for work.',
+    acceptableAnswers: [
+      'me interesa mejorar mi español para el trabajo',
+      'me interesa mejorar mi español para trabajar',
+      'estoy interesado en mejorar mi español para el trabajo',
+      'me interesa mejorar mi espanol para el trabajo'
+    ],
+    modelAnswer: 'Me interesa mejorar mi español para el trabajo.',
+    keyPoint: 'Interesar works like gustar: "Me interesa + infinitive".',
+    explanation: '"Me interesa" directly translates "I am interested in". Remember to use "para" for purpose.'
+  },
+  {
+    id: 4,
+    type: 'ERROR_CORRECTION',
+    skillCategory: 'Grammar',
+    topic: 'Ser vs Estar',
+    question: 'Encuentra el error en la siguiente frase y escribe la versión corregida:',
+    incorrectSentence: 'Hoy soy muy cansado porque trabajé mucho.',
+    correctAnswer: 'Hoy estoy muy cansado porque trabajé mucho.',
+    keyPoint: 'Temporary states or conditions (tiredness) use ESTAR, not SER.',
+    explanation: 'Being tired (cansado) is a condition/state of being, so it requires "estoy", not "soy".'
+  },
+  {
+    id: 5,
+    type: 'SENTENCE_BUILDER',
+    skillCategory: 'Writing',
+    topic: 'Direct Object Pronouns',
+    question: 'Ordena las palabras para formar una frase gramaticalmente correcta:',
+    words: ['mañana', 'los', 'documentos', 'enviar', 'Voy', 'a'],
+    correctOrder: ['Voy', 'a', 'enviar', 'los', 'documentos', 'mañana'],
+    alternativeOrder: ['Los', 'documentos', 'voy', 'a', 'enviar', 'mañana'],
+    modelAnswer: 'Voy a enviar los documentos mañana.',
+    keyPoint: 'Near future structure: Ir + a + Infinitive + Direct Object + Time expression.',
+    explanation: 'Standard Spanish sentence order for planned future actions places the conjugated auxiliary verb first.'
+  },
+  {
+    id: 6,
+    type: 'MATCHING',
+    skillCategory: 'Vocabulary',
+    topic: 'Connectors & Connectives',
+    question: 'Empareja cada conector en español con su equivalente en inglés:',
+    pairs: [
+      { spanish: 'Sin embargo', english: 'However' },
+      { spanish: 'Por lo tanto', english: 'Therefore' },
+      { spanish: 'Además', english: 'Furthermore / In addition' },
+      { spanish: 'Aunque', english: 'Although / Even if' }
+    ],
+    keyPoint: 'Discourse markers are crucial for achieving B2 in SIELE writing and speaking.',
+    explanation: 'Connectors organize your text logically and increase cohesion.'
+  },
+  {
+    id: 7,
+    type: 'FLASHCARDS',
+    skillCategory: 'Vocabulary',
+    topic: 'B2 Vocabulary',
+    question: 'Evalúa tu conocimiento del siguiente término:',
+    word: 'Desarrollar',
+    definition: 'To develop, grow, or build up (an idea, business, project, or skill).',
+    example: 'Es importante desarrollar buenas estrategias de estudio.',
+    keyPoint: 'Essential verb for SIELE B1-B2 essays and discussions.'
+  },
+  {
+    id: 8,
+    type: 'VISUAL_EXERCISE',
+    skillCategory: 'Speaking/Writing',
+    topic: 'Description & Hypothesis',
+    question: 'Describe lo que ves y responde a la pregunta:',
+    imageUrl: 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=800&q=80',
+    promptText: '¿Qué están haciendo las personas en la imagen y qué tipo de ambiente se percibe?',
+    keyPoint: 'Use present continuous (están colaborando) and opinion expressions (parece que, creo que).',
+    explanation: 'Visual description tasks in SIELE test your ability to hypothesize and describe social situations.'
+  },
+  {
+    id: 9,
+    type: 'CONVERSATION_SIMULATION',
+    skillCategory: 'Oral interaction',
+    topic: 'Professional Complaints & Requests',
+    scenario: 'Estás en una reunión de trabajo y necesitas pedir más tiempo para terminar un informe.',
+    partnerPrompt: 'Gabor, ¿tienes listo el informe final para la presentación de esta tarde?',
+    options: [
+      { id: 'A', text: 'No, no lo tengo. Es imposible.', feedback: 'Too abrupt and informal for a professional context.' },
+      { id: 'B', text: 'Lo siento, todavía no está listo. ¿Sería posible entregarlo mañana por la mañana?', feedback: 'Polite, professional, and provides a solution!' },
+      { id: 'C', text: 'Sí, claro, todo está perfecto.', feedback: 'Inaccurate if you actually need more time.' }
+    ],
+    correctAnswer: 'B',
+    keyPoint: 'Use conditional forms (¿Sería posible...?) for polite requests.',
+    explanation: 'Option B demonstrates natural business etiquette using conditional politeness.'
+  },
+  {
+    id: 10,
+    type: 'SIELE_PRACTICE',
+    skillCategory: 'Written expression',
+    topic: 'SIELE Tarea 1 - Email redactado',
+    instructions: 'Escribe un correo electrónico formal (40-60 palabras) solicitando información sobre un curso de español.',
+    wordLimit: { min: 40, max: 60 },
+    keyPoint: 'Formal greetings (Estimado/a Sr./Sra.), clear body, formal closing (Atentamente).',
+    explanation: 'SIELE Task 1 requires adhering to appropriate register and word limits.'
+  }
+];
+
+export default function App() {
+  const [activeTab, setActiveTab] = useState('practice');
+  const [progress, setProgress] = useState(initialProgress);
+  const [storageStatus, setStorageStatus] = useState('Local Store Syncing...');
+
+  // Current Exercise State
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [userText, setUserText] = useState('');
+  const [selectedOption, setSelectedOption] = useState(null);
+  const [builtWords, setBuiltWords] = useState([]);
+  const [availableWords, setAvailableWords] = useState([]);
+  const [matchingSelections, setMatchingSelections] = useState({});
+  const [flashcardStatus, setFlashcardStatus] = useState(null);
+  
+  // Feedback State
+  const [submitted, setSubmitted] = useState(false);
+  const [evaluation, setEvaluation] = useState(null); // 'CORRECT', 'PARTIAL', 'INCORRECT'
+  const [showHint, setShowHint] = useState(false);
+  const [showRule, setShowRule] = useState(false);
+
+  const currentQ = sampleQuestions[currentIndex];
+  const inputRef = useRef(null);
+
+  // Load persistent storage
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem('siele_coach_progress');
+      if (saved) {
+        setProgress(JSON.parse(saved));
+        setStorageStatus('Saved to Local Progress Store');
+      } else {
+        setStorageStatus('Initialized Fresh Progress');
+      }
+    } catch (e) {
+      setStorageStatus('Session Only (Storage Restricted)');
+    }
+  }, []);
+
+  // Sync state to local storage
+  const saveProgressToStorage = (newProgress) => {
+    setProgress(newProgress);
+    try {
+      localStorage.setItem('siele_coach_progress', JSON.stringify(newProgress));
+      setStorageStatus('Saved to Local Progress Store');
+    } catch (e) {
+      setStorageStatus('Session Only (Storage Error)');
+    }
+  };
+
+  // Reset exercise-specific transient state when question changes
+  useEffect(() => {
+    setSubmitted(false);
+    setEvaluation(null);
+    setUserText('');
+    setSelectedOption(null);
+    setShowHint(false);
+    setShowRule(false);
+    setMatchingSelections({});
+    setFlashcardStatus(null);
+
+    if (currentQ.type === 'SENTENCE_BUILDER') {
+      setAvailableWords([...currentQ.words]);
+      setBuiltWords([]);
+    }
+  }, [currentIndex]);
+
+  // Insert Spanish accent into current text entry field
+  const insertAccent = (char) => {
+    setUserText((prev) => prev + char);
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  };
+
+  // Sentence Builder word selection toggles
+  const handleWordClick = (word, index, fromBuilt) => {
+    if (submitted) return;
+    if (fromBuilt) {
+      const updatedBuilt = builtWords.filter((_, i) => i !== index);
+      setBuiltWords(updatedBuilt);
+      setAvailableWords([...availableWords, word]);
+    } else {
+      const updatedAvailable = availableWords.filter((_, i) => i !== index);
+      setAvailableWords(updatedAvailable);
+      setBuiltWords([...builtWords, word]);
+    }
+  };
+
+  // Primary Submission Evaluator
+  const handleSubmit = () => {
+    if (submitted) return;
+    let isCorrect = false;
+    let isPartial = false;
+
+    if (currentQ.type === 'MULTIPLE_CHOICE' || currentQ.type === 'CONVERSATION_SIMULATION') {
+      isCorrect = selectedOption === currentQ.correctAnswer;
+    } else if (currentQ.type === 'FILL_IN_THE_BLANK' || currentQ.type === 'ERROR_CORRECTION') {
+      const cleanUser = userText.trim().toLowerCase();
+      const cleanTarget = currentQ.correctAnswer.toLowerCase();
+      isCorrect = cleanUser === cleanTarget;
+      if (!isCorrect && cleanUser.replace(/[áéíóú]/g, '') === cleanTarget.replace(/[áéíóú]/g, '')) {
+        isPartial = true; // Missing accent mark only
+      }
+    } else if (currentQ.type === 'ENGLISH_TO_SPANISH') {
+      const cleanUser = userText.trim().toLowerCase().replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, "");
+      isCorrect = currentQ.acceptableAnswers.some(ans => 
+        ans.toLowerCase().replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, "") === cleanUser
+      );
+      if (!isCorrect && cleanUser.length > 5) {
+        // Keyword heuristic check
+        isPartial = currentQ.acceptableAnswers.some(ans => 
+          ans.toLowerCase().includes('interesa') && cleanUser.includes('interesa')
+        );
+      }
+    } else if (currentQ.type === 'SENTENCE_BUILDER') {
+      const constructed = builtWords.join(' ');
+      isCorrect = constructed === currentQ.modelAnswer || constructed === currentQ.alternativeOrder?.join(' ');
+    } else if (currentQ.type === 'MATCHING') {
+      const allMatched = currentQ.pairs.every(p => matchingSelections[p.spanish] === p.english);
+      isCorrect = allMatched;
+    } else if (currentQ.type === 'FLASHCARDS') {
+      isCorrect = flashcardStatus === 'KNOW';
+      isPartial = flashcardStatus === 'UNSURE';
+    } else if (currentQ.type === 'VISUAL_EXERCISE' || currentQ.type === 'SIELE_PRACTICE') {
+      isCorrect = userText.trim().length >= 15;
+    }
+
+    const evalResult = isCorrect ? 'CORRECT' : isPartial ? 'PARTIAL' : 'INCORRECT';
+    setEvaluation(evalResult);
+    setSubmitted(true);
+
+    // Update Learner Ledger Stats
+    const updated = {
+      ...progress,
+      totalAttempted: progress.totalAttempted + 1,
+      correct: isCorrect ? progress.correct + 1 : progress.correct,
+      partiallyCorrect: isPartial ? progress.partiallyCorrect + 1 : progress.partiallyCorrect,
+      incorrect: !isCorrect && !isPartial ? progress.incorrect + 1 : progress.incorrect,
+    };
+
+    // Update topic mastery percentage
+    const topic = currentQ.topic;
+    if (topic && updated.topicMastery[topic] !== undefined) {
+      const currentMastery = updated.topicMastery[topic];
+      const delta = isCorrect ? 5 : isPartial ? 2 : -5;
+      updated.topicMastery[topic] = Math.max(0, Math.min(100, currentMastery + delta));
+    }
+
+    saveProgressToStorage(updated);
+  };
+
+  const handleNextQuestion = () => {
+    if (currentIndex < sampleQuestions.length - 1) {
+      setCurrentIndex(currentIndex + 1);
+    } else {
+      setCurrentIndex(0); // Loop or finish set
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-slate-900 text-slate-100 font-sans flex flex-col">
+      {/* Top Header & Navigation */}
+      <header className="bg-slate-800 border-b border-slate-700 sticky top-0 z-50">
+        <div className="max-w-6xl mx-mx-auto px-4 py-3 flex flex-wrap justify-between items-center gap-4">
+          <div className="flex items-center space-x-3">
+            <div className="bg-amber-500 p-2 rounded-lg text-slate-900 font-bold">
+              SIELE
             </div>
-            <div class="bg-slate-800 px-3 py-1.5 rounded border border-slate-700 text-xs">
-                <span class="text-slate-400">Estado:</span> <span class="text-emerald-400 font-bold">16 Módulos Desbloqueados</span>
+            <div>
+              <h1 className="text-lg font-bold text-white leading-tight">Español A2-B1 Mastery Coach</h1>
+              <p className="text-xs text-amber-400 font-medium">Learner: Gabor • Target: SIELE B2</p>
             </div>
+          </div>
+
+          {/* Navigation Controls */}
+          <div className="flex items-center space-x-2">
+            <button
+              onClick={() => setActiveTab('practice')}
+              className={`px-3 py-1.5 rounded-lg text-sm font-medium transition flex items-center space-x-1.5 ${
+                activeTab === 'practice' ? 'bg-amber-500 text-slate-950 font-semibold' : 'bg-slate-700 text-slate-200 hover:bg-slate-600'
+              }`}
+            >
+              <BookOpen size={16} />
+              <span>Interactive Session</span>
+            </button>
+            <button
+              onClick={() => setActiveTab('dashboard')}
+              className={`px-3 py-1.5 rounded-lg text-sm font-medium transition flex items-center space-x-1.5 ${
+                activeTab === 'dashboard' ? 'bg-amber-500 text-slate-950 font-semibold' : 'bg-slate-700 text-slate-200 hover:bg-slate-600'
+              }`}
+            >
+              <BarChart2 size={16} />
+              <span>Progress Dashboard</span>
+            </button>
+          </div>
         </div>
-    </header>
+      </header>
 
-    <!-- Main Container -->
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 grid grid-cols-1 lg:grid-cols-3 gap-8">
+      {/* Main Container */}
+      <main className="flex-1 max-w-6xl w-full mx-auto p-4 md:p-6 grid grid-cols-1 lg:grid-cols-4 gap-6">
         
-        <!-- Left/Center Column: Practice Block & Curriculum Navigator -->
-        <section class="lg:col-span-2 space-y-6">
-            
-            <!-- Module Navigator Panel Grid -->
-            <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 shadow-lg space-y-3">
-                <h3 class="text-sm font-bold text-amber-400 flex items-center gap-2">
-                    <i class="fa-solid fa-compass"></i> Navegador de Módulos (Plan Completo de 4 Meses)
-                </h3>
-                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
-                    <button onclick="changeModule('m1w1')" id="btn_m1w1" class="p-2 rounded bg-amber-500 text-slate-950 font-bold text-left transition-colors border border-slate-700">M1 W1: Indefinido</button>
-                    <button onclick="changeModule('m1w2')" id="btn_m1w2" class="p-2 rounded bg-slate-800 hover:bg-amber-500 hover:text-slate-950 text-left transition-colors font-medium border border-slate-700">M1 W2: Perfecto</button>
-                    <button onclick="changeModule('m1w3')" id="btn_m1w3" class="p-2 rounded bg-slate-800 hover:bg-amber-500 hover:text-slate-950 text-left transition-colors font-medium border border-slate-700">M1 W3: Pluscuam.</button>
-                    <button onclick="changeModule('m1w4')" id="btn_m1w4" class="p-2 rounded bg-slate-800 hover:bg-amber-500 hover:text-slate-950 text-left transition-colors font-medium border border-slate-700">M1 W4: Narrativa</button>
-                    
-                    <button onclick="changeModule('m2w1')" id="btn_m2w1" class="p-2 rounded bg-slate-800 hover:bg-amber-500 hover:text-slate-950 text-left transition-colors font-medium border border-slate-700">M2 W1: Futuro</button>
-                    <button onclick="changeModule('m2w2')" id="btn_m2w2" class="p-2 rounded bg-slate-800 hover:bg-amber-500 hover:text-slate-950 text-left transition-colors font-medium border border-slate-700">M2 W2: Condicional</button>
-                    <button onclick="changeModule('m2w3')" id="btn_m2w3" class="p-2 rounded bg-slate-800 hover:bg-amber-500 hover:text-slate-950 text-left transition-colors font-medium border border-slate-700">M2 W3: Perífrasis</button>
-                    <button onclick="changeModule('m2w4')" id="btn_m2w4" class="p-2 rounded bg-slate-800 hover:bg-amber-500 hover:text-slate-950 text-left transition-colors font-medium border border-slate-700">M2 W4: Conectores</button>
-
-                    <button onclick="changeModule('m3w1')" id="btn_m3w1" class="p-2 rounded bg-slate-800 hover:bg-amber-500 hover:text-slate-950 text-left transition-colors font-medium border border-slate-700">M3 W1: Subjuntivo</button>
-                    <button onclick="changeModule('m3w2')" id="btn_m3w2" class="p-2 rounded bg-slate-800 hover:bg-amber-500 hover:text-slate-950 text-left transition-colors font-medium border border-slate-700">M3 W2: Triggers</button>
-                    <button onclick="changeModule('m3w3')" id="btn_m3w3" class="p-2 rounded bg-slate-800 hover:bg-amber-500 hover:text-slate-950 text-left transition-colors font-medium border border-slate-700">M3 W3: Duda/Cmd</button>
-                    <button onclick="changeModule('m3w4')" id="btn_m3w4" class="p-2 rounded bg-slate-800 hover:bg-amber-500 hover:text-slate-950 text-left transition-colors font-medium border border-slate-700">M3 W4: Reclamación</button>
-
-                    <button onclick="changeModule('m4w1')" id="btn_m4w1" class="p-2 rounded bg-slate-800 hover:bg-amber-500 hover:text-slate-950 text-left transition-colors font-medium border border-slate-700">M4 W1: Lectura</button>
-                    <button onclick="changeModule('m4w2')" id="btn_m4w2" class="p-2 rounded bg-slate-800 hover:bg-amber-500 hover:text-slate-950 text-left transition-colors font-medium border border-slate-700">M4 W2: Escritura</button>
-                    <button onclick="changeModule('m4w3')" id="btn_m4w3" class="p-2 rounded bg-slate-800 hover:bg-amber-500 hover:text-slate-950 text-left transition-colors font-medium border border-slate-700">M4 W3: Oral</button>
-                    <button onclick="changeModule('m4w4')" id="btn_m4w4" class="p-2 rounded bg-slate-800 hover:bg-amber-500 hover:text-slate-950 text-left transition-colors font-medium border border-slate-700">M4 W4: Simulación</button>
-                </div>
-            </div>
-
-            <!-- Active Module Header -->
-            <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 shadow-lg relative overflow-hidden">
-                <div class="absolute top-0 right-0 bg-amber-500/10 text-amber-400 font-bold text-xs uppercase px-3 py-1 rounded-bl-lg border-l border-b border-amber-500/20">
-                    SIELE & DELE B1 Mastery • Meta 80%
-                </div>
-                <h2 id="moduleTitle" class="text-2xl font-bold text-amber-400 mb-2">Mes 1, Semana 1: Pretérito Indefinido vs. Imperfecto</h2>
-                <p id="moduleDescription" class="text-slate-300 text-sm leading-relaxed">
-                    Escribe tus respuestas directamente dentro de cada oración o usa el botón de voz. Pulsa Enter o evalúa para comprobar tus respuestas.
-                </p>
-            </div>
-
-            <!-- Accent Toolbar -->
-            <div class="bg-slate-900 border border-slate-800 rounded-xl p-3 flex items-center justify-between shadow-sm">
-                <span class="text-xs font-semibold text-slate-400 flex items-center gap-1">
-                    <i class="fa-solid fa-keyboard text-amber-400"></i> Acentos Rápidos:
+        {/* Left Side Status Sidebar */}
+        <aside className="lg:col-span-1 space-y-4">
+          {/* Learner Card */}
+          <div className="bg-slate-800 rounded-xl p-4 border border-slate-700 shadow-sm">
+            <h2 className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3">Learner Summary</h2>
+            <div className="space-y-2 text-sm">
+              <div className="flex justify-between py-1 border-b border-slate-700/50">
+                <span className="text-slate-400">CEFR Level:</span>
+                <span className="font-semibold text-amber-400">{progress.cefrLevel}</span>
+              </div>
+              <div className="flex justify-between py-1 border-b border-slate-700/50">
+                <span className="text-slate-400">Study Streak:</span>
+                <span className="font-semibold text-orange-400 flex items-center gap-1">
+                  <Flame size={14} className="fill-orange-400" /> {progress.streak} Day
                 </span>
-                <div class="flex space-x-1 sm:space-x-2">
-                    <button type="button" onclick="insertAccent('á')" class="accent-btn">á</button>
-                    <button type="button" onclick="insertAccent('é')" class="accent-btn">é</button>
-                    <button type="button" onclick="insertAccent('í')" class="accent-btn">í</button>
-                    <button type="button" onclick="insertAccent('ó')" class="accent-btn">ó</button>
-                    <button type="button" onclick="insertAccent('ú')" class="accent-btn">ú</button>
-                    <button type="button" onclick="insertAccent('ñ')" class="accent-btn">ñ</button>
-                </div>
+              </div>
+              <div className="flex justify-between py-1 border-b border-slate-700/50">
+                <span className="text-slate-400">Overall Accuracy:</span>
+                <span className="font-semibold text-emerald-400">
+                  {progress.totalAttempted > 0 ? Math.round((progress.correct / progress.totalAttempted) * 100) : 0}%
+                </span>
+              </div>
             </div>
 
-            <!-- Interactive Exercise Form -->
-            <div class="bg-slate-900 border border-slate-800 rounded-xl p-6 shadow-xl space-y-6">
-                <div class="flex items-center justify-between border-b border-slate-800 pb-4">
-                    <h3 id="blockTitle" class="text-lg font-bold text-slate-100 flex items-center gap-2">
-                        <i class="fa-solid fa-pen-to-square text-amber-400"></i> Ejercicios Prácticos
-                    </h3>
-                    <span class="text-xs text-slate-400">Preguntas Interactivas</span>
-                </div>
-
-                <form id="exerciseForm" onsubmit="event.preventDefault(); evaluateBlock();" class="space-y-6">
-                    <div id="questionsContainer" class="space-y-6"></div>
-                    <div class="pt-4 border-t border-slate-800 flex items-center justify-between">
-                        <button type="button" onclick="resetForm()" class="text-xs text-slate-400 hover:text-slate-200 transition-colors">
-                            <i class="fa-solid fa-rotate-right me-1"></i> Reiniciar
-                        </button>
-                        <button type="submit" class="bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold px-6 py-2.5 rounded-lg transition-colors shadow-lg flex items-center gap-2 cursor-pointer">
-                            <i class="fa-solid fa-check"></i> Evaluar Respuestas
-                        </button>
-                    </div>
-                </form>
-                <div id="feedbackResult" class="hidden p-4 rounded-lg border transition-all"></div>
+            <div className="mt-4 pt-2">
+              <div className="flex justify-between text-xs text-slate-400 mb-1">
+                <span>Storage Status</span>
+              </div>
+              <p className="text-xs bg-slate-900/60 text-slate-300 p-2 rounded border border-slate-700 flex items-center gap-1.5">
+                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                {storageStatus}
+              </p>
             </div>
+          </div>
 
-            <!-- BILINGUAL GRAMMAR RULES & STUDY NOTES CARDS -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div class="bg-slate-900 border border-slate-800 p-5 rounded-xl space-y-3">
-                    <h4 class="text-amber-400 font-bold text-sm flex items-center gap-2">
-                        <i class="fa-solid fa-book-bookmark"></i> Regla Gramatical / Grammar Rule
-                    </h4>
-                    <p id="ruleTextEs" class="text-xs text-slate-300 leading-relaxed">El Imperfecto describe escenarios. El Indefinido ejecuta acciones puntuales.</p>
-                    <p id="ruleTextEn" class="text-xs text-slate-400 italic leading-relaxed">Imperfect sets the background. Preterite executes completed actions.</p>
+          {/* Grammar Topic Mastery Breakdown */}
+          <div className="bg-slate-800 rounded-xl p-4 border border-slate-700 shadow-sm">
+            <h2 className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3">Grammar Mastery</h2>
+            <div className="space-y-3">
+              {Object.entries(progress.topicMastery).map(([topic, pct]) => (
+                <div key={topic}>
+                  <div className="flex justify-between text-xs mb-1">
+                    <span className="text-slate-300 font-medium">{topic}</span>
+                    <span className={`font-bold ${pct >= 75 ? 'text-emerald-400' : pct >= 50 ? 'text-amber-400' : 'text-rose-400'}`}>
+                      {pct}%
+                    </span>
+                  </div>
+                  <div className="w-full bg-slate-700 rounded-full h-1.5">
+                    <div 
+                      className={`h-1.5 rounded-full transition-all duration-500 ${
+                        pct >= 75 ? 'bg-emerald-500' : pct >= 50 ? 'bg-amber-500' : 'bg-rose-500'
+                      }`} 
+                      style={{ width: `${pct}%` }}
+                    ></div>
+                  </div>
                 </div>
-
-                <div class="bg-slate-900 border border-slate-800 p-5 rounded-xl space-y-3">
-                    <h4 class="text-emerald-400 font-bold text-sm flex items-center gap-2">
-                        <i class="fa-solid fa-bolt"></i> Estructura Profesional / Business Structure
-                    </h4>
-                    <p id="ruleExtraEs" class="text-xs text-slate-300 leading-relaxed">Usa los tiempos pasados para redactar informes de proyectos y anécdotas profesionales.</p>
-                    <p id="ruleExtraEn" class="text-xs text-slate-400 italic leading-relaxed">Use past tenses to draft project updates and professional anecdotes.</p>
-                </div>
+              ))}
             </div>
-        </section>
-
-        <!-- Right Column: Progress & Flashcards -->
-        <aside class="space-y-6">
-            <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 shadow-lg space-y-4">
-                <h3 class="text-base font-bold text-slate-100 flex items-center gap-2">
-                    <i class="fa-solid fa-chart-line text-emerald-400"></i> Progreso de Dominio
-                </h3>
-                <div class="space-y-2">
-                    <div class="flex justify-between text-xs font-semibold">
-                        <span class="text-slate-400">Puntuación Actual:</span>
-                        <span id="scorePercent" class="text-amber-400 font-bold text-sm">0%</span>
-                    </div>
-                    <div class="w-full bg-slate-800 rounded-full h-3 overflow-hidden border border-slate-700">
-                        <div id="progressBar" class="bg-amber-500 h-3 rounded-full transition-all duration-500" style="width: 0%"></div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Flashcards Deck -->
-            <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 shadow-lg space-y-4">
-                <div class="flex justify-between items-center">
-                    <h3 class="text-base font-bold text-slate-100 flex items-center gap-2">
-                        <i class="fa-solid fa-layer-group text-amber-400"></i> Tarjetas Vocabulario (15)
-                    </h3>
-                    <span id="cardCounter" class="text-xs text-slate-400">1 / 15</span>
-                </div>
-                <div id="flashcard" onclick="flipCard()" class="bg-slate-800 border border-slate-700 rounded-xl p-6 min-h-[140px] flex flex-col items-center justify-center text-center cursor-pointer hover:border-amber-400/50 transition-all select-none group">
-                    <span id="cardCategory" class="text-[10px] uppercase font-bold text-amber-400 mb-1">Concepto</span>
-                    <p id="cardText" class="text-sm font-semibold text-slate-200 group-hover:text-amber-300 transition-colors">el consultor</p>
-                    <span class="text-[10px] text-slate-500 mt-3"><i class="fa-solid fa-rotate me-1"></i> Haz clic para ver significado</span>
-                </div>
-                <div class="flex justify-between space-x-2">
-                    <button onclick="prevCard()" class="bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs px-3 py-1.5 rounded border border-slate-700 transition-colors cursor-pointer">Anterior</button>
-                    <button onclick="speakFlashcard()" class="bg-slate-800 hover:bg-slate-700 text-amber-400 text-xs px-3 py-1.5 rounded border border-slate-700 transition-colors cursor-pointer"><i class="fa-solid fa-volume-high"></i> Audio</button>
-                    <button onclick="nextCard()" class="bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs px-3 py-1.5 rounded border border-slate-700 transition-colors cursor-pointer">Siguiente</button>
-                </div>
-            </div>
+          </div>
         </aside>
-    </main>
 
-    <script>
-        const exerciseData = {
-            "m1w1": {
-                title: "Mes 1, Semana 1: Indefinido vs. Imperfecto",
-                description: "Domina el contraste entre el escenario (imperfecto) y la acción puntual (indefinido).",
-                ruleEs: "El Imperfecto establece el fondo y los hábitos. El Indefinido ejecuta acciones completadas.",
-                ruleEn: "Imperfect sets the background and habits. Preterite executes completed actions.",
-                extraEs: "Ejemplo: Mientras yo estudiaba, sonó el teléfono.",
-                extraEn: "Example: While I was studying, the phone rang.",
-                questions: [
-                    { id: "q1", prefix: "1. Mientras yo", suffix: "en mi habitación, sonó el teléfono.", answer: "estudiaba", explanation: "Imperfecto para acción en desarrollo.", hint: "estudiar" },
-                    { id: "q2", prefix: "2. El hotel", suffix: "muy grande y tenía una piscina hermosa.", answer: "era", explanation: "Imperfecto para descripción.", hint: "ser" },
-                    { id: "q3", prefix: "3. Ayer", suffix: "al supermercado a comprar comida.", answer: "fui", explanation: "Indefinido para acción puntual.", hint: "ir" },
-                    { id: "q4", prefix: "4. Cuando Juan", suffix: "niño, siempre jugaba al fútbol.", answer: "era", explanation: "Imperfecto para edad.", hint: "ser" },
-                    { id: "q5", prefix: "5. El sábado pasado, nosotros", suffix: "en un restaurante mexicano.", answer: "comimos", explanation: "Indefinido para evento completado.", hint: "comer" }
-                ]
-            },
-            "m1w2": {
-                title: "Mes 1, Semana 2: Pretérito Perfecto",
-                description: "Puente entre el pasado y el presente para experiencias de vida y tiempo no concluido.",
-                ruleEs: "Usa el Pretérito Perfecto (he, has... + participio) para periodos de tiempo abiertos (hoy, este año).",
-                ruleEn: "Use Present Perfect for ongoing time frames or life experiences.",
-                extraEs: "Ejemplo: Esta mañana he tenido una reunión importante.",
-                extraEn: "Example: This morning I have had an important meeting.",
-                questions: [
-                    { id: "q1", prefix: "1. Hoy", suffix: "un día muy ocupado en la oficina.", answer: "ha sido", explanation: "Pretérito perfecto para 'hoy'.", hint: "ha sido" },
-                    { id: "q2", prefix: "2. Esta semana", suffix: "tres informes financieros.", answer: "he escrito", explanation: "Pretérito perfecto para semana actual.", hint: "he escrito" },
-                    { id: "q3", prefix: "3. ¿Alguna vez", suffix: "tú a Madrid por trabajo?", answer: "has viajado", explanation: "Experiencia de vida.", hint: "has viajado" },
-                    { id: "q4", prefix: "4. Este mes nosotros", suffix: "dos contratos nuevos.", answer: "hemos firmado", explanation: "Acción en periodo actual.", hint: "hemos firmado" }
-                ]
-            },
-            "m1w3": {
-                title: "Mes 1, Semana 3: Pretérito Pluscuamperfecto",
-                description: "El pasado antes del pasado para justificaciones y cronología compleja.",
-                ruleEs: "Usa el Pluscuamperfecto (había... + participio) para acciones ocurridas antes de otro evento pasado.",
-                ruleEn: "Use Past Perfect (had + participle) for an action prior to another past action.",
-                extraEs: "Ejemplo: Cuando llegué, el director ya había salido.",
-                extraEn: "Example: When I arrived, the director had already left.",
-                questions: [
-                    { id: "q1", prefix: "1. Cuando llegaron, Carlos ya", suffix: "la cena.", answer: "había cocinado", explanation: "Pluscuamperfecto para la acción anterior.", hint: "había cocinado" },
-                    { id: "q2", prefix: "2. No pude abrir porque yo", suffix: "las llaves.", answer: "había perdido", explanation: "Causa anterior.", hint: "había perdido" },
-                    { id: "q3", prefix: "3. Antes de trabajar aquí, yo ya", suffix: "mi carrera.", answer: "había terminado", explanation: "Acción anterior.", hint: "había terminado" }
-                ]
-            },
-            "m1w4": {
-                title: "Mes 1, Semana 4: Maestría Narrativa y Conectores",
-                description: "Integración de tiempos pasados con marcadores discursivos.",
-                ruleEs: "Combina imperfecto, indefinido y pluscuamperfecto usando conectores como 'sin embargo'.",
-                ruleEn: "Combine past tenses using cohesive connectors.",
-                extraEs: "Ejemplo: Hacía sol; sin embargo, decidí llevar paraguas.",
-                extraEn: "Example: It was sunny; however, I took an umbrella.",
-                questions: [
-                    { id: "q1", prefix: "1. Ayer decidí salir a correr;", suffix: ", empezó a llover fuertemente.", answer: "sin embargo", explanation: "Conector de contraste.", hint: "sin embargo" },
-                    { id: "q2", prefix: "2. El lunes pasado Elena", suffix: "cambiar de apartamento.", answer: "decidió", explanation: "Indefinido para decisión.", hint: "decidió" }
-                ]
-            },
-            "m2w1": {
-                title: "Mes 2, Semana 1: El Futuro Simple",
-                description: "Proyecciones, planes y predicciones tecnológicas.",
-                ruleEs: "Añade las terminaciones (-é, -ás, -á...) al infinitivo. Cuidado con irregulares (haré, tendré).",
-                ruleEn: "Add future endings directly to the infinitive.",
-                extraEs: "Ejemplo: El próximo año cambiaré de puesto.",
-                extraEn: "Example: Next year I will change position.",
-                questions: [
-                    { id: "q1", prefix: "1. El mes que viene, mi equipo y yo", suffix: "un viaje.", answer: "haremos", explanation: "Futuro irregular de hacer.", hint: "haremos" },
-                    { id: "q2", prefix: "2. Si estudio duro, sé que", suffix: "mejores oportunidades.", answer: "tendré", explanation: "Futuro irregular de tener.", hint: "tendré" }
-                ]
-            },
-            "m2w2": {
-                title: "Mes 2, Semana 2: El Condicional Simple",
-                description: "Consejos formales y escenarios hipotéticos (-aría).",
-                ruleEs: "Usa el condicional para dar consejos o hipótesis ideales.",
-                ruleEn: "Use conditional for polite advice and hypotheses.",
-                extraEs: "Ejemplo: Deberías hablar con el gerente.",
-                extraEn: "Example: You should speak with the manager.",
-                questions: [
-                    { id: "q1", prefix: "1. Yo en tu lugar,", suffix: "con el director antes de firmar.", answer: "hablaría", explanation: "Condicional para consejos.", hint: "hablaría" },
-                    { id: "q2", prefix: "2. Si tuviera más presupuesto,", suffix: "una campaña.", answer: "haría", explanation: "Hipótesis con condicional.", hint: "haría" }
-                ]
-            },
-            "m2w3": {
-                title: "Mes 2, Semana 3: Perífrasis Verbales",
-                description: "Estructuras de duración y repetición.",
-                ruleEs: "Usa 'llevar + gerundio' para duración y 'volver a + infinitivo' para repetición.",
-                ruleEn: "Use periphrasis to express duration or repeated actions.",
-                extraEs: "Ejemplo: Llevo dos años trabajando aquí.",
-                extraEn: "Example: I have been working here for two years.",
-                questions: [
-                    { id: "q1", prefix: "1. Yo", suffix: "estudiando español desde 2024.", answer: "llevo", explanation: "Perífrasis de duración.", hint: "llevo" },
-                    { id: "q2", prefix: "2. Prometo que no volveré a", suffix: "el mismo error.", answer: "cometer", suffix: "", hint: "cometer", explanation: "Perífrasis de repetición." }
-                ]
-            },
-            "m2w4": {
-                title: "Mes 2, Semana 4: Cohesión y Conectores",
-                description: "Conectores discursivos (además, sin embargo, por lo tanto).",
-                ruleEs: "Estructura argumentos contrastando ideas o indicando consecuencias.",
-                ruleEn: "Structure arguments using connectors.",
-                extraEs: "Ejemplo: El proyecto es costoso; por lo tanto, necesitamos aprobación.",
-                extraEn: "Example: The project is costly; therefore, we need approval.",
-                questions: [
-                    { id: "q1", prefix: "1. Me encanta la propuesta;", suffix: ", nunca he trabajado allí.", answer: "sin embargo", explanation: "Conector de contraste.", hint: "sin embargo" }
-                ]
-            },
-            "m3w1": {
-                title: "Mes 3, Semana 1: Presente de Subjuntivo",
-                description: "Mecánica del modo subjuntivo (yo del presente, vocales opuestas).",
-                ruleEs: "Toma la forma 'yo', quita la -o y añade la vocal opuesta (-e o -a).",
-                ruleEn: "Take 'yo' form, drop -o, flip vowel.",
-                extraEs: "Ejemplo: Espero que tú trabajes bien.",
-                extraEn: "Example: I hope you work well.",
-                questions: [
-                    { id: "q1", prefix: "1. Quiero que tú", suffix: "con el gerente.", answer: "hables", explanation: "Subjuntivo de hablar.", hint: "hables" },
-                    { id: "q2", prefix: "2. Me alegra que él", suffix: "comida saludable.", answer: "coma", explanation: "Subjuntivo de comer.", hint: "coma" }
-                ]
-            },
-            "m3w2": {
-                title: "Mes 3, Semana 2: Triggers de Deseos y Emociones",
-                description: "Subjuntivo tras deseos y emociones con cambio de sujeto.",
-                ruleEs: "Requiere cambio de sujeto a través de 'que'.",
-                ruleEn: "Requires a change of subject across 'que'.",
-                extraEs: "Ejemplo: Me molesta que mi jefe no escuche.",
-                extraEn: "Example: It bothers me that my boss doesn't listen.",
-                questions: [
-                    { id: "q1", prefix: "1. Yo quiero", suffix: "una casa grande.", answer: "comprar", explanation: "Infinitivo sin cambio de sujeto.", hint: "comprar" },
-                    { id: "q2", prefix: "2. Yo quiero que mi hermano", suffix: "una casa grande.", answer: "compre", explanation: "Subjuntivo con cambio de sujeto.", hint: "compre" }
-                ]
-            },
-            "m3w3": {
-                title: "Mes 3, Semana 3: Duda, Negación y Mandatos",
-                description: "Subjuntivo con duda ('no creo que') e imperativo formal.",
-                ruleEs: "La certeza usa indicativo; la duda usa subjuntivo.",
-                ruleEn: "Certainty uses indicative; doubt triggers subjunctive.",
-                extraEs: "Ejemplo: No creo que el informe esté listo.",
-                extraEn: "Example: I don't think the report is ready.",
-                questions: [
-                    { id: "q1", prefix: "1. Creo que el médico", suffix: "razón.", answer: "tiene", explanation: "Indicativo tras 'creo que'.", hint: "tiene" },
-                    { id: "q2", prefix: "2. No creo que el médico", suffix: "razón.", answer: "tenga", explanation: "Subjuntivo tras 'no creo que'.", hint: "tenga" }
-                ]
-            },
-            "m3w4": {
-                title: "Mes 3, Semana 4: Reclamaciones y Problemas",
-                description: "Resolución de incidencias y quejas formales.",
-                ruleEs: "Usa fórmulas formales para reportar averías y solicitar reembolsos.",
-                ruleEn: "Use formal structures to report faults.",
-                extraEs: "Ejemplo: Solicito que me devuelvan el dinero.",
-                extraEn: "Example: I request a refund.",
-                questions: [
-                    { id: "q1", prefix: "1. Le escribo porque el aparato tiene una", suffix: ".", answer: "avería", explanation: "Vocabulario de fallo técnico.", hint: "avería" }
-                ]
-            },
-            "m4w1": {
-                title: "Mes 4, Semana 1: Comprensión Lectora y Auditiva",
-                description: "Estrategias de skimming y sinónimos.",
-                ruleEs: "Busca sinónimos en las opciones de respuesta.",
-                ruleEn: "Scan for semantic synonyms in reading tasks.",
-                extraEs: "Ejemplo: 'Cerrado por obras' equivale a 'No se puede visitar por reparaciones'.",
-                extraEn: "Example: 'Closed for work' equals repairs.",
-                questions: [
-                    { id: "q1", prefix: "1. Si un texto dice 'Solicitar un empleo', su sinónimo es", suffix: "para un puesto.", answer: "postularse", explanation: "Sinónimo de buscar trabajo.", hint: "postularse" }
-                ]
-            },
-            "m4w2": {
-                title: "Mes 4, Semana 2: Entrenamiento de Escritura",
-                description: "Fórmulas estructurales prememorizadas.",
-                ruleEs: "Ahorra tiempo usando fórmulas fijas de saludo en correos formales.",
-                ruleEn: "Save time using pre-memorized structural greetings.",
-                extraEs: "Ejemplo: 'Estimado Director: Le escribo con motivo de...'",
-                extraEn: "Example: Dear Director...",
-                questions: [
-                    { id: "q1", prefix: "1. En un correo formal a una empresa, el saludo es", suffix: "Señor:", answer: "estimado", explanation: "Cortesía formal.", hint: "estimado" }
-                ]
-            },
-            "m4w3": {
-                title: "Mes 4, Semana 3: Estrategias Orales y Muletillas",
-                description: "Sustitución de ruidos por conectores fluidos.",
-                ruleEs: "Mantén la fluidez usando conectores de pensamiento.",
-                ruleEn: "Maintain fluency using Spanish fillers.",
-                extraEs: "Ejemplo: 'A ver, en mi opinión...'",
-                extraEn: "Example: 'Let's see...'",
-                questions: [
-                    { id: "q1", prefix: "1. Cuando necesitas pensar, puedes decir '", suffix: "...'", answer: "a ver", explanation: "Conector oral de pausa.", hint: "a ver" }
-                ]
-            },
-            "m4w4": {
-                title: "Mes 4, Semana 4: Simulación de Examen",
-                description: "Práctica cronometrada y auditoría de rendimiento.",
-                ruleEs: "Realiza simulacros completos sin pausas.",
-                ruleEn: "Complete full simulations under timer constraints.",
-                extraEs: "Ejemplo: 50 minutos para Escritura.",
-                extraEn: "Example: 50 minutes for Writing.",
-                questions: [
-                    { id: "q1", prefix: "1. Duración del módulo de Escritura en SIELE (minutos):", suffix: "", answer: "50", explanation: "Duración estándar.", hint: "50" }
-                ]
-            }
-        };
+        {/* Center / Primary Interactive Workspace */}
+        <section className="lg:col-span-3">
+          {activeTab === 'practice' ? (
+            <div className="bg-slate-800 rounded-xl border border-slate-700 p-5 md:p-6 shadow-md space-y-6">
+              
+              {/* Question Header Status */}
+              <div className="flex flex-wrap justify-between items-center pb-4 border-b border-slate-700 gap-2">
+                <div className="flex items-center space-x-2">
+                  <span className="px-2.5 py-1 bg-amber-500/10 text-amber-400 border border-amber-500/20 rounded-md text-xs font-bold">
+                    Question {currentIndex + 1} of {sampleQuestions.length}
+                  </span>
+                  <span className="px-2.5 py-1 bg-slate-700 text-slate-300 rounded-md text-xs font-medium">
+                    Topic: {currentQ.topic}
+                  </span>
+                </div>
+                <div className="text-xs text-slate-400 flex items-center gap-2">
+                  <span>Current Score: <strong className="text-emerald-400">{progress.correct}</strong>/{progress.totalAttempted}</span>
+                </div>
+              </div>
 
-        const flashcards = [
-            { cat: "Mes 1", q: "el pretérito indefinido", a: "Preterite tense for completed past actions." },
-            { cat: "Mes 1", q: "el pretérito imperfecto", a: "Imperfect tense for background and habits." },
-            { cat: "Mes 1", q: "el pretérito perfecto", a: "Present perfect for ongoing time frames." },
-            { cat: "Mes 1", q: "el pluscuamperfecto", a: "Past perfect for an action prior to another past action." },
-            { cat: "Mes 2", q: "el futuro simple", a: "Simple future tense for predictions (-é, -ás...)." },
-            { cat: "Mes 2", q: "el condicional simple", a: "Conditional tense for polite advice (-aría)." },
-            { cat: "Mes 2", q: "las perífrasis verbales", a: "Structures like 'llevar + gerundio'." },
-            { cat: "Mes 2", q: "los conectores discursivos", a: "Connectors like 'sin embargo' and 'por lo tanto'." },
-            { cat: "Mes 3", q: "el presente de subjuntivo", a: "Subjunctive mood for doubts and wishes." },
-            { cat: "Mes 3", q: "el cambio de sujeto", a: "Grammatical shift across 'que' to trigger subjunctive." },
-            { cat: "Mes 3", q: "el imperativo formal", a: "Formal commands using 'usted'." },
-            { cat: "Mes 3", q: "la avería y el reembolso", a: "Technical fault and refund." },
-            { cat: "Mes 4", q: "el skimming y los sinónimos", a: "Reading strategy for paraphrased options." },
-            { cat: "Mes 4", q: "la redacción cronometrada", a: "Writing speed training under timer constraints." },
-            { cat: "Mes 4", q: "las muletillas y la fluidez", a: "Fillers ('A ver...', 'Pues...') to avoid pauses." }
-        ];
+              {/* Question Instruction */}
+              <div>
+                <h3 className="text-base md:text-lg font-semibold text-amber-300 mb-1">QUESTION</h3>
+                <p className="text-slate-200">{currentQ.question}</p>
+                {currentQ.context && (
+                  <p className="mt-2 p-3 bg-slate-900/80 rounded-lg text-slate-200 font-serif text-lg italic border-l-4 border-amber-500">
+                    "{currentQ.context}"
+                  </p>
+                )}
+              </div>
 
-        let currentModuleKey = "m1w1";
-        let activeInputId = null;
-        let currentCardIndex = 0;
-        let cardFlipped = false;
+              {/* Spanish Accent Keyboard Helper */}
+              {(currentQ.type === 'FILL_IN_THE_BLANK' || 
+                currentQ.type === 'ENGLISH_TO_SPANISH' || 
+                currentQ.type === 'ERROR_CORRECTION' || 
+                currentQ.type === 'VISUAL_EXERCISE' || 
+                currentQ.type === 'SIELE_PRACTICE') && (
+                <div className="bg-slate-900/40 p-2.5 rounded-lg border border-slate-700/80">
+                  <div className="text-xs text-slate-400 mb-1.5 flex items-center gap-1 font-medium">
+                    <span>Special Spanish Keyboard Accents (Click to insert):</span>
+                  </div>
+                  <div className="flex flex-wrap gap-1.5">
+                    {['á', 'é', 'í', 'ó', 'ú', 'ñ', 'ü', '¿', '¡'].map((char) => (
+                      <button
+                        key={char}
+                        type="button"
+                        onClick={() => insertAccent(char)}
+                        className="w-8 h-8 bg-slate-700 hover:bg-amber-500 hover:text-slate-950 text-amber-300 font-semibold rounded transition flex items-center justify-center text-sm shadow-sm"
+                      >
+                        {char}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
 
-        document.addEventListener('DOMContentLoaded', () => { loadModule(currentModuleKey); updateFlashcard(); });
+              {/* ANSWER AREA - Dynamic Interactive Controls based on Exercise Type */}
+              <div className="py-2">
+                <h4 className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3">ANSWER AREA</h4>
 
-        function changeModule(key) {
-            document.querySelectorAll('.grid button').forEach(b => b.classList.remove('bg-amber-500', 'text-slate-950', 'font-bold'));
-            const activeBtn = document.getElementById('btn_' + key);
-            if (activeBtn) {
-                activeBtn.classList.add('bg-amber-500', 'text-slate-950', 'font-bold');
-            }
-            loadModule(key);
-        }
+                {/* TYPE 1 & 10: Multiple Choice / Conversation Simulation */}
+                {(currentQ.type === 'MULTIPLE_CHOICE' || currentQ.type === 'CONVERSATION_SIMULATION') && (
+                  <div className="space-y-2.5">
+                    {currentQ.partnerPrompt && (
+                      <div className="p-3 bg-slate-900 rounded-lg text-slate-300 text-sm mb-3 border-l-2 border-slate-500">
+                        <strong className="text-amber-400">Partner:</strong> "{currentQ.partnerPrompt}"
+                      </div>
+                    )}
+                    {currentQ.options.map((opt) => (
+                      <button
+                        key={opt.id}
+                        disabled={submitted}
+                        onClick={() => setSelectedOption(opt.id)}
+                        className={`w-full p-3.5 rounded-lg text-left transition flex items-start space-x-3 border ${
+                          selectedOption === opt.id
+                            ? 'bg-amber-500/10 border-amber-500 text-amber-200'
+                            : 'bg-slate-900/60 border-slate-700 text-slate-200 hover:bg-slate-700/50'
+                        }`}
+                      >
+                        <span className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold shrink-0 mt-0.5 ${
+                          selectedOption === opt.id ? 'bg-amber-500 text-slate-950' : 'bg-slate-700 text-slate-300'
+                        }`}>
+                          {opt.id}
+                        </span>
+                        <span className="text-sm font-medium leading-relaxed">{opt.text}</span>
+                      </button>
+                    ))}
+                  </div>
+                )}
 
-        function loadModule(key) {
-            currentModuleKey = key;
-            const data = exerciseData[key];
-            if (!data) return;
-            document.getElementById('moduleTitle').textContent = data.title;
-            document.getElementById('moduleDescription').textContent = data.description;
-            document.getElementById('blockTitle').innerHTML = `<i class="fa-solid fa-pen-to-square text-amber-400"></i> Ejercicios Prácticos (${key.toUpperCase()})`;
-            
-            document.getElementById('ruleTextEs').textContent = data.ruleEs;
-            document.getElementById('ruleTextEn').textContent = data.ruleEn;
-            document.getElementById('ruleExtraEs').textContent = data.extraEs;
-            document.getElementById('ruleExtraEn').textContent = data.extraEn;
+                {/* TYPE 2: Fill in the Blank */}
+                {currentQ.type === 'FILL_IN_THE_BLANK' && (
+                  <div className="bg-slate-900/60 p-4 rounded-xl border border-slate-700 flex flex-wrap items-center gap-2 text-base md:text-lg">
+                    <span>{currentQ.sentenceBefore}</span>
+                    <input
+                      ref={inputRef}
+                      type="text"
+                      disabled={submitted}
+                      value={userText}
+                      onChange={(e) => setUserText(e.target.value)}
+                      placeholder="type here..."
+                      className="bg-slate-800 border-2 border-amber-500/60 focus:border-amber-400 text-amber-300 px-3 py-1 rounded font-semibold focus:outline-none min-w-[140px]"
+                    />
+                    <span>{currentQ.sentenceAfter}</span>
+                  </div>
+                )}
 
-            const container = document.getElementById('questionsContainer');
-            container.innerHTML = '';
-            data.questions.forEach((q) => {
-                const qDiv = document.createElement('div');
-                qDiv.className = 'space-y-2 bg-slate-950 p-4 rounded-lg border border-slate-800/80';
-                qDiv.innerHTML = `
-                    <div class="text-sm text-slate-200 flex flex-wrap items-center gap-2 leading-relaxed">
-                        <span>${q.prefix}</span>
-                        <input type="text" id="${q.id}" class="inline-input" placeholder="${q.hint || 'Escribe aquí...'}" onfocus="setActiveInput('${q.id}')" onkeydown="handleInputKeydown(event)">
-                        <span>${q.suffix || ''}</span>
-                        <button type="button" onclick="startSpeechRecognition('${q.id}')" class="bg-slate-800 hover:bg-slate-700 text-amber-400 text-xs px-2.5 py-1.5 rounded border border-slate-700 cursor-pointer"><i class="fa-solid fa-microphone"></i> Voz</button>
+                {/* TYPE 3 & 4 & 5 (Text Entry): English to Spanish / Error Correction */}
+                {(currentQ.type === 'ENGLISH_TO_SPANISH' || currentQ.type === 'ERROR_CORRECTION') && (
+                  <div className="space-y-3">
+                    {currentQ.promptEnglish && (
+                      <div className="p-3 bg-slate-900/70 rounded-lg text-slate-300 text-sm">
+                        <span className="text-slate-400 font-medium">English Prompt: </span>
+                        <span className="font-semibold text-white">{currentQ.promptEnglish}</span>
+                      </div>
+                    )}
+                    {currentQ.incorrectSentence && (
+                      <div className="p-3 bg-rose-950/30 border border-rose-900/50 rounded-lg text-rose-200 text-sm">
+                        <span className="text-rose-400 font-medium">Incorrect Sentence: </span>
+                        <span className="line-through">{currentQ.incorrectSentence}</span>
+                      </div>
+                    )}
+                    <textarea
+                      ref={inputRef}
+                      disabled={submitted}
+                      rows={3}
+                      value={userText}
+                      onChange={(e) => setUserText(e.target.value)}
+                      placeholder="Escribe tu respuesta en español..."
+                      className="w-full bg-slate-900 border border-slate-700 focus:border-amber-500 text-slate-100 p-3 rounded-lg focus:outline-none resize-none"
+                    />
+                  </div>
+                )}
+
+                {/* TYPE 6: Sentence Builder (Interactive Drag/Click blocks) */}
+                {currentQ.type === 'SENTENCE_BUILDER' && (
+                  <div className="space-y-4">
+                    {/* Active Construction Zone */}
+                    <div className="min-h-[60px] p-3 bg-slate-900 rounded-lg border-2 border-dashed border-slate-700 flex flex-wrap gap-2 items-center">
+                      {builtWords.length === 0 ? (
+                        <span className="text-slate-500 text-sm italic">Click word blocks below to construct your sentence...</span>
+                      ) : (
+                        builtWords.map((word, idx) => (
+                          <button
+                            key={idx}
+                            disabled={submitted}
+                            onClick={() => handleWordClick(word, idx, true)}
+                            className="bg-amber-500 hover:bg-amber-400 text-slate-950 font-semibold px-3 py-1.5 rounded-md text-sm transition shadow"
+                          >
+                            {word}
+                          </button>
+                        ))
+                      )}
                     </div>
-                    <div id="feedback_${q.id}" class="text-xs hidden pt-1"></div>
-                `;
-                container.appendChild(qDiv);
-            });
-            document.getElementById('feedbackResult').className = 'hidden';
-            resetScoreDisplay();
-        }
+                    {/* Available Bank */}
+                    <div className="flex flex-wrap gap-2">
+                      {availableWords.map((word, idx) => (
+                        <button
+                          key={idx}
+                          disabled={submitted}
+                          onClick={() => handleWordClick(word, idx, false)}
+                          className="bg-slate-700 hover:bg-slate-600 text-slate-200 font-medium px-3 py-1.5 rounded-md text-sm transition"
+                        >
+                          {word}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
 
-        function setActiveInput(id) { activeInputId = id; }
+                {/* TYPE 7: Matching Activity */}
+                {currentQ.type === 'MATCHING' && (
+                  <div className="space-y-3">
+                    {currentQ.pairs.map((pair) => (
+                      <div key={pair.spanish} className="flex items-center justify-between gap-4 p-3 bg-slate-900/60 rounded-lg border border-slate-700">
+                        <span className="font-semibold text-amber-300 text-sm">{pair.spanish}</span>
+                        <select
+                          disabled={submitted}
+                          value={matchingSelections[pair.spanish] || ''}
+                          onChange={(e) => setMatchingSelections({ ...matchingSelections, [pair.spanish]: e.target.value })}
+                          className="bg-slate-800 border border-slate-700 text-slate-200 text-sm p-2 rounded focus:outline-none focus:border-amber-500"
+                        >
+                          <option value="">-- Selecciona el significado --</option>
+                          {currentQ.pairs.map(p => (
+                            <option key={p.english} value={p.english}>{p.english}</option>
+                          ))}
+                        </select>
+                      </div>
+                    ))}
+                  </div>
+                )}
 
-        function insertAccent(char) {
-            if (!activeInputId) {
-                const inputs = document.querySelectorAll('.inline-input');
-                if (inputs.length > 0) activeInputId = inputs[0].id;
-                else return;
-            }
-            const input = document.getElementById(activeInputId);
-            if (input) {
-                const start = input.selectionStart || input.value.length;
-                input.value = input.value.substring(0, start) + char + input.value.substring(start);
-                input.focus();
-            }
-        }
+                {/* TYPE 8: Flashcard Self-Rating */}
+                {currentQ.type === 'FLASHCARDS' && (
+                  <div className="bg-slate-900/80 p-6 rounded-xl border border-slate-700 text-center space-y-4">
+                    <span className="text-xs uppercase text-amber-400 tracking-widest font-bold">Vocabulary Word</span>
+                    <h2 className="text-3xl font-extrabold text-white">{currentQ.word}</h2>
+                    <p className="text-slate-300 text-sm italic">"{currentQ.example}"</p>
+                    
+                    <div className="pt-4 flex justify-center gap-3">
+                      <button
+                        onClick={() => setFlashcardStatus('KNOW')}
+                        className={`px-4 py-2 rounded-lg text-xs font-bold transition ${
+                          flashcardStatus === 'KNOW' ? 'bg-emerald-500 text-slate-950' : 'bg-slate-700 text-slate-300 hover:bg-slate-600'
+                        }`}
+                      >
+                        I Know It (🟢)
+                      </button>
+                      <button
+                        onClick={() => setFlashcardStatus('UNSURE')}
+                        className={`px-4 py-2 rounded-lg text-xs font-bold transition ${
+                          flashcardStatus === 'UNSURE' ? 'bg-amber-500 text-slate-950' : 'bg-slate-700 text-slate-300 hover:bg-slate-600'
+                        }`}
+                      >
+                        Not Sure (🟡)
+                      </button>
+                      <button
+                        onClick={() => setFlashcardStatus('DONT_KNOW')}
+                        className={`px-4 py-2 rounded-lg text-xs font-bold transition ${
+                          flashcardStatus === 'DONT_KNOW' ? 'bg-rose-500 text-white' : 'bg-slate-700 text-slate-300 hover:bg-slate-600'
+                        }`}
+                      >
+                        I Don't Know It (🔴)
+                      </button>
+                    </div>
+                  </div>
+                )}
 
-        function handleInputKeydown(event) { if (event.key === 'Enter') { event.preventDefault(); evaluateBlock(); } }
+                {/* TYPE 9: Visual Exercise */}
+                {currentQ.type === 'VISUAL_EXERCISE' && (
+                  <div className="space-y-4">
+                    <img 
+                      src={currentQ.imageUrl} 
+                      alt="Visual Prompt" 
+                      className="w-full h-48 md:h-64 object-cover rounded-xl border border-slate-700" 
+                    />
+                    <p className="text-sm text-slate-300 font-medium">{currentQ.promptText}</p>
+                    <textarea
+                      ref={inputRef}
+                      disabled={submitted}
+                      rows={3}
+                      value={userText}
+                      onChange={(e) => setUserText(e.target.value)}
+                      placeholder="Describe la escena utilizando expresiones de opinión..."
+                      className="w-full bg-slate-900 border border-slate-700 text-slate-100 p-3 rounded-lg focus:outline-none"
+                    />
+                  </div>
+                )}
 
-        function startSpeechRecognition(inputId) {
-            const input = document.getElementById(inputId);
-            setActiveInput(inputId);
-            if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
-                alert('El reconocimiento de voz no está soportado en este navegador. Usa Google Chrome o Microsoft Edge.');
-                return;
-            }
-            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-            const recognition = new SpeechRecognition();
-            recognition.lang = 'es-ES';
-            recognition.start();
-            recognition.onresult = (e) => { input.value = e.results[0][0].transcript.toLowerCase().trim(); };
-        }
+                {/* TYPE 11: SIELE Timed/Structured Task Practice */}
+                {currentQ.type === 'SIELE_PRACTICE' && (
+                  <div className="space-y-4">
+                    <div className="p-3 bg-amber-500/10 border border-amber-500/30 rounded-lg text-xs text-amber-300 space-y-1">
+                      <p><strong>SIELE Task Rules:</strong> {currentQ.instructions}</p>
+                      <p>Target length: {currentQ.wordLimit.min} - {currentQ.wordLimit.max} words.</p>
+                    </div>
+                    <textarea
+                      ref={inputRef}
+                      disabled={submitted}
+                      rows={5}
+                      value={userText}
+                      onChange={(e) => setUserText(e.target.value)}
+                      placeholder="Escribe tu texto formal..."
+                      className="w-full bg-slate-900 border border-slate-700 text-slate-100 p-3 rounded-lg focus:outline-none"
+                    />
+                    <div className="text-xs text-slate-400 text-right">
+                      Word Count: <span className="font-semibold text-white">{userText.trim() ? userText.trim().split(/\s+/).length : 0}</span> words
+                    </div>
+                  </div>
+                )}
+              </div>
 
-        function evaluateBlock() {
-            const data = exerciseData[currentModuleKey];
-            if (!data) return;
-            let correctCount = 0;
-            data.questions.forEach((q) => {
-                const input = document.getElementById(q.id);
-                const feedback = document.getElementById(`feedback_${q.id}`);
-                const val = input.value.trim().toLowerCase();
-                input.classList.remove('correct', 'incorrect');
-                if (val === q.answer.toLowerCase()) {
-                    correctCount++;
-                    input.classList.add('correct');
-                    feedback.className = 'text-xs text-emerald-400 font-medium pt-1';
-                    feedback.innerHTML = `<i class="fa-solid fa-circle-check"></i> ¡Correcto! ${q.explanation}`;
-                } else {
-                    input.classList.add('incorrect');
-                    feedback.className = 'text-xs text-rose-400 font-medium pt-1';
-                    feedback.innerHTML = `<i class="fa-solid fa-circle-xmark"></i> Respuesta esperada: <strong>${q.answer}</strong>. ${q.explanation}`;
-                }
-            });
-            const pct = Math.round((correctCount / data.questions.length) * 100);
-            document.getElementById('scorePercent').textContent = pct + '%';
-            document.getElementById('progressBar').style.width = pct + '%';
-            const banner = document.getElementById('feedbackResult');
-            banner.classList.remove('hidden');
-            if (pct >= 80) {
-                banner.className = 'p-4 rounded-lg border bg-emerald-950/80 border-emerald-500 text-emerald-200 text-sm';
-                banner.innerHTML = `<strong><i class="fa-solid fa-trophy"></i> ¡Felicidades Gabor! Puntuación: ${pct}% (Superado)</strong><p class="text-xs text-emerald-300">Has superado la meta del 80%. Módulo completado.</p>`;
-            } else {
-                banner.className = 'p-4 rounded-lg border bg-rose-950/80 border-rose-500 text-rose-200 text-sm';
-                banner.innerHTML = `<strong><i class="fa-solid fa-triangle-exclamation"></i> Puntuación: ${pct}% (Meta: 80%)</strong><p class="text-xs text-rose-300">Revisa los errores e inténtalo de nuevo.</p>`;
-            }
-        }
+              {/* ACTION BUTTONS BAR */}
+              <div className="pt-2 border-t border-slate-700 flex flex-wrap gap-2 items-center justify-between">
+                <div className="flex gap-2">
+                  {!submitted ? (
+                    <button
+                      onClick={handleSubmit}
+                      className="bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold px-5 py-2 rounded-lg text-sm transition flex items-center gap-1.5 shadow"
+                    >
+                      <Send size={16} /> Submit Answer
+                    </button>
+                  ) : (
+                    <button
+                      onClick={handleNextQuestion}
+                      className="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold px-5 py-2 rounded-lg text-sm transition flex items-center gap-1.5 shadow"
+                    >
+                      Continue <ArrowRight size={16} />
+                    </button>
+                  )}
 
-        function resetScoreDisplay() {
-            document.getElementById('scorePercent').textContent = '0%';
-            document.getElementById('progressBar').style.width = '0%';
-        }
+                  <button
+                    onClick={() => setShowHint(!showHint)}
+                    className="bg-slate-700 hover:bg-slate-600 text-slate-200 px-3 py-2 rounded-lg text-xs font-semibold transition"
+                  >
+                    {showHint ? 'Hide Hint' : 'Give Me a Hint'}
+                  </button>
 
-        function resetForm() { document.getElementById('exerciseForm').reset(); resetScoreDisplay(); }
+                  <button
+                    onClick={() => setShowRule(!showRule)}
+                    className="bg-slate-700 hover:bg-slate-600 text-slate-200 px-3 py-2 rounded-lg text-xs font-semibold transition"
+                  >
+                    {showRule ? 'Hide Rule' : 'Explain the Rule'}
+                  </button>
+                </div>
 
-        function updateFlashcard() {
-            const card = flashcards[currentCardIndex];
-            document.getElementById('cardCounter').textContent = `${currentCardIndex + 1} / ${flashcards.length}`;
-            document.getElementById('cardCategory').textContent = card.cat;
-            document.getElementById('cardText').textContent = cardFlipped ? card.a : card.q;
-        }
+                {submitted && evaluation === 'INCORRECT' && (
+                  <button
+                    onClick={() => {
+                      setSubmitted(false);
+                      setEvaluation(null);
+                    }}
+                    className="bg-rose-500/20 text-rose-300 border border-rose-500/40 hover:bg-rose-500/30 px-3.5 py-2 rounded-lg text-xs font-semibold transition flex items-center gap-1"
+                  >
+                    <RotateCcw size={14} /> Try Again
+                  </button>
+                )}
+              </div>
 
-        function flipCard() { cardFlipped = !cardFlipped; updateFlashcard(); }
-        function nextCard() { cardFlipped = false; currentCardIndex = (currentCardIndex + 1) % flashcards.length; updateFlashcard(); }
-        function prevCard() { cardFlipped = false; currentCardIndex = (currentCardIndex - 1 + flashcards.length) % flashcards.length; updateFlashcard(); }
-        function speakFlashcard() {
-            const card = flashcards[currentCardIndex];
-            const msg = new SpeechSynthesisUtterance(`${card.q}. ${card.a}`);
-            msg.lang = 'es-ES';
-            window.speechSynthesis.speak(msg);
-        }
-    </script>
-</body>
-</html>
+              {/* HINT TILE */}
+              {showHint && (
+                <div className="p-3 bg-amber-500/10 border-l-4 border-amber-400 rounded-r-lg text-xs text-amber-200">
+                  <strong>💡 Hint:</strong> Focus on the topic rule: {currentQ.keyPoint}
+                </div>
+              )}
+
+              {/* RULE TILE */}
+              {showRule && (
+                <div className="p-3 bg-slate-900 border border-slate-700 rounded-lg text-xs text-slate-300 space-y-1">
+                  <strong className="text-amber-400">Grammar Rule Breakdown:</strong>
+                  <p>{currentQ.explanation}</p>
+                </div>
+              )}
+
+              {/* FEEDBACK DISPLAY (Rendered strictly after submission) */}
+              {submitted && (
+                <div className="mt-6 p-4 rounded-xl bg-slate-900/90 border border-slate-700 space-y-3">
+                  <div className="flex items-center space-x-2">
+                    {evaluation === 'CORRECT' && (
+                      <span className="px-3 py-1 bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 rounded-full text-xs font-bold flex items-center gap-1">
+                        <CheckCircle size={14} /> 🟢 Correct
+                      </span>
+                    )}
+                    {evaluation === 'PARTIAL' && (
+                      <span className="px-3 py-1 bg-amber-500/20 text-amber-400 border border-amber-500/40 rounded-full text-xs font-bold flex items-center gap-1">
+                        <AlertCircle size={14} /> 🟡 Partially Correct
+                      </span>
+                    )}
+                    {evaluation === 'INCORRECT' && (
+                      <span className="px-3 py-1 bg-rose-500/20 text-rose-400 border border-rose-500/40 rounded-full text-xs font-bold flex items-center gap-1">
+                        <XCircle size={14} /> 🔴 Incorrect
+                      </span>
+                    )}
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs pt-1">
+                    <div className="p-2.5 bg-slate-800/80 rounded border border-slate-700">
+                      <span className="text-slate-400 block mb-0.5 font-medium">Your answer:</span>
+                      <span className="text-white font-mono">
+                        {currentQ.type === 'SENTENCE_BUILDER' 
+                          ? builtWords.join(' ') 
+                          : currentQ.type === 'MATCHING'
+                          ? JSON.stringify(matchingSelections)
+                          : userText || selectedOption || flashcardStatus || '(No answer entered)'}
+                      </span>
+                    </div>
+
+                    <div className="p-2.5 bg-slate-800/80 rounded border border-slate-700">
+                      <span className="text-slate-400 block mb-0.5 font-medium">Correct or improved answer:</span>
+                      <span className="text-emerald-300 font-mono">
+                        {currentQ.modelAnswer || currentQ.correctAnswer || 'Evaluated based on response criteria'}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="text-xs text-slate-300 space-y-1 pt-1">
+                    <p><strong className="text-slate-400">Explanation:</strong> {currentQ.explanation}</p>
+                    <p><strong className="text-amber-400">Key Point:</strong> {currentQ.keyPoint}</p>
+                    <p><strong className="text-slate-400">Progress Update:</strong> Topic rating for "{currentQ.topic}" updated to {progress.topicMastery[currentQ.topic] || 50}%.</p>
+                  </div>
+                </div>
+              )}
+
+            </div>
+          ) : (
+            /* MY PROGRESS DASHBOARD TAB */
+            <div className="bg-slate-800 rounded-xl border border-slate-700 p-6 space-y-6">
+              <div className="flex justify-between items-center pb-4 border-b border-slate-700">
+                <div>
+                  <h2 className="text-xl font-bold text-white">Learner Progress Dashboard</h2>
+                  <p className="text-xs text-slate-400">Learner ID: Gabor • Persistent Tracking Active</p>
+                </div>
+                <div className="bg-amber-500/10 text-amber-400 px-3 py-1.5 rounded-lg border border-amber-500/30 text-xs font-bold">
+                  Target: SIELE B2 (6-Month Roadmap)
+                </div>
+              </div>
+
+              {/* SIELE 4-Skill Readiness Indicators */}
+              <div>
+                <h3 className="text-sm font-semibold text-slate-300 uppercase tracking-wider mb-3">SIELE Skill Breakdown</h3>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                  {Object.entries(progress.sieleScores).map(([skill, score]) => (
+                    <div key={skill} className="bg-slate-900 p-3.5 rounded-xl border border-slate-700 text-center">
+                      <span className="text-xs text-slate-400 uppercase font-semibold block mb-1">{skill}</span>
+                      <span className="text-2xl font-extrabold text-amber-400">{score}%</span>
+                      <div className="w-full bg-slate-800 rounded-full h-1.5 mt-2">
+                        <div className="bg-amber-500 h-1.5 rounded-full" style={{ width: `${score}%` }}></div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Grammar Topic Mastery Breakdown */}
+              <div>
+                <h3 className="text-sm font-semibold text-slate-300 uppercase tracking-wider mb-3">Detailed Grammar Mastery Ratings</h3>
+                <div className="space-y-3">
+                  {Object.entries(progress.topicMastery).map(([topic, pct]) => (
+                    <div key={topic} className="bg-slate-900 p-3 rounded-lg border border-slate-700 flex flex-col md:flex-row md:items-center justify-between gap-2">
+                      <div>
+                        <span className="text-sm font-semibold text-slate-200">{topic}</span>
+                        <span className="text-xs text-slate-400 block">
+                          Status: {pct >= 75 ? 'Secure' : pct >= 50 ? 'Developing' : 'Needs teaching'}
+                        </span>
+                      </div>
+                      <div className="flex items-center space-x-3">
+                        <div className="w-32 bg-slate-800 rounded-full h-2">
+                          <div 
+                            className={`h-2 rounded-full ${pct >= 75 ? 'bg-emerald-500' : pct >= 50 ? 'bg-amber-500' : 'bg-rose-500'}`} 
+                            style={{ width: `${pct}%` }}
+                          ></div>
+                        </div>
+                        <span className="text-xs font-bold text-slate-200 min-w-[35px] text-right">{pct}%</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Vocabulary Review Queue */}
+              <div className="bg-slate-900 p-4 rounded-xl border border-slate-700">
+                <h3 className="text-sm font-semibold text-slate-300 uppercase tracking-wider mb-2">Words Needing Review</h3>
+                <div className="flex flex-wrap gap-2">
+                  {progress.wordsToReview.map((word) => (
+                    <span key={word} className="px-3 py-1 bg-amber-500/10 text-amber-300 border border-amber-500/30 rounded-md text-xs font-semibold">
+                      {word}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
+        </section>
+      </main>
+    </div>
+  );
+}
