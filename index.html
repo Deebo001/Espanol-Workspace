@@ -146,7 +146,7 @@
       'Week 14: Subjunctive with Emotions & Doubt': [
         { word: 'Dudar', meaning: 'To doubt', example: 'Dudo que sea verdad.', status: 'KNOW' },
         { word: 'Alegrarse', meaning: 'To be glad', example: 'Me alegra que estés aquí.', status: 'KNOW' },
-        { word: 'Temer', meaning: 'To fear', example: ' Temo que llueva.', status: 'UNSURE' },
+        { word: 'Temer', meaning: 'To fear', example: 'Temo que llueva.', status: 'UNSURE' },
         { word: 'Es posible', meaning: 'It is possible', example: 'Es posible que vayamos.', status: 'UNSURE' },
         { word: 'Incierto', meaning: 'Uncertain', example: 'El resultado es incierto.', status: 'DONT_KNOW' }
       ],
@@ -165,14 +165,14 @@
         { word: 'Instrucción', meaning: 'Instruction', example: 'Sigue las instrucciones.', status: 'DONT_KNOW' }
       ],
       'Week 17: Por vs. Para & Advanced Prepositions': [
-        { word: 'Por', meaning: 'Cause / Exchange / Through', example: gracias por todo.', status: 'KNOW' },
+        { word: 'Por', meaning: 'Cause / Exchange / Through', example: 'Gracias por todo.', status: 'KNOW' },
         { word: 'Para', meaning: 'Destination / Purpose', example: 'Estudio para el examen.', status: 'KNOW' },
         { word: 'Motivo', meaning: 'Motive / Reason', example: 'Por este motivo.', status: 'UNSURE' },
         { word: 'Objetivo', meaning: 'Objective', example: 'Nuestro objetivo principal.', status: 'UNSURE' },
         { word: 'Destinatario', meaning: 'Recipient', example: 'Para el destinatario.', status: 'DONT_KNOW' }
       ],
       'Week 18: Passive Voice & Impersonal Constructions': [
-        { word: 'Se habla', meaning: 'It is spoken / Spanish is spoken', example: 'Aquí se habla español.', status: 'KNOW' },
+        { word: 'Se habla', meaning: 'It is spoken', example: 'Aquí se habla español.', status: 'KNOW' },
         { word: 'Construido', meaning: 'Built', example: 'El edificio fue construido.', status: 'KNOW' },
         { word: 'Se vende', meaning: 'For sale', example: 'Se vende casa.', status: 'UNSURE' },
         { word: 'Impersonal', meaning: 'Impersonal', example: 'Oración impersonal.', status: 'UNSURE' },
@@ -222,11 +222,18 @@
       ]
     };
 
-    // Generate 2 sets for each of the 24 weeks (Total 48 sets)
+    // Pre-loaded Street Slang Flashcards
+    const initialSlangCards = [
+      { phrase: "¿Qué onda, ese?", meaning: "What's up, man?", context: "Very informal greeting in street culture.", image: "https://images.unsplash.com/photo-1496449903678-68ddcb189a24?auto=format&fit=crop&q=80&w=1000", isCustom: false },
+      { phrase: "¡Está cañón!", meaning: "It's super tough / wild!", context: "Used when a situation is crazy or very difficult.", image: "https://images.unsplash.com/photo-1512818011718-d9de36709893?auto=format&fit=crop&q=80&w=1000", isCustom: false },
+      { phrase: "No manches", meaning: "No way / You're kidding!", context: "Expressing disbelief or surprise.", image: "https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&q=80&w=1000", isCustom: false },
+      { phrase: "Aguas", meaning: "Watch out / Be careful!", context: "Everyday Mexican street warning.", image: "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&q=80&w=1000", isCustom: false },
+      { phrase: "Chido", meaning: "Cool / Awesome", context: "Popular informal adjective for things or people.", image: "https://images.unsplash.com/photo-1573002813597-881ca05720f1?auto=format&fit=crop&q=80&w=1000", isCustom: false }
+    ];
+
     const generateFullQuestionBank = () => {
       let bank = [];
       allWeeksList.forEach((weekName, idx) => {
-        // Set 1
         bank.push({
           id: idx * 2 + 1,
           topic: weekName,
@@ -244,7 +251,6 @@
           keyPoint: `Dominio formal de ${weekName} (Set 1).`,
           explanation: `La opción A cumple exactamente con la norma gramatical y el registro exigido en el examen SIELE para ${weekName}.`
         });
-        // Set 2
         bank.push({
           id: idx * 2 + 2,
           topic: weekName,
@@ -277,7 +283,7 @@
     };
 
     function App() {
-      const [activeTab, setActiveTab] = useState('chat'); // 'chat' | 'cards' | 'coach'
+      const [activeTab, setActiveTab] = useState('chat'); 
       const [messages, setMessages] = useState([
         { role: 'assistant', text: "¡Qué onda carnal! Soy tu tutor. Vamos a darle al español de la calle. ¿Qué traes en mente hoy?" }
       ]);
@@ -291,38 +297,16 @@
       const [customMeaning, setCustomMeaning] = useState('');
       const [customContext, setCustomContext] = useState('');
 
-      const [cards, setCards] = useState([
-        { 
-          phrase: "¿Qué onda, ese?", 
-          meaning: "What's up, man? (Mexico/Chicano)", 
-          context: "Very informal greeting common in street culture.",
-          image: "https://images.unsplash.com/photo-1496449903678-68ddcb189a24?auto=format&fit=crop&q=80&w=1000",
-          isCustom: false
-        }
-      ]);
+      const [cards, setCards] = useState(initialSlangCards);
       const [cardIndex, setCardIndex] = useState(0);
       const [showMeaning, setShowMeaning] = useState(false);
 
       // SIELE Coach Sub-tab & State
-      const [coachSubTab, setCoachSubTab] = useState('practice'); // 'practice' | 'vocabulary' | 'dashboard'
-      const [selectedTopicFilter, setSelectedTopicFilter] = useState('ALL');
-      const [selectedSetFilter, setSelectedSetFilter] = useState('1'); // Set 1 or Set 2
-      const [progress, setProgress] = useState(() => {
-        try {
-          const saved = localStorage.getItem('gabor_siele_progress_v10');
-          return saved ? JSON.parse(saved) : initialProgress;
-        } catch (e) {
-          return initialProgress;
-        }
-      });
-      const [currentIndex, setCurrentIndex] = useState(() => {
-        try {
-          const savedIndex = localStorage.getItem('gabor_siele_index_v10');
-          return savedIndex ? parseInt(savedIndex, 10) : 0;
-        } catch (e) {
-          return 0;
-        }
-      });
+      const [coachSubTab, setCoachSubTab] = useState('practice');
+      const [selectedWeek, setSelectedWeek] = useState(allWeeksList[0]);
+      const [selectedSetFilter, setSelectedSetFilter] = useState('1'); 
+      const [progress, setProgress] = useState(initialProgress);
+      const [currentIndex, setCurrentIndex] = useState(0);
 
       const [userText, setUserText] = useState('');
       const [selectedOpt, setSelectedOpt] = useState(null);
@@ -339,21 +323,9 @@
         }
       }, [messages, isTyping]);
 
-      useEffect(() => {
-        try {
-          localStorage.setItem('gabor_siele_progress_v10', JSON.stringify(progress));
-        } catch (e) {}
-      }, [progress]);
-
-      useEffect(() => {
-        try {
-          localStorage.setItem('gabor_siele_index_v10', currentIndex.toString());
-        } catch (e) {}
-      }, [currentIndex]);
-
       // Filter questions by Topic AND by Set
       const filteredQuestions = questionBank.filter(q => {
-        const matchesTopic = selectedTopicFilter === 'ALL' || q.topic === selectedTopicFilter;
+        const matchesTopic = q.topic === selectedWeek;
         const matchesSet = q.setNumber.toString() === selectedSetFilter;
         return matchesTopic && matchesSet;
       });
@@ -372,7 +344,7 @@
 
       useEffect(() => {
         resetQuestionState();
-      }, [currentIndex, selectedTopicFilter, selectedSetFilter]);
+      }, [currentIndex, selectedWeek, selectedSetFilter]);
 
       const insertAccent = (char) => setUserText(prev => prev + char);
 
@@ -390,26 +362,12 @@
         setEvaluation(resStatus);
         setSubmitted(true);
 
-        setProgress(prev => {
-          const newCorrect = isCorrect ? prev.correct + 1 : prev.correct;
-          const newIncorrect = !isCorrect ? prev.incorrect + 1 : prev.incorrect;
-          const topicName = currentQ.topic;
-          const currentTopicMastery = prev.topicMastery[topicName] || 50;
-          const updatedMastery = isCorrect 
-            ? Math.min(100, currentTopicMastery + 5) 
-            : Math.max(0, currentTopicMastery - 5);
-
-          return {
-            ...prev,
-            totalAttempted: prev.totalAttempted + 1,
-            correct: newCorrect,
-            incorrect: newIncorrect,
-            topicMastery: {
-              ...prev.topicMastery,
-              [topicName]: updatedMastery
-            }
-          };
-        });
+        setProgress(prev => ({
+          ...prev,
+          totalAttempted: prev.totalAttempted + 1,
+          correct: isCorrect ? prev.correct + 1 : prev.correct,
+          incorrect: !isCorrect ? prev.incorrect + 1 : prev.incorrect
+        }));
       };
 
       const handleNextQuestion = () => {
@@ -417,31 +375,22 @@
         setCurrentIndex(nextIdx);
       };
 
-      // Get 5 words for vocabulary deck based on selected topic filter
-      const getCurrentVocabularyWords = () => {
-        if (selectedTopicFilter !== 'ALL' && weeklyVocabBank[selectedTopicFilter]) {
-          return weeklyVocabBank[selectedTopicFilter];
-        }
-        // Default first week or fallback if ALL
-        return weeklyVocabBank['Week 1: Present Tense Regular/Irregular & Daily Routines'];
-      };
-
       const handleVocabRating = (wordIndex, newStatus) => {
-        const currentWords = getCurrentVocabularyWords();
-        currentWords[wordIndex].status = newStatus;
-        setProgress(prev => ({ ...prev, timestamp: Date.now() }));
+        if (weeklyVocabBank[selectedWeek] && weeklyVocabBank[selectedWeek][wordIndex]) {
+          weeklyVocabBank[selectedWeek][wordIndex].status = newStatus;
+          setProgress(prev => ({ ...prev, timestamp: Date.now() }));
+        }
       };
 
       // Image & Card Generation
       const generateImage = async (prompt) => {
         try {
+          if (!apiKey) throw new Error("No API key");
           const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/imagen-4.0-generate-001:predict?key=${apiKey}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-              instances: { 
-                prompt: `Cinematic movie still, 35mm film, grainy, realistic, Latin American urban street scene, barrio aesthetic, high contrast, dramatic lighting, portraying: ${prompt}` 
-              },
+              instances: { prompt: `Cinematic urban street scene: ${prompt}` },
               parameters: { sampleCount: 1 }
             })
           });
@@ -458,7 +407,7 @@
         setIsGeneratingCard(true);
         setIsCustomModalOpen(false);
         try {
-          const imageUrl = await generateImage(customPhrase + " " + (customContext || "barrio street visual"));
+          const imageUrl = await generateImage(customPhrase);
           const newCard = {
             phrase: customPhrase.trim(),
             meaning: customMeaning.trim(),
@@ -487,6 +436,7 @@
       const generateNewCard = async () => {
         setIsGeneratingCard(true);
         try {
+          if (!apiKey) throw new Error("No API key provided");
           const prompt = "Generate one unique Mexican street slang phrase, its English meaning, and a short cultural context. Return as JSON with keys: phrase, meaning, context.";
           const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${MODEL_NAME}:generateContent?key=${apiKey}`, {
             method: 'POST',
@@ -498,20 +448,20 @@
           });
           const result = await response.json();
           const cardData = JSON.parse(result.candidates[0].content.parts[0].text);
-          const imageUrl = await generateImage(cardData.phrase + " in a Mexican barrio setting");
+          const imageUrl = await generateImage(cardData.phrase);
           const newCard = { ...cardData, image: imageUrl, isCustom: false };
           setCards(prev => [...prev, newCard]);
           setCardIndex(cards.length);
           setShowMeaning(false);
         } catch (err) {
-          // Fallback static new card if API key is blank
-          const fallbackList = [
-            { phrase: "¡Ándale pues!", meaning: "Alright then / Let's go!", context: "Used to agree or wrap up a conversation.", image: "https://images.unsplash.com/photo-1512818011718-d9de36709893?auto=format&fit=crop&q=80&w=1000", isCustom: false },
-            { phrase: "Aguas", meaning: "Watch out / Be careful", context: "Common warning expression across Mexico.", image: "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&q=80&w=1000", isCustom: false },
-            { phrase: "No manches", meaning: "No way / You're kidding", context: "Expressing surprise or disbelief.", image: "https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&q=80&w=1000", isCustom: false }
+          // Cycle through extra slang items if offline / no key
+          const extraSlang = [
+            { phrase: "¡Qué padre!", meaning: "How cool / awesome!", context: "Very common Mexican expression.", image: "https://images.unsplash.com/photo-1512818011718-d9de36709893?auto=format&fit=crop&q=80&w=1000", isCustom: false },
+            { phrase: "Camára", meaning: "Got it / Agreed / Deal!", context: "Street slang to confirm agreement.", image: "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&q=80&w=1000", isCustom: false },
+            { phrase: "Chale", meaning: "Bummer / Give me a break", context: "Expressing mild disappointment.", image: "https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&q=80&w=1000", isCustom: false }
           ];
-          const randomFallback = fallbackList[Math.floor(Math.random() * fallbackList.length)];
-          setCards(prev => [...prev, randomFallback]);
+          const nextCard = extraSlang[cards.length % extraSlang.length];
+          setCards(prev => [...prev, nextCard]);
           setCardIndex(cards.length);
           setShowMeaning(false);
         } finally {
@@ -520,14 +470,14 @@
       };
 
       const playAudio = async (text, id) => {
-        if (isPlaying) return;
+        if (isPlaying || !apiKey) return;
         setIsPlaying(id);
         try {
           const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${TTS_MODEL}:generateContent?key=${apiKey}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-              contents: [{ parts: [{ text: `Say this naturally with a gritty, deep-voiced Mexican street accent (male): ${text}` }] }],
+              contents: [{ parts: [{ text: `Say this naturally: ${text}` }] }],
               generationConfig: {
                 responseModalities: ["AUDIO"],
                 speechConfig: { voiceConfig: { prebuiltVoiceConfig: { voiceName: "Iapetus" } } }
@@ -536,11 +486,15 @@
           });
           const result = await response.json();
           const pcmData = result.candidates?.[0]?.content?.parts?.find(p => p.inlineData)?.inlineData?.data;
-          const audioBlob = pcmToWav(pcmData, 24000); 
-          const audioUrl = URL.createObjectURL(audioBlob);
-          const audio = new Audio(audioUrl);
-          audio.onended = () => { setIsPlaying(null); URL.revokeObjectURL(audioUrl); };
-          await audio.play();
+          if (pcmData) {
+            const audioBlob = pcmToWav(pcmData, 24000); 
+            const audioUrl = URL.createObjectURL(audioBlob);
+            const audio = new Audio(audioUrl);
+            audio.onended = () => { setIsPlaying(null); URL.revokeObjectURL(audioUrl); };
+            await audio.play();
+          } else {
+            setIsPlaying(null);
+          }
         } catch (err) {
           setIsPlaying(null);
         }
@@ -572,27 +526,42 @@
 
       const handleSend = async () => {
         if (!input.trim()) return;
-        setMessages(prev => [...prev, { role: 'user', text: input }]);
+        const userMsg = input;
+        setMessages(prev => [...prev, { role: 'user', text: userMsg }]);
         setInput('');
         setIsTyping(true);
+
         try {
+          if (!apiKey) {
+            // Local fallback reply if no key present
+            setTimeout(() => {
+              setMessages(prev => [...prev, { role: 'assistant', text: `¡Órale carnal! Entendí: "${userMsg}". Vamos a seguir practicando el español de la calle.` }]);
+              setIsTyping(false);
+            }, 600);
+            return;
+          }
+
           const sys = "You are a friendly Mexican street-smart tutor. Speak informally. Provide English translations in brackets.";
           const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${MODEL_NAME}:generateContent?key=${apiKey}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-              contents: [{ parts: [{ text: input }] }],
+              contents: [{ parts: [{ text: userMsg }] }],
               systemInstruction: { parts: [{ text: sys }] }
             })
           });
           const data = await response.json();
-          setMessages(prev => [...prev, { role: 'assistant', text: data.candidates[0].content.parts[0].text }]);
+          const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || "¡Órale! Todo bien carnal.";
+          setMessages(prev => [...prev, { role: 'assistant', text: reply }]);
+        } catch (err) {
+          setMessages(prev => [...prev, { role: 'assistant', text: "¡Chale! Tuve un detalle técnico, pero aquí andamos. ¿Qué más me cuentas?" }]);
         } finally {
           setIsTyping(false);
         }
       };
 
-      const currentCard = cards[cardIndex];
+      const currentCard = cards[cardIndex] || initialSlangCards[0];
+      const currentVocabList = weeklyVocabBank[selectedWeek] || weeklyVocabBank['Week 1: Present Tense Regular/Irregular & Daily Routines'];
 
       return (
         <div className="flex flex-col h-screen bg-stone-100 text-stone-900 font-sans">
@@ -622,6 +591,7 @@
                       </div>
                     </div>
                   ))}
+                  {isTyping && <div className="text-xs text-stone-400 italic">Escribiendo...</div>}
                 </div>
                 <div className="mt-4 flex gap-2">
                   <input value={input} onChange={(e) => setInput(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && handleSend()} placeholder="Dime algo, carnal..." className="flex-1 p-3 rounded-xl border focus:ring-2 focus:ring-orange-500 bg-white shadow-inner" />
@@ -692,22 +662,24 @@
                   </div>
                 </div>
 
+                {/* SHARED WEEK SELECTOR FOR SIELE COACH */}
+                <div className="bg-white p-3 rounded-xl border flex flex-wrap items-center justify-between gap-2 shadow-sm">
+                  <label className="text-xs font-bold uppercase text-stone-500">Select Curriculum Week:</label>
+                  <select
+                    value={selectedWeek}
+                    onChange={(e) => { setSelectedWeek(e.target.value); setCurrentIndex(0); }}
+                    className="bg-stone-100 text-xs font-bold px-3 py-2 rounded border focus:ring-2 focus:ring-orange-500 flex-1 min-w-[280px]"
+                  >
+                    {allWeeksList.map(week => (
+                      <option key={week} value={week}>{week}</option>
+                    ))}
+                  </select>
+                </div>
+
                 {coachSubTab === 'practice' && (
                   <div className="bg-white p-6 rounded-2xl shadow border space-y-6">
                     <div className="flex flex-wrap justify-between items-center border-b pb-3 text-xs gap-2">
                       <span className="bg-orange-100 text-orange-800 px-3 py-1 rounded font-bold">Q {activeIndex + 1} of {filteredQuestions.length}</span>
-                      
-                      {/* Topic Dropdown containing ALL 24 Weeks */}
-                      <select
-                        value={selectedTopicFilter}
-                        onChange={(e) => { setSelectedTopicFilter(e.target.value); setCurrentIndex(0); }}
-                        className="bg-stone-100 text-xs font-bold px-2 py-1.5 rounded border max-w-[280px]"
-                      >
-                        <option value="ALL">All 24 Weeks (All Topics)</option>
-                        {allWeeksList.map(week => (
-                          <option key={week} value={week}>{week}</option>
-                        ))}
-                      </select>
 
                       {/* Set 1 or Set 2 Selector */}
                       <div className="flex bg-stone-100 p-1 rounded border">
@@ -786,31 +758,23 @@
 
                 {coachSubTab === 'vocabulary' && (
                   <div className="bg-white p-6 rounded-2xl shadow border space-y-4">
-                    <div className="flex justify-between items-center flex-wrap gap-2">
-                      <h2 className="text-xl font-bold">Vocabulary Practice Deck (5 words/wk)</h2>
-                      <select
-                        value={selectedTopicFilter}
-                        onChange={(e) => setSelectedTopicFilter(e.target.value)}
-                        className="bg-stone-100 text-xs font-bold px-2 py-1.5 rounded border max-w-[280px]"
-                      >
-                        {allWeeksList.map(week => (
-                          <option key={week} value={week}>{week}</option>
-                        ))}
-                      </select>
+                    <div className="flex justify-between items-center border-b pb-3">
+                      <h2 className="text-lg font-bold text-stone-800">5 Words for: <span className="text-orange-600">{selectedWeek}</span></h2>
                     </div>
+
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      {getCurrentVocabularyWords().map((item, idx) => (
+                      {currentVocabList.map((item, idx) => (
                         <div key={idx} className="bg-stone-50 p-4 rounded-xl border space-y-2">
                           <div className="flex justify-between items-center">
-                            <h3 className="font-bold text-orange-600">{item.word}</h3>
+                            <h3 className="font-bold text-orange-600 text-base">{item.word}</h3>
                             <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-orange-100 text-orange-800">{item.status}</span>
                           </div>
                           <p className="text-xs text-stone-600">Meaning: <strong>{item.meaning}</strong></p>
                           <p className="text-xs text-stone-500 italic">"{item.example}"</p>
                           <div className="flex gap-1 pt-1">
-                            <button onClick={() => handleVocabRating(idx, 'KNOW')} className="text-xs bg-emerald-100 text-emerald-800 px-2 py-1 rounded font-bold">Know It (🟢)</button>
-                            <button onClick={() => handleVocabRating(idx, 'UNSURE')} className="text-xs bg-amber-100 text-amber-800 px-2 py-1 rounded font-bold">Not Sure (🟡)</button>
-                            <button onClick={() => handleVocabRating(idx, 'DONT_KNOW')} className="text-xs bg-rose-100 text-rose-800 px-2 py-1 rounded font-bold">Don't Know (🔴)</button>
+                            <button onClick={() => handleVocabRating(idx, 'KNOW')} className="text-xs bg-emerald-100 hover:bg-emerald-200 text-emerald-800 px-2 py-1 rounded font-bold">Know It (🟢)</button>
+                            <button onClick={() => handleVocabRating(idx, 'UNSURE')} className="text-xs bg-amber-100 hover:bg-amber-200 text-amber-800 px-2 py-1 rounded font-bold">Not Sure (🟡)</button>
+                            <button onClick={() => handleVocabRating(idx, 'DONT_KNOW')} className="text-xs bg-rose-100 hover:bg-rose-200 text-rose-800 px-2 py-1 rounded font-bold">Don't Know (🔴)</button>
                           </div>
                         </div>
                       ))}
