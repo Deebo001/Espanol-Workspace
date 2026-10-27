@@ -50,7 +50,7 @@
       'Week 24: Comprehensive SIELE Mock Exam'
     ];
 
-    // 5 Unique Vocabulary Words for EACH of the 24 Weeks (Total 120 words)
+    // 5 Unique Vocabulary Words for EACH of the 24 Weeks
     const weeklyVocabBank = {
       'Week 1: Present Tense Regular/Irregular & Daily Routines': [
         { word: 'Rutina', meaning: 'Routine', example: 'Mi rutina diaria incluye estudiar español.', status: 'KNOW' },
@@ -454,10 +454,9 @@
           setCardIndex(cards.length);
           setShowMeaning(false);
         } catch (err) {
-          // Cycle through extra slang items if offline / no key
           const extraSlang = [
             { phrase: "¡Qué padre!", meaning: "How cool / awesome!", context: "Very common Mexican expression.", image: "https://images.unsplash.com/photo-1512818011718-d9de36709893?auto=format&fit=crop&q=80&w=1000", isCustom: false },
-            { phrase: "Camára", meaning: "Got it / Agreed / Deal!", context: "Street slang to confirm agreement.", image: "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&q=80&w=1000", isCustom: false },
+            { phrase: "Cámara", meaning: "Got it / Agreed / Deal!", context: "Street slang to confirm agreement.", image: "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&q=80&w=1000", isCustom: false },
             { phrase: "Chale", meaning: "Bummer / Give me a break", context: "Expressing mild disappointment.", image: "https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&q=80&w=1000", isCustom: false }
           ];
           const nextCard = extraSlang[cards.length % extraSlang.length];
@@ -533,7 +532,6 @@
 
         try {
           if (!apiKey) {
-            // Local fallback reply if no key present
             setTimeout(() => {
               setMessages(prev => [...prev, { role: 'assistant', text: `¡Órale carnal! Entendí: "${userMsg}". Vamos a seguir practicando el español de la calle.` }]);
               setIsTyping(false);
