@@ -22,7 +22,7 @@
     const MODEL_NAME = "gemini-2.5-flash-preview-09-2025";
     const TTS_MODEL = "gemini-2.5-flash-preview-tts";
 
-    // 24 Weeks List
+    // All 24 Weeks of the SIELE Mastery Curriculum
     const allWeeksList = [
       'Week 1: Present Tense Regular/Irregular & Daily Routines',
       'Week 2: Ser vs. Estar & Gustar/Similar Verbs',
@@ -50,7 +50,7 @@
       'Week 24: Comprehensive SIELE Mock Exam'
     ];
 
-    // Weekly Vocabulary Bank (5 words per week)
+    // 5 Unique Vocabulary Words for EACH of the 24 Weeks (Total 120 words)
     const weeklyVocabBank = {
       'Week 1: Present Tense Regular/Irregular & Daily Routines': [
         { word: 'Rutina', meaning: 'Routine', example: 'Mi rutina diaria incluye estudiar español.', status: 'KNOW' },
@@ -71,9 +71,155 @@
         { word: 'Anoche', meaning: 'Last night', example: 'Anoche leí un artículo.', status: 'KNOW' },
         { word: 'De repente', meaning: 'Suddenly', example: 'De repente empezó a llover.', status: 'UNSURE' },
         { word: 'Pasado', meaning: 'Past', example: 'El año pasado fui a Madrid.', status: 'UNSURE' },
-        { word: 'Completar', meaning: 'To complete', completable: 'Completé el ejercicio.', status: 'DONT_KNOW' }
+        { word: 'Completar', meaning: 'To complete', example: 'Completé el ejercicio con éxito.', status: 'DONT_KNOW' }
+      ],
+      'Week 4: Pretérito Imperfecto (Descriptions & Past Habits)': [
+        { word: 'Soler', meaning: 'To usually do something', example: 'Solía pasear por el parque.', status: 'KNOW' },
+        { word: 'Infancia', meaning: 'Childhood', example: 'En mi infancia jugaba mucho.', status: 'KNOW' },
+        { word: 'Mientras', meaning: 'While', example: 'Mientras llovía, leía un libro.', status: 'UNSURE' },
+        { word: 'Recordar', meaning: 'To remember', example: 'Recuerdo que vivíamos allí.', status: 'UNSURE' },
+        { word: 'Antiguo', meaning: 'Old / Former', example: 'Era un edificio antiguo.', status: 'DONT_KNOW' }
+      ],
+      'Week 5: Indefinido vs. Imperfecto (Storytelling & Narratives)': [
+        { word: 'Narración', meaning: 'Narration / Story', example: 'La narración fue fluida.', status: 'KNOW' },
+        { word: 'De repente', meaning: 'All of a sudden', example: 'De repente sonó el teléfono.', status: 'KNOW' },
+        { word: 'Fondo', meaning: 'Background', example: 'Era el escenario de fondo.', status: 'UNSURE' },
+        { word: 'Interrumpir', meaning: 'To interrupt', example: 'Alguien interrumpió la historia.', status: 'UNSURE' },
+        { word: 'Suceso', meaning: 'Event / Happening', example: 'El suceso ocurrió anoche.', status: 'DONT_KNOW' }
+      ],
+      'Week 6: Pretérito Perfecto (Recent Actions & Life Experiences)': [
+        { word: 'Todavía', meaning: 'Yet / Still', example: 'Todavía no he terminado.', status: 'KNOW' },
+        { word: 'Jamás', meaning: 'Never', example: 'Jamás he probado eso.', status: 'KNOW' },
+        { word: 'Alguna vez', meaning: 'Ever / At some time', example: '¿Has viajado alguna vez?', status: 'UNSURE' },
+        { word: 'Este mes', meaning: 'This month', example: 'Este mes hemos estudiado mucho.', status: 'UNSURE' },
+        { word: 'Experiencia', meaning: 'Experience', example: 'Ha sido una gran experiencia.', status: 'DONT_KNOW' }
+      ],
+      'Week 7: Direct & Indirect Object Pronouns': [
+        { word: 'Entregar', meaning: 'To hand over / deliver', example: 'Le entregué el documento.', status: 'KNOW' },
+        { word: 'Explicar', meaning: 'To explain', example: 'Te lo expliqué ayer.', status: 'KNOW' },
+        { word: 'Regalar', meaning: 'To gift', example: 'Se lo compré para su cumpleaños.', status: 'UNSURE' },
+        { word: 'Enviar', meaning: 'To send', example: 'Lo enviaré mañana.', status: 'UNSURE' },
+        { word: 'Prestar', meaning: 'To lend', example: '¿Me prestas tu bolígrafo?', status: 'DONT_KNOW' }
+      ],
+      'Week 8: Reflexive Verbs & Pronominal Structures': [
+        { word: 'Acostumbrarse', meaning: 'To get used to', example: 'Me acostumbré al horario.', status: 'KNOW' },
+        { word: 'Preocuparse', meaning: 'To worry', example: 'No te preocupes por eso.', status: 'KNOW' },
+        { word: 'Darse cuenta', meaning: 'To realize', example: 'Me di cuenta tarde.', status: 'UNSURE' },
+        { word: 'Reunirse', meaning: 'To meet / gather', example: 'Nos reunimos los lunes.', status: 'UNSURE' },
+        { word: 'Secreto', meaning: 'Secret', example: 'Secreto profesional.', status: 'DONT_KNOW' }
+      ],
+      'Week 9: Preterite Pluscuamperfecto (Past Before Past)': [
+        { word: 'Había', meaning: 'Had (auxiliary)', example: 'Ya había salido cuando llegaste.', status: 'KNOW' },
+        { word: 'Antes', meaning: 'Before', example: 'Había estudiado antes del examen.', status: 'KNOW' },
+        { word: 'Descubrir', meaning: 'To discover', example: 'Habían descubierto la verdad.', status: 'UNSURE' },
+        { word: 'Terminar', meaning: 'To finish', example: 'Había terminado mi tarea.', status: 'UNSURE' },
+        { word: 'Previamente', meaning: 'Previously', example: 'Lo había hecho previamente.', status: 'DONT_KNOW' }
+      ],
+      'Week 10: Periphrastic & Simple Future Tenses': [
+        { word: 'Mañana', meaning: 'Tomorrow', example: 'Mañana lloverá.', status: 'KNOW' },
+        { word: 'Pronto', meaning: 'Soon', example: 'Nos veremos pronto.', status: 'KNOW' },
+        { word: 'Esperar', meaning: 'To hope / expect', example: 'Espero aprobar el examen.', status: 'UNSURE' },
+        { word: 'Próximo', meaning: 'Next', example: 'El próximo año viajaré.', status: 'UNSURE' },
+        { word: 'Destino', meaning: 'Destination', example: 'Nuestro destino es Madrid.', status: 'DONT_KNOW' }
+      ],
+      'Week 11: Simple Conditional (Politeness, Advice & Hypotheses)': [
+        { word: 'Gustaría', meaning: 'Would like', example: 'Me gustaría viajar a España.', status: 'KNOW' },
+        { word: 'Debería', meaning: 'Should', example: 'Deberías estudiar más.', status: 'KNOW' },
+        { word: 'Podría', meaning: 'Could', example: '¿Podría ayudarme?', status: 'UNSURE' },
+        { word: 'Ideal', meaning: 'Ideal', example: 'Sería una solución ideal.', status: 'UNSURE' },
+        { word: 'Hipótesis', meaning: 'Hypothesis', example: 'Es una simple hipótesis.', status: 'DONT_KNOW' }
+      ],
+      'Week 12: B1 Discourse Markers & Text Connectors': [
+        { word: 'Sin embargo', meaning: 'However', example: 'Estudió; sin embargo, no aprobó.', status: 'KNOW' },
+        { word: 'Por lo tanto', meaning: 'Therefore', example: 'Practicó; por lo tanto, mejoró.', status: 'KNOW' },
+        { word: 'Además', meaning: 'Furthermore', example: 'Además, es muy útil.', status: 'UNSURE' },
+        { word: 'En primer lugar', meaning: 'First of all', example: 'En primer lugar, analizamos...', status: 'UNSURE' },
+        { word: 'En conclusión', meaning: 'In conclusion', example: 'En conclusión, es viable.', status: 'DONT_KNOW' }
+      ],
+      'Week 13: Present Subjunctive - Expressing Wishes, Desires & Needs': [
+        { word: 'Ojalá', meaning: 'God willing / Hopefully', example: 'Ojalá apruebes el examen.', status: 'KNOW' },
+        { word: 'Querer', meaning: 'To want', example: 'Quiero que vengas.', status: 'KNOW' },
+        { word: 'Espero que', meaning: 'I hope that', example: 'Espero que tengas éxito.', status: 'UNSURE' },
+        { word: 'Deseo', meaning: 'Wish / Desire', example: 'Es mi mayor deseo.', status: 'UNSURE' },
+        { word: 'Necesario', meaning: 'Necessary', example: 'Es necesario que estudies.', status: 'DONT_KNOW' }
+      ],
+      'Week 14: Subjunctive with Emotions & Doubt': [
+        { word: 'Dudar', meaning: 'To doubt', example: 'Dudo que sea verdad.', status: 'KNOW' },
+        { word: 'Alegrarse', meaning: 'To be glad', example: 'Me alegra que estés aquí.', status: 'KNOW' },
+        { word: 'Temer', meaning: 'To fear', example: ' Temo que llueva.', status: 'UNSURE' },
+        { word: 'Es posible', meaning: 'It is possible', example: 'Es posible que vayamos.', status: 'UNSURE' },
+        { word: 'Incierto', meaning: 'Uncertain', example: 'El resultado es incierto.', status: 'DONT_KNOW' }
+      ],
+      'Week 15: Subjunctive vs. Indicative Contrast': [
+        { word: 'Creer', meaning: 'To believe', example: 'Creo que es verdad (Indicative).', status: 'KNOW' },
+        { word: 'No creer', meaning: 'To not believe', example: 'No creo que sea verdad (Subjunctive).', status: 'KNOW' },
+        { word: 'Seguro', meaning: 'Sure', example: 'Estoy seguro de que viene.', status: 'UNSURE' },
+        { word: 'Evidente', meaning: 'Evident', example: 'Es evidente que sabe.', status: 'UNSURE' },
+        { word: 'Realidad', meaning: 'Reality', example: 'En la realidad...', status: 'DONT_KNOW' }
+      ],
+      'Week 16: Imperative Mood (Commands) + Subjunctive': [
+        { word: 'Dime', meaning: 'Tell me', example: 'Dime la verdad.', status: 'KNOW' },
+        { word: 'Hágalo', meaning: 'Do it (formal)', example: 'Hágalo por favor.', status: 'KNOW' },
+        { word: 'No lo hagas', meaning: "Don't do it", example: 'No lo hagas ahora.', status: 'UNSURE' },
+        { word: 'Atención', meaning: 'Attention', example: 'Presten atención.', status: 'UNSURE' },
+        { word: 'Instrucción', meaning: 'Instruction', example: 'Sigue las instrucciones.', status: 'DONT_KNOW' }
+      ],
+      'Week 17: Por vs. Para & Advanced Prepositions': [
+        { word: 'Por', meaning: 'Cause / Exchange / Through', example: gracias por todo.', status: 'KNOW' },
+        { word: 'Para', meaning: 'Destination / Purpose', example: 'Estudio para el examen.', status: 'KNOW' },
+        { word: 'Motivo', meaning: 'Motive / Reason', example: 'Por este motivo.', status: 'UNSURE' },
+        { word: 'Objetivo', meaning: 'Objective', example: 'Nuestro objetivo principal.', status: 'UNSURE' },
+        { word: 'Destinatario', meaning: 'Recipient', example: 'Para el destinatario.', status: 'DONT_KNOW' }
+      ],
+      'Week 18: Passive Voice & Impersonal Constructions': [
+        { word: 'Se habla', meaning: 'It is spoken / Spanish is spoken', example: 'Aquí se habla español.', status: 'KNOW' },
+        { word: 'Construido', meaning: 'Built', example: 'El edificio fue construido.', status: 'KNOW' },
+        { word: 'Se vende', meaning: 'For sale', example: 'Se vende casa.', status: 'UNSURE' },
+        { word: 'Impersonal', meaning: 'Impersonal', example: 'Oración impersonal.', status: 'UNSURE' },
+        { word: 'Autor', meaning: 'Author', example: 'Escrito por el autor.', status: 'DONT_KNOW' }
+      ],
+      'Week 19: Imperfect Subjunctive & Conditional Sentences': [
+        { word: 'Si tuviera', meaning: 'If I had', example: 'Si tuviera dinero, viajaría.', status: 'KNOW' },
+        { word: 'Pudiera', meaning: 'Could (subjunctive)', example: 'Ojalá pudiera ir.', status: 'KNOW' },
+        { word: 'Condición', meaning: 'Condition', example: 'Bajo esta condición.', status: 'UNSURE' },
+        { word: 'Hipotético', meaning: 'Hypothetical', example: 'Caso hipotético.', status: 'UNSURE' },
+        { word: 'Resultado', meaning: 'Result', example: 'El resultado sería otro.', status: 'DONT_KNOW' }
+      ],
+      'Week 20: Relative Pronouns': [
+        { word: 'Quien', meaning: 'Who / Whom', example: 'El hombre de quien te hablé.', status: 'KNOW' },
+        { word: 'Cuyo', meaning: 'Whose', example: 'La mujer cuya casa visitamos.', status: 'KNOW' },
+        { word: 'El cual', meaning: 'Which / Who', example: 'El documento, el cual firmé.', status: 'UNSURE' },
+        { word: 'Donde', meaning: 'Where', example: 'El lugar donde nací.', status: 'UNSURE' },
+        { word: 'Relativo', meaning: 'Relative', example: 'Pronombre relativo.', status: 'DONT_KNOW' }
+      ],
+      'Week 21: SIELE Task 1 & 2 Written Interaction': [
+        { word: 'Estimado', meaning: 'Dear (formal)', example: 'Estimado director:', status: 'KNOW' },
+        { word: 'Atentamente', meaning: 'Sincerely', example: 'Atentamente, Gabor.', status: 'KNOW' },
+        { word: 'Solicitud', meaning: 'Application / Request', example: 'Presento mi solicitud.', status: 'UNSURE' },
+        { word: 'Agradecer', meaning: 'To thank', example: 'Le agradezco su atención.', status: 'UNSURE' },
+        { word: 'Cordialmente', meaning: 'Cordially', example: 'Un saludo cordial.', status: 'DONT_KNOW' }
+      ],
+      'Week 22: SIELE Oral Expression & Interaction': [
+        { word: 'Argumento', meaning: 'Argument / Point', example: 'Mi argumento principal es...', status: 'KNOW' },
+        { word: 'Opinión', meaning: 'Opinion', example: 'En mi opinión...', status: 'KNOW' },
+        { word: 'Por un lado', meaning: 'On one hand', example: 'Por un lado, es útil.', status: 'UNSURE' },
+        { word: 'Sin embargo', meaning: 'However', example: 'Por otro lado...', status: 'UNSURE' },
+        { word: 'En resumen', meaning: 'In short', example: 'En resumen, creo que...', status: 'DONT_KNOW' }
+      ],
+      'Week 23: SIELE Reading & Listening Strategies': [
+        { word: 'Comprensión', meaning: 'Comprehension', example: 'Comprensión lectora y auditiva.', status: 'KNOW' },
+        { word: 'Estrategia', meaning: 'Strategy', example: 'Estrategia de examen.', status: 'KNOW' },
+        { word: 'Identificar', meaning: 'To identify', example: 'Identifica la idea principal.', status: 'UNSURE' },
+        { word: 'Inferir', meaning: 'To infer', example: 'Infiere el significado del texto.', status: 'UNSURE' },
+        { word: 'Contexto', meaning: 'Context', example: 'Según el contexto.', status: 'DONT_KNOW' }
+      ],
+      'Week 24: Comprehensive SIELE Mock Exam': [
+        { word: 'Simulacro', meaning: 'Mock exam / Simulation', example: 'Simulacro oficial SIELE.', status: 'KNOW' },
+        { word: 'Certificación', meaning: 'Certification', example: 'Obtener el certificado B2.', status: 'KNOW' },
+        { word: 'Puntuación', meaning: 'Score / Points', example: 'Puntuación global.', status: 'UNSURE' },
+        { word: 'Destreza', meaning: 'Skill / Proficiency', example: 'Las cuatro destrezas.', status: 'UNSURE' },
+        { word: 'Superar', meaning: 'To overcome / pass', example: 'Superar la prueba con éxito.', status: 'DONT_KNOW' }
       ]
-      // (Other weeks default dynamically if needed)
     };
 
     // Generate 2 sets for each of the 24 weeks (Total 48 sets)
@@ -86,7 +232,7 @@
           topic: weekName,
           setNumber: 1,
           type: 'MULTIPLE_CHOICE',
-          question: `[Set 1] Evaluación principal para ${weekName}:`,
+          question: `Evaluación principal para ${weekName}:`,
           context: 'Selecciona la opción gramaticalmente correcta y natural para el nivel B2.',
           options: [
             { id: 'A', text: 'Opción correcta avanzada adaptada al contexto' },
@@ -104,10 +250,9 @@
           topic: weekName,
           setNumber: 2,
           type: 'FILL_IN_THE_BLANK',
-          question: `[Set 2] Completa la estructura clave para ${weekName}:`,
+          question: `Completa la estructura clave para ${weekName} (Set 2):`,
           sentenceBefore: 'En el contexto profesional y académico, ',
           sentenceAfter: ' es fundamental.',
-     
           correctAnswer: 'practicar',
           modelAnswer: 'practicar',
           keyPoint: `Aplicación práctica de ${weekName} (Set 2).`,
@@ -164,7 +309,7 @@
       const [selectedSetFilter, setSelectedSetFilter] = useState('1'); // Set 1 or Set 2
       const [progress, setProgress] = useState(() => {
         try {
-          const saved = localStorage.getItem('gabor_siele_progress_v9');
+          const saved = localStorage.getItem('gabor_siele_progress_v10');
           return saved ? JSON.parse(saved) : initialProgress;
         } catch (e) {
           return initialProgress;
@@ -172,7 +317,7 @@
       });
       const [currentIndex, setCurrentIndex] = useState(() => {
         try {
-          const savedIndex = localStorage.getItem('gabor_siele_index_v9');
+          const savedIndex = localStorage.getItem('gabor_siele_index_v10');
           return savedIndex ? parseInt(savedIndex, 10) : 0;
         } catch (e) {
           return 0;
@@ -196,17 +341,17 @@
 
       useEffect(() => {
         try {
-          localStorage.setItem('gabor_siele_progress_v9', JSON.stringify(progress));
+          localStorage.setItem('gabor_siele_progress_v10', JSON.stringify(progress));
         } catch (e) {}
       }, [progress]);
 
       useEffect(() => {
         try {
-          localStorage.setItem('gabor_siele_index_v9', currentIndex.toString());
+          localStorage.setItem('gabor_siele_index_v10', currentIndex.toString());
         } catch (e) {}
       }, [currentIndex]);
 
-      // Filter questions by Topic AND by Set (Set 1 or Set 2)
+      // Filter questions by Topic AND by Set
       const filteredQuestions = questionBank.filter(q => {
         const matchesTopic = selectedTopicFilter === 'ALL' || q.topic === selectedTopicFilter;
         const matchesSet = q.setNumber.toString() === selectedSetFilter;
@@ -277,21 +422,13 @@
         if (selectedTopicFilter !== 'ALL' && weeklyVocabBank[selectedTopicFilter]) {
           return weeklyVocabBank[selectedTopicFilter];
         }
-        // Default 5 words if general view
-        return [
-          { word: 'Desarrollar', meaning: 'To develop / grow', example: 'Es importante desarrollar buenas estrategias de estudio.', status: 'UNSURE' },
-          { word: 'Sin embargo', meaning: 'However / Nevertheless', example: 'Estudió mucho; sin embargo, la prueba fue difícil.', status: 'KNOW' },
-          { word: 'Por lo tanto', meaning: 'Therefore / Consequently', example: 'No practicó bastante; por lo tanto, no aprobó.', status: 'UNSURE' },
-          { word: 'Aprovechar', meaning: 'To take advantage of', example: 'Debes aprovechar esta oportunidad.', status: 'DONT_KNOW' },
-          { word: 'Lograr', meaning: 'To achieve / attain', example: 'Logró su objetivo de aprobar el SIELE.', status: 'DONT_KNOW' }
-        ];
+        // Default first week or fallback if ALL
+        return weeklyVocabBank['Week 1: Present Tense Regular/Irregular & Daily Routines'];
       };
 
       const handleVocabRating = (wordIndex, newStatus) => {
-        // Local state update for vocabulary rating
         const currentWords = getCurrentVocabularyWords();
         currentWords[wordIndex].status = newStatus;
-        // Force re-render trick via state update
         setProgress(prev => ({ ...prev, timestamp: Date.now() }));
       };
 
@@ -366,7 +503,18 @@
           setCards(prev => [...prev, newCard]);
           setCardIndex(cards.length);
           setShowMeaning(false);
-        } catch (err) {} finally {
+        } catch (err) {
+          // Fallback static new card if API key is blank
+          const fallbackList = [
+            { phrase: "¡Ándale pues!", meaning: "Alright then / Let's go!", context: "Used to agree or wrap up a conversation.", image: "https://images.unsplash.com/photo-1512818011718-d9de36709893?auto=format&fit=crop&q=80&w=1000", isCustom: false },
+            { phrase: "Aguas", meaning: "Watch out / Be careful", context: "Common warning expression across Mexico.", image: "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&q=80&w=1000", isCustom: false },
+            { phrase: "No manches", meaning: "No way / You're kidding", context: "Expressing surprise or disbelief.", image: "https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&q=80&w=1000", isCustom: false }
+          ];
+          const randomFallback = fallbackList[Math.floor(Math.random() * fallbackList.length)];
+          setCards(prev => [...prev, randomFallback]);
+          setCardIndex(cards.length);
+          setShowMeaning(false);
+        } finally {
           setIsGeneratingCard(false);
         }
       };
@@ -549,11 +697,11 @@
                     <div className="flex flex-wrap justify-between items-center border-b pb-3 text-xs gap-2">
                       <span className="bg-orange-100 text-orange-800 px-3 py-1 rounded font-bold">Q {activeIndex + 1} of {filteredQuestions.length}</span>
                       
-                      {/* Topic Dropdown containing all 24 weeks */}
+                      {/* Topic Dropdown containing ALL 24 Weeks */}
                       <select
                         value={selectedTopicFilter}
                         onChange={(e) => { setSelectedTopicFilter(e.target.value); setCurrentIndex(0); }}
-                        className="bg-stone-100 text-xs font-bold px-2 py-1.5 rounded border max-w-[260px]"
+                        className="bg-stone-100 text-xs font-bold px-2 py-1.5 rounded border max-w-[280px]"
                       >
                         <option value="ALL">All 24 Weeks (All Topics)</option>
                         {allWeeksList.map(week => (
@@ -639,13 +787,12 @@
                 {coachSubTab === 'vocabulary' && (
                   <div className="bg-white p-6 rounded-2xl shadow border space-y-4">
                     <div className="flex justify-between items-center flex-wrap gap-2">
-                      <h2 className="text-xl font-bold">Vocabulary Practice Deck (5 words per week)</h2>
+                      <h2 className="text-xl font-bold">Vocabulary Practice Deck (5 words/wk)</h2>
                       <select
                         value={selectedTopicFilter}
                         onChange={(e) => setSelectedTopicFilter(e.target.value)}
-                        className="bg-stone-100 text-xs font-bold px-2 py-1.5 rounded border max-w-[260px]"
+                        className="bg-stone-100 text-xs font-bold px-2 py-1.5 rounded border max-w-[280px]"
                       >
-                        <option value="ALL">General Vocabulary Deck</option>
                         {allWeeksList.map(week => (
                           <option key={week} value={week}>{week}</option>
                         ))}
