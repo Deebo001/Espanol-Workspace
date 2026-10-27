@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Barrio & SIELE Coach (Gabor)</title>
+  <title>Barrio & SIELE Mastery Coach (Gabor)</title>
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- React & ReactDOM CDNs -->
@@ -172,7 +172,7 @@
       const [selectedTopicFilter, setSelectedTopicFilter] = useState('ALL');
       const [progress, setProgress] = useState(() => {
         try {
-          const saved = localStorage.getItem('gabor_siele_progress_v7');
+          const saved = localStorage.getItem('gabor_siele_progress_v8');
           return saved ? JSON.parse(saved) : initialProgress;
         } catch (e) {
           return initialProgress;
@@ -180,7 +180,7 @@
       });
       const [currentIndex, setCurrentIndex] = useState(() => {
         try {
-          const savedIndex = localStorage.getItem('gabor_siele_index_v7');
+          const savedIndex = localStorage.getItem('gabor_siele_index_v8');
           return savedIndex ? parseInt(savedIndex, 10) : 0;
         } catch (e) {
           return 0;
@@ -206,13 +206,13 @@
 
       useEffect(() => {
         try {
-          localStorage.setItem('gabor_siele_progress_v7', JSON.stringify(progress));
+          localStorage.setItem('gabor_siele_progress_v8', JSON.stringify(progress));
         } catch (e) {}
       }, [progress]);
 
       useEffect(() => {
         try {
-          localStorage.setItem('gabor_siele_index_v7', currentIndex.toString());
+          localStorage.setItem('gabor_siele_index_v8', currentIndex.toString());
         } catch (e) {}
       }, [currentIndex]);
 
