@@ -50,7 +50,7 @@
       'Week 24: Comprehensive SIELE Mock Exam'
     ];
 
-    // 5 Unique Vocabulary Words for EACH of the 24 Weeks
+    // Weekly Vocabulary Bank (5 words per week)
     const weeklyVocabBank = {
       'Week 1: Present Tense Regular/Irregular & Daily Routines': [
         { word: 'Rutina', meaning: 'Routine', example: 'Mi rutina diaria incluye estudiar español.', status: 'KNOW' },
@@ -222,13 +222,18 @@
       ]
     };
 
-    // Pre-loaded Street Slang Flashcards
+    // Expanded Mexican Slang Flashcards including Master List items (nohaybronca.wordpress.com)
     const initialSlangCards = [
       { phrase: "¿Qué onda, ese?", meaning: "What's up, man?", context: "Very informal greeting in street culture.", image: "https://images.unsplash.com/photo-1496449903678-68ddcb189a24?auto=format&fit=crop&q=80&w=1000", isCustom: false },
       { phrase: "¡Está cañón!", meaning: "It's super tough / wild!", context: "Used when a situation is crazy or very difficult.", image: "https://images.unsplash.com/photo-1512818011718-d9de36709893?auto=format&fit=crop&q=80&w=1000", isCustom: false },
       { phrase: "No manches", meaning: "No way / You're kidding!", context: "Expressing disbelief or surprise.", image: "https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&q=80&w=1000", isCustom: false },
       { phrase: "Aguas", meaning: "Watch out / Be careful!", context: "Everyday Mexican street warning.", image: "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&q=80&w=1000", isCustom: false },
-      { phrase: "Chido", meaning: "Cool / Awesome", context: "Popular informal adjective for things or people.", image: "https://images.unsplash.com/photo-1573002813597-881ca05720f1?auto=format&fit=crop&q=80&w=1000", isCustom: false }
+      { phrase: "Chido", meaning: "Cool / Awesome", context: "Popular informal adjective for things or people.", image: "https://images.unsplash.com/photo-1573002813597-881ca05720f1?auto=format&fit=crop&q=80&w=1000", isCustom: false },
+      { phrase: "A toda madre", meaning: "Awesome / Excellent / Great time", context: "Extremely popular expression for something great (or a person who is very kind).", image: "https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?auto=format&fit=crop&q=80&w=1000", isCustom: false },
+      { phrase: "Naco", meaning: "Tacky / Vulgar / Unrefined", context: "Used to describe bad taste or lack of social etiquette.", image: "https://images.unsplash.com/photo-1508739773434-c26b3d09e071?auto=format&fit=crop&q=80&w=1000", isCustom: false },
+      { phrase: "Pachanga", meaning: "Party / Bash", context: "A lively, informal celebration or neighborhood gathering.", image: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&q=80&w=1000", isCustom: false },
+      { phrase: "Codo", meaning: "Stingy / Cheap", context: "Literally means 'elbow'; used for someone who hates spending money.", image: "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?auto=format&fit=crop&q=80&w=1000", isCustom: false },
+      { phrase: "Fresa", meaning: "Preppy / Snob", context: "Describes someone from a wealthy background with privileged attitudes.", image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=1000", isCustom: false }
     ];
 
     const generateFullQuestionBank = () => {
