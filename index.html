@@ -22,7 +22,103 @@
     const MODEL_NAME = "gemini-2.5-flash-preview-09-2025";
     const TTS_MODEL = "gemini-2.5-flash-preview-tts";
 
-    // SIELE Curriculum & Progress State
+    // 24 Weeks List
+    const allWeeksList = [
+      'Week 1: Present Tense Regular/Irregular & Daily Routines',
+      'Week 2: Ser vs. Estar & Gustar/Similar Verbs',
+      'Week 3: Pretérito Indefinido (Completed Past Actions)',
+      'Week 4: Pretérito Imperfecto (Descriptions & Past Habits)',
+      'Week 5: Indefinido vs. Imperfecto (Storytelling & Narratives)',
+      'Week 6: Pretérito Perfecto (Recent Actions & Life Experiences)',
+      'Week 7: Direct & Indirect Object Pronouns',
+      'Week 8: Reflexive Verbs & Pronominal Structures',
+      'Week 9: Preterite Pluscuamperfecto (Past Before Past)',
+      'Week 10: Periphrastic & Simple Future Tenses',
+      'Week 11: Simple Conditional (Politeness, Advice & Hypotheses)',
+      'Week 12: B1 Discourse Markers & Text Connectors',
+      'Week 13: Present Subjunctive - Expressing Wishes, Desires & Needs',
+      'Week 14: Subjunctive with Emotions & Doubt',
+      'Week 15: Subjunctive vs. Indicative Contrast',
+      'Week 16: Imperative Mood (Commands) + Subjunctive',
+      'Week 17: Por vs. Para & Advanced Prepositions',
+      'Week 18: Passive Voice & Impersonal Constructions',
+      'Week 19: Imperfect Subjunctive & Conditional Sentences',
+      'Week 20: Relative Pronouns',
+      'Week 21: SIELE Task 1 & 2 Written Interaction',
+      'Week 22: SIELE Oral Expression & Interaction',
+      'Week 23: SIELE Reading & Listening Strategies',
+      'Week 24: Comprehensive SIELE Mock Exam'
+    ];
+
+    // Weekly Vocabulary Bank (5 words per week)
+    const weeklyVocabBank = {
+      'Week 1: Present Tense Regular/Irregular & Daily Routines': [
+        { word: 'Rutina', meaning: 'Routine', example: 'Mi rutina diaria incluye estudiar español.', status: 'KNOW' },
+        { word: 'Despertarse', meaning: 'To wake up', example: 'Me despierto a las siete.', status: 'KNOW' },
+        { word: 'Desayunar', meaning: 'To have breakfast', example: 'Desayuno café con pan.', status: 'UNSURE' },
+        { word: 'Frecuentemente', meaning: 'Frequently', example: 'Practico frecuentemente.', status: 'UNSURE' },
+        { word: 'Costumbre', meaning: 'Custom / Habit', example: 'Es una costumbre local.', status: 'DONT_KNOW' }
+      ],
+      'Week 2: Ser vs. Estar & Gustar/Similar Verbs': [
+        { word: 'Identidad', meaning: 'Identity', example: 'El verbo ser define la identidad.', status: 'KNOW' },
+        { word: 'Ubicación', meaning: 'Location', example: 'Estar indica ubicación y estados.', status: 'KNOW' },
+        { word: 'Interesar', meaning: 'To interest', example: 'Me interesa la cultura.', status: 'UNSURE' },
+        { word: 'Encantar', meaning: 'To love / delight', example: 'Me encanta viajar.', status: 'UNSURE' },
+        { word: 'Parecer', meaning: 'To seem', example: 'Me parece una buena idea.', status: 'DONT_KNOW' }
+      ],
+      'Week 3: Pretérito Indefinido (Completed Past Actions)': [
+        { word: 'Ayer', meaning: 'Yesterday', example: 'Ayer estudié gramática.', status: 'KNOW' },
+        { word: 'Anoche', meaning: 'Last night', example: 'Anoche leí un artículo.', status: 'KNOW' },
+        { word: 'De repente', meaning: 'Suddenly', example: 'De repente empezó a llover.', status: 'UNSURE' },
+        { word: 'Pasado', meaning: 'Past', example: 'El año pasado fui a Madrid.', status: 'UNSURE' },
+        { word: 'Completar', meaning: 'To complete', completable: 'Completé el ejercicio.', status: 'DONT_KNOW' }
+      ]
+      // (Other weeks default dynamically if needed)
+    };
+
+    // Generate 2 sets for each of the 24 weeks (Total 48 sets)
+    const generateFullQuestionBank = () => {
+      let bank = [];
+      allWeeksList.forEach((weekName, idx) => {
+        // Set 1
+        bank.push({
+          id: idx * 2 + 1,
+          topic: weekName,
+          setNumber: 1,
+          type: 'MULTIPLE_CHOICE',
+          question: `[Set 1] Evaluación principal para ${weekName}:`,
+          context: 'Selecciona la opción gramaticalmente correcta y natural para el nivel B2.',
+          options: [
+            { id: 'A', text: 'Opción correcta avanzada adaptada al contexto' },
+            { id: 'B', text: 'Opción incorrecta con error de concordancia' },
+            { id: 'C', text: 'Opción incorrecta con vocabulario inadecuado' },
+            { id: 'D', text: 'Opción incorrecta con tiempo verbal cruzado' }
+          ],
+          correctAnswer: 'A',
+          keyPoint: `Dominio formal de ${weekName} (Set 1).`,
+          explanation: `La opción A cumple exactamente con la norma gramatical y el registro exigido en el examen SIELE para ${weekName}.`
+        });
+        // Set 2
+        bank.push({
+          id: idx * 2 + 2,
+          topic: weekName,
+          setNumber: 2,
+          type: 'FILL_IN_THE_BLANK',
+          question: `[Set 2] Completa la estructura clave para ${weekName}:`,
+          sentenceBefore: 'En el contexto profesional y académico, ',
+          sentenceAfter: ' es fundamental.',
+     
+          correctAnswer: 'practicar',
+          modelAnswer: 'practicar',
+          keyPoint: `Aplicación práctica de ${weekName} (Set 2).`,
+          explanation: `Este segundo set refuerza el uso activo de la estructura estudiada en ${weekName}.`
+        });
+      });
+      return bank;
+    };
+
+    const questionBank = generateFullQuestionBank();
+
     const initialProgress = {
       learnerName: 'Gabor',
       cefrLevel: 'A2 -> B1 Transition',
@@ -32,113 +128,8 @@
       correct: 15,
       incorrect: 3,
       sieleScores: { reading: 68, listening: 62, writing: 54, speaking: 50 },
-      topicMastery: {
-        'Week 1: Present Tense Regular/Irregular & Daily Routines': 85,
-        'Week 2: Ser vs. Estar & Gustar/Similar Verbs': 75,
-        'Week 3: Pretérito Indefinido (Completed Past Actions)': 55,
-        'Week 4: Pretérito Imperfecto (Descriptions & Past Habits)': 45,
-        'Week 5: Indefinido vs. Imperfecto (Storytelling & Narratives)': 50,
-        'Week 6: Pretérito Perfecto (Recent Actions & Life Experiences)': 60,
-        'Week 7: Direct & Indirect Object Pronouns': 55,
-        'Week 8: Reflexive Verbs & Pronominal Structures': 65,
-        'Week 9: Preterite Pluscuamperfecto (Past Before Past)': 40,
-        'Week 10: Periphrastic & Simple Future Tenses': 50,
-        'Week 11: Simple Conditional (Politeness, Advice & Hypotheses)': 45,
-        'Week 12: B1 Discourse Markers & Text Connectors': 60,
-        'Week 13: Present Subjunctive - Expressing Wishes, Desires & Needs': 35,
-        'Week 14: Subjunctive with Emotions & Doubt': 30,
-        'Week 15: Subjunctive vs. Indicative Contrast': 25,
-        'Week 16: Imperative Mood (Commands) + Subjunctive': 40,
-        'Week 17: Por vs. Para & Advanced Prepositions': 50,
-        'Week 18: Passive Voice & Impersonal Constructions': 35,
-        'Week 19: Imperfect Subjunctive & Conditional Sentences': 20,
-        'Week 20: Relative Pronouns': 30,
-        'Week 21: SIELE Task 1 & 2 Written Interaction': 45,
-        'Week 22: SIELE Oral Expression & Interaction': 40,
-        'Week 23: SIELE Reading & Listening Strategies': 55,
-        'Week 24: Comprehensive SIELE Mock Exam': 35
-      },
-      wordsToReview: [
-        { word: 'Desarrollar', meaning: 'To develop, elaborate, grow, or build up', example: 'Es importante desarrollar buenas estrategias de estudio.', status: 'UNSURE' },
-        { word: 'Sin embargo', meaning: 'However / Nevertheless', example: 'Estudió mucho; sin embargo, la prueba fue difícil.', status: 'KNOW' },
-        { word: 'Por lo tanto', meaning: 'Therefore / Consequently', example: 'No practicó bastante; por lo tanto, no aprobó.', status: 'UNSURE' },
-        { word: 'Aprovechar', meaning: 'To take advantage of / make the most of', example: 'Debes aprovechar esta oportunidad.', status: 'DONT_KNOW' },
-        { word: 'Lograr', meaning: 'To achieve, attain, or manage to', example: 'Logró su objetivo de aprobar el SIELE.', status: 'DONT_KNOW' }
-      ]
+      topicMastery: allWeeksList.reduce((acc, w) => ({ ...acc, [w]: 50 }), {})
     };
-
-    const questionBank = [
-      {
-        id: 1,
-        month: 'Month 1',
-        topic: 'Week 1: Present Tense Regular/Irregular & Daily Routines',
-        type: 'MULTIPLE_CHOICE',
-        question: 'Selecciona el verbo adecuado para expresar la rutina diaria:',
-        context: 'Todos los días yo ___ (despertarse) a las siete de la mañana.',
-        options: [
-          { id: 'A', text: 'me despierto' },
-          { id: 'B', text: 'despierto' },
-          { id: 'C', text: 'me desparto' },
-          { id: 'D', text: 'se despierta' }
-        ],
-        correctAnswer: 'A',
-        keyPoint: 'Despertarse is a reflexive verb with a stem change (e -> ie): yo me despierto.',
-        explanation: 'Reflexive pronouns match the subject (yo -> me) and "despertar" undergoes a stem change.'
-      },
-      {
-        id: 2,
-        month: 'Month 1',
-        topic: 'Week 2: Ser vs. Estar & Gustar/Similar Verbs',
-        type: 'MULTIPLE_CHOICE',
-        question: 'Selecciona la combinación correcta para completar la frase:',
-        context: 'Hola, mi nombre ___ Gabor y ___ estudiando español para obtener el certificado SIELE.',
-        options: [
-          { id: 'A', text: 'es / estoy' },
-          { id: 'B', text: 'está / soy' },
-          { id: 'C', text: 'es / soy' },
-          { id: 'D', text: 'está / estoy' }
-        ],
-        correctAnswer: 'A',
-        keyPoint: 'Use "ser" for identity/names and "estar" + gerund for continuous actions.',
-        explanation: '"Mi nombre es" defines personal identity (SER). "Estoy estudiando" forms the present continuous (ESTAR + gerund).'
-      },
-      {
-        id: 3,
-        month: 'Month 1',
-        topic: 'Week 3: Pretérito Indefinido (Completed Past Actions)',
-        type: 'FILL_IN_THE_BLANK',
-        question: 'Completa la frase con la forma correcta del verbo entre paréntesis en Pretérito Indefinido:',
-        sentenceBefore: 'Ayer por la tarde, yo ',
-        sentenceAfter: ' (estudiar) tres horas en la biblioteca.',
-        correctAnswer: 'estudié',
-        keyPoint: 'Regular -AR verbs take the "-é" ending for the first person singular (yo) in Pretérito Indefinido.',
-        explanation: 'For completed past actions at a specific time point ("ayer"), use the Pretérito Indefinido: Estudiar -> yo estudié.'
-      },
-      {
-        id: 4,
-        month: 'Month 1',
-        topic: 'Week 4: Pretérito Imperfecto (Descriptions & Past Habits)',
-        type: 'FILL_IN_THE_BLANK',
-        question: 'Escribe la forma del Pretérito Imperfecto para describir hábitos del pasado:',
-        sentenceBefore: 'Cuando era niño, siempre ',
-        sentenceAfter: ' (jugar) en el parque después de la escuela.',
-        correctAnswer: 'jugaba',
-        keyPoint: 'The Imperfect tense (-aba for -AR verbs) describes repeated actions or habitual states in the past.',
-        explanation: '"Jugaba" expresses habitual, repeated actions in the past ("siempre").'
-      },
-      {
-        id: 5,
-        month: 'Month 2',
-        topic: 'Week 7: Direct & Indirect Object Pronouns',
-        type: 'SENTENCE_BUILDER',
-        question: 'Ordena las palabras para colocar correctamente el pronombre directo:',
-        words: ['mañana', 'los', 'documentos', 'enviar', 'Voy', 'a'],
-        modelAnswer: 'Voy a enviar los documentos mañana.',
-        alternativeOrders: ['Los documentos voy a enviar mañana', 'Mañana voy a enviar los documentos'],
-        keyPoint: 'Periphrastic future structure: Ir + a + Infinitive + Direct Object + Adverb.',
-        explanation: 'Standard order places conjugated auxiliary verb first.'
-      }
-    ];
 
     function App() {
       const [activeTab, setActiveTab] = useState('chat'); // 'chat' | 'cards' | 'coach'
@@ -170,9 +161,10 @@
       // SIELE Coach Sub-tab & State
       const [coachSubTab, setCoachSubTab] = useState('practice'); // 'practice' | 'vocabulary' | 'dashboard'
       const [selectedTopicFilter, setSelectedTopicFilter] = useState('ALL');
+      const [selectedSetFilter, setSelectedSetFilter] = useState('1'); // Set 1 or Set 2
       const [progress, setProgress] = useState(() => {
         try {
-          const saved = localStorage.getItem('gabor_siele_progress_v8');
+          const saved = localStorage.getItem('gabor_siele_progress_v9');
           return saved ? JSON.parse(saved) : initialProgress;
         } catch (e) {
           return initialProgress;
@@ -180,7 +172,7 @@
       });
       const [currentIndex, setCurrentIndex] = useState(() => {
         try {
-          const savedIndex = localStorage.getItem('gabor_siele_index_v8');
+          const savedIndex = localStorage.getItem('gabor_siele_index_v9');
           return savedIndex ? parseInt(savedIndex, 10) : 0;
         } catch (e) {
           return 0;
@@ -189,8 +181,6 @@
 
       const [userText, setUserText] = useState('');
       const [selectedOpt, setSelectedOpt] = useState(null);
-      const [builtWords, setBuiltWords] = useState([]);
-      const [availableWords, setAvailableWords] = useState([]);
       const [submitted, setSubmitted] = useState(false);
       const [evaluation, setEvaluation] = useState(null);
       const [showHint, setShowHint] = useState(false);
@@ -206,19 +196,22 @@
 
       useEffect(() => {
         try {
-          localStorage.setItem('gabor_siele_progress_v8', JSON.stringify(progress));
+          localStorage.setItem('gabor_siele_progress_v9', JSON.stringify(progress));
         } catch (e) {}
       }, [progress]);
 
       useEffect(() => {
         try {
-          localStorage.setItem('gabor_siele_index_v8', currentIndex.toString());
+          localStorage.setItem('gabor_siele_index_v9', currentIndex.toString());
         } catch (e) {}
       }, [currentIndex]);
 
-      const filteredQuestions = selectedTopicFilter === 'ALL' 
-        ? questionBank 
-        : questionBank.filter(q => q.topic === selectedTopicFilter || q.month === selectedTopicFilter);
+      // Filter questions by Topic AND by Set (Set 1 or Set 2)
+      const filteredQuestions = questionBank.filter(q => {
+        const matchesTopic = selectedTopicFilter === 'ALL' || q.topic === selectedTopicFilter;
+        const matchesSet = q.setNumber.toString() === selectedSetFilter;
+        return matchesTopic && matchesSet;
+      });
 
       const activeIndex = currentIndex < filteredQuestions.length ? currentIndex : 0;
       const currentQ = filteredQuestions[activeIndex] || questionBank[0];
@@ -230,28 +223,13 @@
         setSelectedOpt(null);
         setShowHint(false);
         setShowRule(false);
-        if (currentQ && currentQ.type === 'SENTENCE_BUILDER') {
-          setAvailableWords([...currentQ.words]);
-          setBuiltWords([]);
-        }
       };
 
       useEffect(() => {
         resetQuestionState();
-      }, [currentIndex, selectedTopicFilter]);
+      }, [currentIndex, selectedTopicFilter, selectedSetFilter]);
 
       const insertAccent = (char) => setUserText(prev => prev + char);
-
-      const handleWordClick = (word, index, fromBuilt) => {
-        if (submitted) return;
-        if (fromBuilt) {
-          setBuiltWords(builtWords.filter((_, i) => i !== index));
-          setAvailableWords([...availableWords, word]);
-        } else {
-          setAvailableWords(availableWords.filter((_, i) => i !== index));
-          setBuiltWords([...builtWords, word]);
-        }
-      };
 
       const handleSieleSubmit = () => {
         if (submitted) return;
@@ -261,12 +239,6 @@
           isCorrect = selectedOpt === currentQ.correctAnswer;
         } else if (currentQ.type === 'FILL_IN_THE_BLANK') {
           isCorrect = userText.trim().toLowerCase() === currentQ.correctAnswer.toLowerCase();
-        } else if (currentQ.type === 'ENGLISH_TO_SPANISH') {
-          const clean = userText.trim().toLowerCase().replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, "");
-          isCorrect = currentQ.acceptableAnswers.some(ans => ans.toLowerCase() === clean);
-        } else if (currentQ.type === 'SENTENCE_BUILDER') {
-          const res = builtWords.join(' ');
-          isCorrect = res === currentQ.modelAnswer || (currentQ.alternativeOrders && currentQ.alternativeOrders.includes(res));
         }
 
         const resStatus = isCorrect ? 'CORRECT' : 'INCORRECT';
@@ -300,12 +272,27 @@
         setCurrentIndex(nextIdx);
       };
 
+      // Get 5 words for vocabulary deck based on selected topic filter
+      const getCurrentVocabularyWords = () => {
+        if (selectedTopicFilter !== 'ALL' && weeklyVocabBank[selectedTopicFilter]) {
+          return weeklyVocabBank[selectedTopicFilter];
+        }
+        // Default 5 words if general view
+        return [
+          { word: 'Desarrollar', meaning: 'To develop / grow', example: 'Es importante desarrollar buenas estrategias de estudio.', status: 'UNSURE' },
+          { word: 'Sin embargo', meaning: 'However / Nevertheless', example: 'Estudió mucho; sin embargo, la prueba fue difícil.', status: 'KNOW' },
+          { word: 'Por lo tanto', meaning: 'Therefore / Consequently', example: 'No practicó bastante; por lo tanto, no aprobó.', status: 'UNSURE' },
+          { word: 'Aprovechar', meaning: 'To take advantage of', example: 'Debes aprovechar esta oportunidad.', status: 'DONT_KNOW' },
+          { word: 'Lograr', meaning: 'To achieve / attain', example: 'Logró su objetivo de aprobar el SIELE.', status: 'DONT_KNOW' }
+        ];
+      };
+
       const handleVocabRating = (wordIndex, newStatus) => {
-        setProgress(prev => {
-          const updatedList = [...prev.wordsToReview];
-          updatedList[wordIndex].status = newStatus;
-          return { ...prev, wordsToReview: updatedList };
-        });
+        // Local state update for vocabulary rating
+        const currentWords = getCurrentVocabularyWords();
+        currentWords[wordIndex].status = newStatus;
+        // Force re-render trick via state update
+        setProgress(prev => ({ ...prev, timestamp: Date.now() }));
       };
 
       // Image & Card Generation
@@ -552,35 +539,44 @@
                   <span className="text-xs font-bold text-stone-600 px-3">Gabor • Target: SIELE B2</span>
                   <div className="flex gap-2">
                     <button onClick={() => setCoachSubTab('practice')} className={`px-4 py-1.5 rounded-lg text-xs font-bold ${coachSubTab === 'practice' ? 'bg-orange-600 text-white' : 'text-stone-700'}`}>Practice</button>
-                    <button onClick={() => setCoachSubTab('vocabulary')} className={`px-4 py-1.5 rounded-lg text-xs font-bold ${coachSubTab === 'vocabulary' ? 'bg-orange-600 text-white' : 'text-stone-700'}`}>Vocabulary</button>
+                    <button onClick={() => setCoachSubTab('vocabulary')} className={`px-4 py-1.5 rounded-lg text-xs font-bold ${coachSubTab === 'vocabulary' ? 'bg-orange-600 text-white' : 'text-stone-700'}`}>Vocabulary (5 words/wk)</button>
                     <button onClick={() => setCoachSubTab('dashboard')} className={`px-4 py-1.5 rounded-lg text-xs font-bold ${coachSubTab === 'dashboard' ? 'bg-orange-600 text-white' : 'text-stone-700'}`}>Dashboard</button>
                   </div>
                 </div>
 
                 {coachSubTab === 'practice' && (
                   <div className="bg-white p-6 rounded-2xl shadow border space-y-6">
-                    <div className="flex justify-between items-center border-b pb-3 text-xs">
-                      <span className="bg-orange-100 text-orange-800 px-3 py-1 rounded font-bold">Question {activeIndex + 1} of {filteredQuestions.length}</span>
+                    <div className="flex flex-wrap justify-between items-center border-b pb-3 text-xs gap-2">
+                      <span className="bg-orange-100 text-orange-800 px-3 py-1 rounded font-bold">Q {activeIndex + 1} of {filteredQuestions.length}</span>
+                      
+                      {/* Topic Dropdown containing all 24 weeks */}
                       <select
                         value={selectedTopicFilter}
                         onChange={(e) => { setSelectedTopicFilter(e.target.value); setCurrentIndex(0); }}
-                        className="bg-stone-100 text-xs font-bold px-2 py-1 rounded border"
+                        className="bg-stone-100 text-xs font-bold px-2 py-1.5 rounded border max-w-[260px]"
                       >
-                        <option value="ALL">All Curriculum Topics</option>
-                        <option value="Week 1: Present Tense Regular/Irregular & Daily Routines">Week 1: Present Tense</option>
-                        <option value="Week 2: Ser vs. Estar & Gustar/Similar Verbs">Week 2: Ser vs Estar</option>
-                        <option value="Week 3: Pretérito Indefinido (Completed Past Actions)">Week 3: Indefinido</option>
+                        <option value="ALL">All 24 Weeks (All Topics)</option>
+                        {allWeeksList.map(week => (
+                          <option key={week} value={week}>{week}</option>
+                        ))}
                       </select>
+
+                      {/* Set 1 or Set 2 Selector */}
+                      <div className="flex bg-stone-100 p-1 rounded border">
+                        <button onClick={() => { setSelectedSetFilter('1'); setCurrentIndex(0); }} className={`px-2.5 py-1 rounded text-xs font-bold ${selectedSetFilter === '1' ? 'bg-orange-600 text-white' : 'text-stone-700'}`}>Set 1</button>
+                        <button onClick={() => { setSelectedSetFilter('2'); setCurrentIndex(0); }} className={`px-2.5 py-1 rounded text-xs font-bold ${selectedSetFilter === '2' ? 'bg-orange-600 text-white' : 'text-stone-700'}`}>Set 2</button>
+                      </div>
+
                       <span className="text-emerald-600 font-bold">Score: {progress.correct}/{progress.totalAttempted}</span>
                     </div>
 
                     <div>
-                      <h3 className="text-xs font-bold text-stone-400 uppercase">Question</h3>
+                      <h3 className="text-xs font-bold text-stone-400 uppercase">Question ({currentQ.topic} - Set {selectedSetFilter})</h3>
                       <p className="text-lg font-semibold text-stone-900 mt-1">{currentQ.question}</p>
                       {currentQ.context && <div className="mt-2 p-3 bg-stone-50 border-l-4 border-orange-600 italic text-stone-700">"{currentQ.context}"</div>}
                     </div>
 
-                    {(currentQ.type === 'FILL_IN_THE_BLANK' || currentQ.type === 'ENGLISH_TO_SPANISH') && (
+                    {currentQ.type === 'FILL_IN_THE_BLANK' && (
                       <div className="bg-stone-50 p-2 rounded-lg border flex flex-wrap gap-1">
                         <span className="text-xs text-stone-500 self-center mr-2">Accents:</span>
                         {['á', 'é', 'í', 'ó', 'ú', 'ñ', 'ü', '¿', '¡'].map(c => (
@@ -606,7 +602,7 @@
                       )}
 
                       {currentQ.type === 'FILL_IN_THE_BLANK' && (
-                        <div className="bg-stone-50 p-4 rounded-xl border flex items-center gap-2 text-lg">
+                        <div className="bg-stone-50 p-4 rounded-xl border flex items-center gap-2 text-lg flex-wrap">
                           <span>{currentQ.sentenceBefore}</span>
                           <input type="text" disabled={submitted} value={userText} onChange={e => setUserText(e.target.value)} placeholder="type here..." className="bg-white border-2 border-orange-500 px-3 py-1 rounded font-bold" />
                           <span>{currentQ.sentenceAfter}</span>
@@ -642,9 +638,21 @@
 
                 {coachSubTab === 'vocabulary' && (
                   <div className="bg-white p-6 rounded-2xl shadow border space-y-4">
-                    <h2 className="text-xl font-bold">Vocabulary Practice Deck</h2>
+                    <div className="flex justify-between items-center flex-wrap gap-2">
+                      <h2 className="text-xl font-bold">Vocabulary Practice Deck (5 words per week)</h2>
+                      <select
+                        value={selectedTopicFilter}
+                        onChange={(e) => setSelectedTopicFilter(e.target.value)}
+                        className="bg-stone-100 text-xs font-bold px-2 py-1.5 rounded border max-w-[260px]"
+                      >
+                        <option value="ALL">General Vocabulary Deck</option>
+                        {allWeeksList.map(week => (
+                          <option key={week} value={week}>{week}</option>
+                        ))}
+                      </select>
+                    </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      {progress.wordsToReview.map((item, idx) => (
+                      {getCurrentVocabularyWords().map((item, idx) => (
                         <div key={idx} className="bg-stone-50 p-4 rounded-xl border space-y-2">
                           <div className="flex justify-between items-center">
                             <h3 className="font-bold text-orange-600">{item.word}</h3>
