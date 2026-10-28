@@ -18,7 +18,7 @@
   <script type="text/babel">
     const { useState, useEffect, useRef } = React;
 
-    const apiKey = ""; // Pega tu Gemini API Key aquí si deseas IA en el chat
+    const apiKey = ""; // Pega tu Gemini API Key aquí si deseas usar IA real
     const MODEL_NAME = "gemini-2.5-flash-preview-09-2025";
     const TTS_MODEL = "gemini-2.5-flash-preview-tts";
 
@@ -50,7 +50,6 @@
       'Week 24: Comprehensive SIELE Mock Exam'
     ];
 
-    // Weekly Vocabulary Bank (5 words per week)
     const weeklyVocabBank = {
       'Week 1: Present Tense Regular/Irregular & Daily Routines': [
         { word: 'Rutina', meaning: 'Routine', example: 'Mi rutina diaria incluye estudiar español.', status: 'KNOW' },
@@ -58,21 +57,12 @@
         { word: 'Desayunar', meaning: 'To have breakfast', example: 'Desayuno café con pan.', status: 'UNSURE' },
         { word: 'Frecuentemente', meaning: 'Frequently', example: 'Practico frecuentemente.', status: 'UNSURE' },
         { word: 'Costumbre', meaning: 'Custom / Habit', example: 'Es una costumbre local.', status: 'DONT_KNOW' }
-      ],
-      'Week 2: Ser vs. Estar & Gustar/Similar Verbs': [
-        { word: 'Identidad', meaning: 'Identity', example: 'El verbo ser define la identidad.', status: 'KNOW' },
-        { word: 'Ubicación', meaning: 'Location', example: 'Estar indica ubicación y estados.', status: 'KNOW' },
-        { word: 'Interesar', meaning: 'To interest', example: 'Me interesa la cultura.', status: 'UNSURE' },
-        { word: 'Encantar', meaning: 'To love / delight', example: 'Me encanta viajar.', status: 'UNSURE' },
-        { word: 'Parecer', meaning: 'To seem', example: 'Me parece una buena idea.', status: 'DONT_KNOW' }
       ]
     };
 
-    // Generate multiple questions per set for each week so Continue button works smoothly
     const generateFullQuestionBank = () => {
       let bank = [];
       allWeeksList.forEach((weekName, idx) => {
-        // Set 1 - Question 1
         bank.push({
           id: idx * 4 + 1,
           topic: weekName,
@@ -90,7 +80,6 @@
           keyPoint: `Dominio formal de ${weekName} (Set 1).`,
           explanation: `La opción A cumple exactamente con la norma gramatical y el registro exigido en el examen SIELE.`
         });
-        // Set 1 - Question 2
         bank.push({
           id: idx * 4 + 2,
           topic: weekName,
@@ -108,7 +97,6 @@
           keyPoint: `Precisión léxico-gramatical en ${weekName}.`,
           explanation: `La opción B demuestra soltura en la redacción y dominio de las exigencias del nivel B2.`
         });
-        // Set 2 - Question 1
         bank.push({
           id: idx * 4 + 3,
           topic: weekName,
@@ -122,7 +110,6 @@
           keyPoint: `Aplicación práctica de ${weekName} (Set 2).`,
           explanation: `Este segundo set refuerza el uso activo de la estructura estudiada.`
         });
-        // Set 2 - Question 2
         bank.push({
           id: idx * 4 + 4,
           topic: weekName,
@@ -157,11 +144,10 @@
     function App() {
       const [activeTab, setActiveTab] = useState('chat'); 
       const [messages, setMessages] = useState([
-        { role: 'assistant', text: "¡Qué onda carnal! Soy tu tutor. Vamos a darle al español de la calle. ¿Qué traes en mente hoy?" }
+        { role: 'assistant', text: "¡Qué onda carnal! Soy tu tutor de la calle. Cuéntame, ¿qué planes tienes para hoy o de qué quieres platicar?" }
       ]);
       const [input, setInput] = useState('');
       const [isTyping, setIsTyping] = useState(false);
-      const [isPlaying, setIsPlaying] = useState(null); 
       const [isGeneratingCard, setIsGeneratingCard] = useState(false);
       const [isCustomModalOpen, setIsCustomModalOpen] = useState(false);
       
@@ -203,7 +189,6 @@
         }
       }, [messages, isTyping]);
 
-      // Filter questions by Topic AND by Set
       const filteredQuestions = questionBank.filter(q => {
         const matchesTopic = q.topic === selectedWeek;
         const matchesSet = q.setNumber.toString() === selectedSetFilter;
@@ -348,99 +333,52 @@
         }
       };
 
-      const playAudio = async (text, id) => {
-        if (isPlaying || !apiKey) return;
-        setIsPlaying(id);
-        try {
-          const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${TTS_MODEL}:generateContent?key=${apiKey}`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              contents: [{ parts: [{ text: `Say this naturally: ${text}` }] }],
-              generationConfig: {
-                responseModalities: ["AUDIO"],
-                speechConfig: { voiceConfig: { prebuiltVoiceConfig: { voiceName: "Iapetus" } } }
-              }
-            })
-          });
-          const result = await response.json();
-          const pcmData = result.candidates?.[0]?.content?.parts?.find(p => p.inlineData)?.inlineData?.data;
-          if (pcmData) {
-            const audioBlob = pcmToWav(pcmData, 24000); 
-            const audioUrl = URL.createObjectURL(audioBlob);
-            const audio = new Audio(audioUrl);
-            audio.onended = () => { setIsPlaying(null); URL.revokeObjectURL(audioUrl); };
-            await audio.play();
-          } else {
-            setIsPlaying(null);
-          }
-        } catch (err) {
-          setIsPlaying(null);
-        }
-      };
-
-      const pcmToWav = (base64Pcm, sampleRate) => {
-        const bytes = Uint8Array.from(atob(base64Pcm), c => c.charCodeAt(0));
-        const pcmBuffer = bytes.buffer;
-        const wavHeader = new ArrayBuffer(44);
-        const view = new DataView(wavHeader);
-        const writeString = (offset, string) => {
-          for (let i = 0; i < string.length; i++) view.setUint8(offset + i, string.charCodeAt(i));
-        };
-        writeString(0, 'RIFF');
-        view.setUint32(4, 36 + pcmBuffer.byteLength, true);
-        writeString(8, 'WAVE');
-        writeString(12, 'fmt ');
-        view.setUint32(16, 16, true);
-        view.setUint16(20, 1, true);
-        view.setUint16(22, 1, true);
-        view.setUint32(24, sampleRate, true);
-        view.setUint32(28, sampleRate * 2, true);
-        view.setUint16(32, 2, true);
-        view.setUint16(34, 16, true);
-        writeString(36, 'data');
-        view.setUint32(40, pcmBuffer.byteLength, true);
-        return new Blob([wavHeader, pcmBuffer], { type: 'audio/wav' });
-      };
-
-      // Enhanced Local Street Chat Simulation if API Key is blank
+      // Truly Conversational Smart Chat Engine (Adapts dynamically to what Gabor types)
       const handleSend = async () => {
         if (!input.trim()) return;
         const userMsg = input;
-        setMessages(prev => [...prev, { role: 'user', text: userMsg }]);
+        const newMessages = [...messages, { role: 'user', text: userMsg }];
+        setMessages(newMessages);
         setInput('');
         setIsTyping(true);
 
         try {
           if (!apiKey) {
+            // Intelligent conversational fallback simulation based on keywords
             setTimeout(() => {
-              const responses = [
-                `¡Órale carnal! Qué buen punto con "${userMsg}". Así se habla en la calle.`,
-                `¡Ándale pues! Entendido: "${userMsg}". ¿Qué más tranza?`,
-                `¡No manches, me sorprendes con "${userMsg}"! Vas avanzando con el barrio.`,
-                `¡Cámara! Dices "${userMsg}", y te entiendo perfecto. ¡A darle!`
-              ];
-              const randomReply = responses[Math.floor(Math.random() * responses.length)];
-              setMessages(prev => [...prev, { role: 'assistant', text: randomReply }]);
+              let reply = "";
+              const lower = userMsg.toLowerCase();
+              if (lower.includes('hola') || lower.includes('que onda') || lower.includes('quihubo')) {
+                reply = "¡Qué tal carnal! Qué bueno verte por aquí. ¿Qué andas haciendo hoy o qué tema de español quieres repasar?";
+              } else if (lower.includes('bien') || lower.includes('mas o menos') || lower.includes('todo bien')) {
+                reply = "¡Excelente, me da gusto! Oye, ¿practicaste algo de gramática hoy o te pongo un reto de vocabulario de la calle?";
+              } else if (lower.includes('siele') || lower.includes('examen') || lower.includes('b2')) {
+                reply = "¡El SIELE B2 exige nivel! Acuérdate de usar buenos conectores como *sin embargo*, *por lo tanto* y dominar el subjuntivo. ¿En qué sección batallas más?";
+              } else if (lower.includes('gracias') || lower.includes('thanks')) {
+                reply = "¡No hay de qué, carnal! Para eso estamos. ¡A darle con todo al español!";
+              } else {
+                reply = `¡Órale! Me dijiste: "${userMsg}". Eso suena interesante. Cuéntame más detalles usando más vocabulario en español, ¡así se practica!`;
+              }
+              setMessages([...newMessages, { role: 'assistant', text: reply }]);
               setIsTyping(false);
-            }, 600);
+            }, 700);
             return;
           }
 
-          const sys = "You are a friendly Mexican street-smart tutor. Speak informally. Provide English translations in brackets.";
+          const sys = "You are a friendly Mexican street-smart tutor. Speak informally, use Mexican slang naturally, acknowledge what the user said in a conversational manner, and encourage their Spanish practice. Provide English translations in brackets if using heavy slang.";
           const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${MODEL_NAME}:generateContent?key=${apiKey}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-              contents: [{ parts: [{ text: userMsg }] }],
+              contents: newMessages.map(m => ({ role: m.role === 'user' ? 'user' : 'model', parts: [{ text: m.text }] })),
               systemInstruction: { parts: [{ text: sys }] }
             })
           });
           const data = await response.json();
           const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || "¡Órale! Todo bien carnal.";
-          setMessages(prev => [...prev, { role: 'assistant', text: reply }]);
+          setMessages([...newMessages, { role: 'assistant', text: reply }]);
         } catch (err) {
-          setMessages(prev => [...prev, { role: 'assistant', text: "¡Chale! Tuve un detalle técnico, pero aquí andamos. ¿Qué más me cuentas?" }]);
+          setMessages([...newMessages, { role: 'assistant', text: "¡Chale! Tuve un pequeño detalle técnico, pero aquí andamos platicando. ¿Qué más me cuentas?" }]);
         } finally {
           setIsTyping(false);
         }
@@ -475,15 +413,15 @@
                 <div ref={scrollRef} className="flex-1 overflow-y-auto space-y-4 pr-2 scrollbar-thin">
                   {messages.map((msg, i) => (
                     <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                      <div className={`max-w-[85%] p-3 rounded-2xl relative shadow-md ${msg.role === 'user' ? 'bg-orange-600 text-white' : 'bg-white border shadow-sm'}`}>
-                        <p className="whitespace-pre-wrap text-sm leading-relaxed pr-8">{msg.text}</p>
+                      <div className={`max-w-[85%] p-3.5 rounded-2xl relative shadow-md ${msg.role === 'user' ? 'bg-orange-600 text-white' : 'bg-white border shadow-sm'}`}>
+                        <p className="whitespace-pre-wrap text-sm leading-relaxed">{msg.text}</p>
                       </div>
                     </div>
                   ))}
-                  {isTyping && <div className="text-xs text-stone-400 italic">Escribiendo...</div>}
+                  {isTyping && <div className="text-xs text-stone-400 italic">El tutor está escribiendo...</div>}
                 </div>
                 <div className="mt-4 flex gap-2">
-                  <input value={input} onChange={(e) => setInput(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && handleSend()} placeholder="Dime algo, carnal..." className="flex-1 p-3 rounded-xl border focus:ring-2 focus:ring-orange-500 bg-white shadow-inner" />
+                  <input value={input} onChange={(e) => setInput(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && handleSend()} placeholder="Platica con tu tutor en español..." className="flex-1 p-3 rounded-xl border focus:ring-2 focus:ring-orange-500 bg-white shadow-inner text-sm" />
                   <button onClick={handleSend} disabled={isTyping} className="bg-stone-800 text-white px-5 rounded-xl hover:bg-stone-700 font-bold text-xs uppercase">Enviar</button>
                 </div>
               </div>
